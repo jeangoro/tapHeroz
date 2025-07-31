@@ -1,0 +1,30 @@
+.minus1 {
+  font-size: 18px;
+  font-weight: 700;
+  position: relative;
+  animation-name: animateMinus1;
+  animation-duration: 0.5s;
+  animation-delay: 0s;
+}
+
+@keyframes animateMinus1 {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 1;
+    transform: translateX(-20px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(20px);
+  }
+  75% {
+    opacity: 1;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(20px);
+  }
+}

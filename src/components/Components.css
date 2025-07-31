@@ -1,0 +1,27 @@
+.competition-row {
+  font-size: 11px;
+}
+
+.competition-row ion-col {
+  background-color: #a991f7;
+  border-radius: 5px;
+  text-align: center;
+  padding: 5px;
+  box-shadow: 4px 4px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.blinking-text {
+  animation: blink 1s infinite steps(1); /* 1s duration, infinite loop, instant transition */
+}
