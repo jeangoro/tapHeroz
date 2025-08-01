@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { IonButton, IonButtons, IonCol, IonContent, IonHeader, IonModal, IonPage, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react";
 import Depot from "./Depot";
+import "./Comptes.css";
 
 const Comptes = () => {
   const [isOpen, setisOpen] = useState(false);
@@ -13,7 +14,7 @@ const Comptes = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="ion-padding">
-          <IonRow className="text-align-center">
+          <IonRow className="text-align-center fz-10">
             <IonCol size="12">
               <IonText color={"success"}>
                 <h4 color="danger">Solde du compte: 1000 FCFA</h4>{" "}
