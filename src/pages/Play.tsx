@@ -1,5 +1,4 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from "@ionic/react";
-// import Game from "../components/Game";
+import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonRefresher, IonRefresherContent, IonTitle, IonToolbar, RefresherCustomEvent } from "@ionic/react";
 import "./Play.css";
 import Jeux from "../components/Jeux";
 import { useHistory } from "react-router";
@@ -22,6 +21,15 @@ const Play: React.FC = () => {
     }
   }, [history, userInfos]);
 
+  function handleRefresh(event: RefresherCustomEvent) {
+    setTimeout(() => {
+      // Any calls to load data go here
+      console.log("Refresh in progress!");
+
+      event.detail.complete();
+    }, 2000);
+  }
+
   return (
     <>
       <Menu />
@@ -40,10 +48,17 @@ const Play: React.FC = () => {
           {/* Temps restant: {leftTime} */}
           <div style={{ color: "red", textAlign: "center" }}>
             Prochain tour de compétition dans : <br />
-            <CountDown timeToWaitInSeconds={leftTime} />
+            <h4>
+              <CountDown timeToWaitInSeconds={leftTime} />
+            </h4>
           </div>
           <RappelParticipation />
           <Jeux />
+          {/* <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+            <IonRefresherContent>
+              
+            </IonRefresherContent>
+          </IonRefresher> */}
         </IonContent>
       </IonPage>
     </>

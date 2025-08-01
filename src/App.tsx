@@ -96,53 +96,55 @@ const App: React.FC = () => {
   }, [getUserInfos]);
 
   return (
-    <IonApp>
-      <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route exact path="/login">
-              <Login />
-            </Route>
-            <Route exact path="/register">
-              <Register />
-            </Route>
-            <Route exact path="/play">
-              <Play />
-            </Route>
-            <Route exact path="/statistiques">
-              <Statistiques />
-            </Route>
-            <Route exact path="/parrainage">
-              <Parrainages />
-            </Route>
-            <Route exact path="/compte">
-              <Comptes />
-            </Route>
-            <Route exact path="/">
-              <Redirect to="/login" />
-            </Route>
-          </IonRouterOutlet>
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="Play" href="/play">
-              <IonIcon aria-hidden="true" icon={play} />
-              <IonLabel>Jouer</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="statistiques" href="/statistiques">
-              <IonIcon aria-hidden="true" icon={statsChart} />
-              <IonLabel>Stats</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="Fieuls" href="/parrainage">
-              <IonIcon aria-hidden="true" icon={people} />
-              <IonLabel>Fieuls</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="compte" href="/compte">
-              <IonIcon aria-hidden="true" icon={people} />
-              <IonLabel>Compte</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
-    </IonApp>
+    <>
+      <IonApp>
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route exact path="/login">
+                <Login />
+              </Route>
+              <Route exact path="/register">
+                <Register />
+              </Route>
+              <Route exact path="/play">
+                <Play />
+              </Route>
+              <Route exact path="/statistiques">
+                <Statistiques />
+              </Route>
+              <Route exact path="/parrainage">
+                <Parrainages />
+              </Route>
+              <Route exact path="/compte">
+                <Comptes />
+              </Route>
+              <Route exact path="/">
+                <Redirect to="/login" />
+              </Route>
+            </IonRouterOutlet>
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="Play" href="/play">
+                <IonIcon aria-hidden="true" icon={play} />
+                <IonLabel>Jouer</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="statistiques" href="/statistiques">
+                <IonIcon aria-hidden="true" icon={statsChart} />
+                <IonLabel>Stats</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="Fieuls" href="/parrainage">
+                <IonIcon aria-hidden="true" icon={people} />
+                <IonLabel>Fieuls</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="compte" href="/compte">
+                <IonIcon aria-hidden="true" icon={people} />
+                <IonLabel>Compte</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </IonApp>
+    </>
   );
 };
 

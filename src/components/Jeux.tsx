@@ -365,26 +365,6 @@ const Jeux = () => {
         </h1>
       </IonText>
 
-      {/* <audio id="myAudio" src="./../assets/audio/explosion_small.mp3"></audio> */}
-      {/* <IonButton
-        onClick={() => {
-          wonAudio.volume = 100;
-          wonAudio.play();
-        }}
-      >
-        Play Sound
-      </IonButton>
-      <audio id="wonAudio" controls>
-        <source src="/assets/audios/explosion.mp3" type="audio/mp3" />
-        Your browser does not support the audio element.
-      </audio>
-      <audio id="lostAudio" controls>
-        <source src="/assets/audios/explosion.mp3" type="audio/mp3" />
-        Your browser does not support the audio element.
-      </audio> */}
-
-      {/* <IonButton onClick={showRandomNumber}>Show Random Number</IonButton> */}
-
       {/* <p>
             Explore{" "}
             <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">
