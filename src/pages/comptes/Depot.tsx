@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonPage, IonRow, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonInput, IonRow } from "@ionic/react";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-// import { MyContext } from "../../components/context/MyContext";
-import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfos } from "../../store/userInfosSlice.js";
 import PayIframe from "./PayIframe.js";
@@ -12,7 +10,7 @@ import PayIframe from "./PayIframe.js";
 const Depot = () => {
   const [montantDepot, setmontantDepot] = useState("");
   const [telephoneDepot, settelephoneDepot] = useState<any>("");
-  const history = useHistory();
+  //   const history = useHistory();
 
   const user_infos = useSelector((state: any) => state.userInfos.user_infos);
   const dispatch = useDispatch();

@@ -1,4 +1,5 @@
-import { Redirect, Route, useHistory } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Redirect, Route } from "react-router-dom";
 import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { people, play, statsChart } from "ionicons/icons";
@@ -51,7 +52,7 @@ setupIonicReact();
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  // const history = useHistory();
   const user_infos = JSON.parse(sessionStorage.getItem("user_infos")!);
 
   const user_infos_state = useSelector((state: any) => state?.userInfos?.user_infos);
