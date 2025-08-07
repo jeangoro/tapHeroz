@@ -13,6 +13,7 @@ const Menu = () => {
     sessionStorage.clear();
     dispatch(reset());
     history.push("/login");
+    history.go(0);
   };
 
   return (

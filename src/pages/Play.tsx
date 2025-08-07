@@ -14,9 +14,9 @@ const Play: React.FC = () => {
   const [leftTime, setLeftTime] = useState(60 * 60 * 24 * 2);
 
   useEffect(() => {
-    console.log(userInfos);
+    console.log(userInfos?.ID_JOUEUR);
 
-    if (userInfos === null) {
+    if (userInfos?.ID_JOUEUR === undefined) {
       history.push("/login");
     }
   }, [history, userInfos]);

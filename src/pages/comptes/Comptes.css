@@ -1,3 +1,13 @@
 .fz-10 ion-button {
   font-size: 10px;
 }
+
+ion-spinner {
+  width: 100px;
+  height: 100px;
+  --color: #0059ff;
+}
+
+.t-a-l {
+  text-align: left;
+}

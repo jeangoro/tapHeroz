@@ -15,6 +15,7 @@ const Register: React.FC = () => {
   const [email, setemail] = useState("");
   const [phone, setphone] = useState("");
   const [pays, setpays] = useState("");
+
   const [idLeague, setidLeague] = useState(1);
   const [password, setpassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState<string>("");
@@ -24,6 +25,16 @@ const Register: React.FC = () => {
 
   const list_leagues = useSelector((state: any) => state.register.listLeagues);
   const user_infos = useSelector((state: any) => state.userInfos.user_infos);
+
+  const queryString = window.location.search; // Returns "?product=shirt&color=blue"
+  const urlParams = new URLSearchParams(queryString);
+  const referer = urlParams.get("referer");
+
+  const [refererId, setrefererId] = useState(referer);
+  // Returns "shirt"
+
+  console.log(refererId);
+  sessionStorage.setItem("referer", refererId);
 
   const checkPassword = (value) => {
     if (password === value) {
@@ -35,8 +46,16 @@ const Register: React.FC = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (Object.keys(user_infos).length !== 0) {
+  //     history.push("/play");
+  //   }
+  // });
+
   useEffect(() => {
-    if (Object.keys(user_infos).length !== 0) {
+    // console.log(user_infos.ID_JOUEUR);
+
+    if (user_infos.ID_JOUEUR !== undefined) {
       history.push("/play");
     }
   });
@@ -115,12 +134,7 @@ const Register: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Inscription</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonCard style={{ height: "-webkit-fill-available", overflow: "auto" }}>
+        <IonCard style={{ overflow: "auto" }}>
           <IonCardContent>
             <IonGrid fixed={true} className="ion-padding" style={{ innerHeight: "100%" }}>
               <form
@@ -133,10 +147,11 @@ const Register: React.FC = () => {
                     email: email,
                     phone: phone,
                     pays: pays,
+                    referer_id: refererId,
                     id_league: idLeague,
                     password: password,
                   };
-                  console.log("Form submitted :", values);
+                  // console.log("Form submitted :", values);
                   registration(values);
                 }}
               >
@@ -150,6 +165,8 @@ const Register: React.FC = () => {
                   <IonInput name="phone" type="tel" value={phone} onIonChange={(e) => setphone(e.detail.value!)} label="Téléphone" labelPlacement="floating" fill="outline" placeholder="Téléphone"></IonInput>
                   <br />
                   <IonInput name="pays" type="text" value={pays} onIonChange={(e) => setpays(e.detail.value!)} label="Pays" labelPlacement="floating" fill="outline" placeholder="Pays"></IonInput>
+                  <br />
+                  <IonInput disabled name="refererId" type="text" value={refererId} onIonChange={(e) => setrefererId(e.detail.value!)} label="Referer" labelPlacement="floating" fill="outline" placeholder="Pays"></IonInput>
                   <br />
                   {/* <IonList>
                     <IonItem>

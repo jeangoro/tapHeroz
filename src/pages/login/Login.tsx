@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonInputPasswordToggle, IonPage, IonRow, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonInputPasswordToggle, IonPage, IonRow, IonTitle, IonToolbar, useIonToast } from "@ionic/react";
 import "./Login.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -16,10 +16,21 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (Object.keys(user_infos).length !== 0) {
+    // if (Object.keys().length !== 0) {
+    if (user_infos.ID_JOUEUR !== undefined) {
       history.push("/play");
     }
   });
+
+  const [present] = useIonToast();
+
+  const presentToast = (position: "top" | "middle" | "bottom", message: "") => {
+    present({
+      message: message,
+      duration: 5000,
+      position: position,
+    });
+  };
 
   const connexion = async (values: object) => {
     console.log(user_infos);
@@ -28,15 +39,18 @@ const Login: React.FC = () => {
       .post("identification.php", values)
       .then((res) => {
         console.log(res);
-        if (res.status === 200) {
+        if (res.data.status === true) {
           sessionStorage.setItem("user_infos", JSON.stringify(res.data));
           dispatch(setUserInfos(res.data));
+          history.push("/play");
           // setState("user_infos", res.data);
           // setState("lastPointsSaved", res.data.SOLDE_POINTS);
           // setIsOpen(true);
+        } else {
+          presentToast("middle", res.data.message);
         }
-        history.push("/play");
-        history.go(0);
+
+        // history.go(0);
         console.log(user_infos);
       })
       .catch((err) => {
@@ -52,12 +66,7 @@ const Login: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Connexion</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonCard style={{ height: "-webkit-fill-available" }}>
+        <IonCard>
           <IonCardContent>
             <form
               action=""

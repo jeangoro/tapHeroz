@@ -5,6 +5,7 @@ const PayIframe = () => {
     <div>
       {/* <h2>Embedded Content</h2> */}
       <iframe
+        id="iframe-depot"
         src="https://pay.glotelho.cm/collect/yASRDtENBU"
         title="Payement"
         loading="lazy"

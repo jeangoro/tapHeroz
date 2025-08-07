@@ -117,7 +117,8 @@ const Jeux = () => {
   useEffect(() => {
     // console.log(user_infos_state);
 
-    if (Object.keys(user_infos_state).length === 0 && user_infos !== null) {
+    // if (Object.keys(user_infos_state).length === 0 && user_infos !== null) {
+    if (user_infos_state?.ID_JOUEUR === undefined && user_infos?.ID_JOUEUR !== undefined) {
       getUserInfos({ id_joueur: user_infos?.ID_JOUEUR });
       console.log("user_infos recuperer");
     }
@@ -361,7 +362,7 @@ const Jeux = () => {
       <br /> */}
       <IonText color="primary">
         <h1 style={{ display: "inline-flex" }}>
-          <IonImg className="coin-icon" src={axios.defaults.baseURL + "images/coin.ico"}></IonImg>
+          <IonImg className="coin-icon" src={"/assets/images/coin.png"}></IonImg>
           <strong>{points.current.toLocaleString()}</strong>
         </h1>
       </IonText>

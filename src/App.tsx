@@ -39,13 +39,12 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Play from "./pages/Play";
 import { useDispatch, useSelector } from "react-redux";
-// import { store } from "./store/store.js";
 import axios from "axios";
 import { setUserInfos } from "./store/userInfosSlice.js";
 import { useCallback, useEffect } from "react";
 import Statistiques from "./pages/statistiques/Statistiques";
-import Parrainages from "./pages/parrainages/Parrainages.jsx";
 import Comptes from "./pages/comptes/Comptes";
+import Parrainages from "./pages/parrainages/Parrainages";
 // import axios from "axios";
 
 setupIonicReact();
@@ -86,15 +85,23 @@ const App: React.FC = () => {
   );
 
   useEffect(() => {
-    console.log(user_infos);
+    console.log(user_infos_state?.ID_JOUEUR);
 
-    if (user_infos !== null) {
+    if (user_infos_state?.ID_JOUEUR === undefined && user_infos?.ID_JOUEUR !== undefined) {
       if (Object.keys(user_infos_state).length === 0) {
         getUserInfos({ id_joueur: user_infos?.ID_JOUEUR });
         console.log("user_infos recuperer");
       }
     }
-  }, [getUserInfos]);
+  }, [getUserInfos, user_infos, user_infos_state]);
+
+  // useIonViewWillEnter(() => {
+  //   console.log("Page will enter view");
+  // });
+
+  // useIonViewDidEnter(() => {
+  //   console.log("Page did enter view");
+  // });
 
   return (
     <>
@@ -103,22 +110,25 @@ const App: React.FC = () => {
           <IonTabs>
             <IonRouterOutlet>
               <Route exact path="/login">
-                <Login />
+                {user_infos_state?.ID_JOUEUR === undefined ? <Login /> : <Redirect to="/play" />}
               </Route>
               <Route exact path="/register">
-                <Register />
+                {user_infos_state?.ID_JOUEUR === undefined ? <Register /> : <Redirect to="/play" />}
               </Route>
+              {/* <Route exact path="/:id">
+                {user_infos_state?.ID_JOUEUR === undefined ? <Register /> : <Play />}
+              </Route> */}
               <Route exact path="/play">
-                <Play />
+                {user_infos_state?.ID_JOUEUR !== undefined ? <Play /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/statistiques">
-                <Statistiques />
+                {user_infos_state?.ID_JOUEUR !== undefined ? <Statistiques /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/parrainage">
-                <Parrainages />
+                {user_infos_state?.ID_JOUEUR !== undefined ? <Parrainages /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/compte">
-                <Comptes />
+                {user_infos_state?.ID_JOUEUR !== undefined ? <Comptes /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/">
                 <Redirect to="/login" />
