@@ -36,7 +36,7 @@ const Login: React.FC = () => {
     console.log(user_infos);
 
     await axios
-      .post("identification.php", values)
+      .post("backend/identification.php", values)
       .then((res) => {
         console.log(res);
         if (res.data.status === true) {

@@ -72,7 +72,7 @@ const Depot = ({ isOpen, setisOpen }) => {
     };
 
     await axios
-      .post("depot.php", newValues)
+      .post("backend/depot.php", newValues)
       .then((res) => {
         // console.log(res);
         if (res.data.status === true) {

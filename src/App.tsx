@@ -37,7 +37,7 @@ import "@ionic/react/css/palettes/dark.system.css";
 import "./theme/variables.css";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import Play from "./pages/Play";
+// import Play from "./pages/Play";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setUserInfos } from "./store/userInfosSlice.js";
@@ -45,6 +45,7 @@ import { useCallback, useEffect } from "react";
 import Statistiques from "./pages/statistiques/Statistiques";
 import Comptes from "./pages/comptes/Comptes";
 import Parrainages from "./pages/parrainages/Parrainages";
+import Play from "./pages/play/Play";
 // import axios from "axios";
 
 setupIonicReact();
@@ -61,7 +62,7 @@ const App: React.FC = () => {
       // console.log(user_infos);
 
       await axios
-        .post("get_user_infos.php", values)
+        .post("backend/get_user_infos.php", values)
         .then((res) => {
           console.log(res);
           if (res.status === 200) {

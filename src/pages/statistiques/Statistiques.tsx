@@ -1,9 +1,10 @@
-import { IonCol, IonContent, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IonButtons, IonCol, IonContent, IonHeader, IonImg, IonItem, IonLabel, IonMenuButton, IonPage, IonRow, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react";
 import axios from "axios";
-import { arrowDown, informationCircle } from "ionicons/icons";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setListStatistiques } from "../../store/statistiquesSlice";
+// import Menu from "../../components/Menu";
 
 const Statistiques = () => {
   const user_infos_state = useSelector((state: any) => state?.userInfos?.user_infos);
@@ -16,7 +17,7 @@ const Statistiques = () => {
   const getListStatistiques = useCallback(
     async (values: object) => {
       await axios
-        .post("statistiques.php", values)
+        .post("backend/statistiques.php", values)
         .then((res) => {
           // console.log(res);
           if (res.status === 200) {
@@ -32,7 +33,7 @@ const Statistiques = () => {
           console.log(err);
         });
     },
-    [dispatch]
+    [dispatch, user_infos_state]
   );
 
   // if (user_infos_state !== null) {
@@ -48,13 +49,17 @@ const Statistiques = () => {
 
   return (
     <>
+      {/* <Menu /> */}
       <IonPage>
         <IonHeader>
           <IonToolbar>
+            {/* <IonButtons slot="start">
+              <IonMenuButton></IonMenuButton>
+            </IonButtons> */}
             <IonTitle>STATISTIQUES</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen>
+        <IonContent fullscreen className="ion-padding">
           <IonRow class="t-a-c">
             <IonCol>
               <h1> Classement et rang</h1>
@@ -71,27 +76,22 @@ const Statistiques = () => {
                 <IonLabel>
                   <IonRow>
                     <IonCol>{stat.LOGIN}</IonCol>
-                    <IonCol size="2">
-                      <IonImg className="coin-icon" src={"/assets/images/coin.png"}></IonImg>
+                    <IonCol size="6">
+                      <IonRow className="align-item-center">
+                        <span>
+                          <IonImg className="coin-icon" src={"/assets/images/coin.png"}></IonImg>
+                          {/* TJK */}
+                        </span>
+                        <span>
+                          <IonCol>{stat.SOLDE_POINTS}</IonCol>
+                        </span>
+                      </IonRow>
                     </IonCol>
-                    <IonCol>{stat.SOLDE_POINTS}</IonCol>
                   </IonRow>
                 </IonLabel>
               </IonItem>
             );
           })}
-          {/* <IonItem lines="full">
-            <IonIcon icon={arrowDown} slot="start"></IonIcon>
-            <IonLabel>
-              Item Lines Full <br /> <IonIcon icon={informationCircle}></IonIcon>50000
-            </IonLabel>
-          </IonItem>
-          <IonItem lines="full">
-            <IonIcon icon={arrowDown} slot="start"></IonIcon>
-            <IonLabel>
-              Item Lines Full <br /> <IonIcon icon={informationCircle}></IonIcon>50000
-            </IonLabel>
-          </IonItem> */}
         </IonContent>
       </IonPage>
     </>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -64,17 +65,6 @@ const Jeux = () => {
     lostAudio.play();
   };
 
-  useEffect(() => {
-    console.log("mount game page");
-
-    return () => {
-      console.log("unmount game page");
-      if (lastPointsSaved.current !== points.current) {
-        saveProgression();
-      }
-    };
-  }, []);
-
   // useEffect(() => {
   //   console.log(points.current);
 
@@ -91,7 +81,7 @@ const Jeux = () => {
       // console.log(user_infos);
 
       await axios
-        .post("get_user_infos.php", values)
+        .post("backend/get_user_infos.php", values)
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
@@ -333,7 +323,7 @@ const Jeux = () => {
       values.current = { id_joueur: user_infos?.ID_JOUEUR, points: newPoints };
 
       await axios
-        .post("save_progression.php", values.current)
+        .post("backend/save_progression.php", values.current)
         .then((res) => {
           //   console.log(res);
           if (res.status === 200) {
@@ -356,12 +346,23 @@ const Jeux = () => {
     }, 30000);
   }, []);
 
+  useEffect(() => {
+    console.log("mount game page");
+
+    return () => {
+      console.log("unmount game page");
+      if (lastPointsSaved.current !== points.current) {
+        saveProgression();
+      }
+    };
+  }, []);
+
   return (
     <div className="container">
       {/* <strong>{"TAP HEROZ"}</strong>
       <br /> */}
       <IonText color="primary">
-        <h1 style={{ display: "inline-flex" }}>
+        <h1 style={{ display: "inline-flex", alignItems: "center" }}>
           <IonImg className="coin-icon" src={"/assets/images/coin.png"}></IonImg>
           <strong>{points.current.toLocaleString()}</strong>
         </h1>

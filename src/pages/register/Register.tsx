@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IonAlert, IonButton, IonCard, IonCardContent, IonContent, IonGrid, IonHeader, IonInput, IonInputPasswordToggle, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import "./Register.css";
 import { useCallback, useEffect, useState } from "react";
@@ -64,7 +65,7 @@ const Register: React.FC = () => {
     // console.log(list_leagues);
     if (list_leagues === undefined) {
       await axios
-        .get("list_leagues.php")
+        .get("backend/list_leagues.php")
         .then((res) => {
           if (res.status === 200) {
             dispatch(setListLeagues(res.data));
@@ -83,7 +84,7 @@ const Register: React.FC = () => {
     console.log(list_leagues);
 
     await axios
-      .post("inscription.php", infos)
+      .post("backend/inscription.php", infos)
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
@@ -133,7 +134,7 @@ const Register: React.FC = () => {
           <IonTitle>Inscription</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen className="ion-padding">
         <IonCard style={{ overflow: "auto" }}>
           <IonCardContent>
             <IonGrid fixed={true} className="ion-padding" style={{ innerHeight: "100%" }}>

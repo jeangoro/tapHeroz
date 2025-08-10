@@ -2,7 +2,7 @@ import { IonButton, IonCol, IonRow } from "@ionic/react";
 import React from "react";
 import "./Components.css";
 
-const RappelParticipation = () => {
+const RappelParticipation = ({ setisOpenAddParticipation }) => {
   return (
     <div>
       <p>
@@ -10,7 +10,9 @@ const RappelParticipation = () => {
       </p>
       <IonRow className="competition-rowTJK" style={{ textAlign: "center" }}>
         <IonCol>
-          <IonButton color={"warning"}>Je participe à la compétition</IonButton>
+          <IonButton color={"warning"} onClick={() => setisOpenAddParticipation(true)}>
+            Je participe à la compétition
+          </IonButton>
         </IonCol>
         {/* <IonCol size="2">
           L 1 <br /> 1 jour{" "}

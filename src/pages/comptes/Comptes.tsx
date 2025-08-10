@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useEffect, useState } from "react";
-import { IonButton, IonCol, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonPage, IonRow, IonText, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react";
+import { IonButton, IonButtons, IonCol, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonMenuButton, IonPage, IonRow, IonText, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react";
 import Depot from "./Depot";
 import "./Comptes.css";
 import Retrait from "./Retrait";
 import { useDispatch, useSelector } from "react-redux";
-import { alert, alertCircle, arrowDown, arrowUp, checkmarkCircle, close, informationCircle, star, swapHorizontal } from "ionicons/icons";
+import { alertCircle, arrowDown, arrowUp, checkmarkCircle, close, swapHorizontal } from "ionicons/icons";
 import axios from "axios";
 import { setListTransactions } from "../../store/comptesSlice";
+import Menu from "../../components/Menu";
 
 const Comptes = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const Comptes = () => {
   const getListTransaction = useCallback(
     async (values: object) => {
       await axios
-        .post("list_transactions.php", values)
+        .post("backend/list_transactions.php", values)
         .then((res) => {
           // console.log(res);
           if (res.status === 200) {
@@ -48,9 +49,13 @@ const Comptes = () => {
 
   return (
     <>
-      <IonPage>
+      <Menu />
+      <IonPage id="main-content">
         <IonHeader>
           <IonToolbar>
+            <IonButtons slot="start">
+              <IonMenuButton></IonMenuButton>
+            </IonButtons>
             <IonTitle>Comptes</IonTitle>
           </IonToolbar>
         </IonHeader>

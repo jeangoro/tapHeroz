@@ -33,7 +33,7 @@ const Retrait = ({ isOpen, setisOpen }) => {
     console.log(user_infos);
 
     await axios
-      .post("retrait.php", values)
+      .post("backend/retrait.php", values)
       .then((res) => {
         // console.log(res);
         if (res.status === 200) {
