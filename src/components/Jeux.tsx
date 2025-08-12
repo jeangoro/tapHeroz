@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router";
-import { IonButton, IonCol, IonGrid, IonImg, IonRow, IonText } from "@ionic/react";
+import { IonButton, IonCol, IonGrid, IonImg, IonRow, IonText, useIonToast } from "@ionic/react";
 // import { setUserInfos, reset, incrementPoints, decrementPoints, setLastPointsSaved } from "../store/userInfosSlice.js";
 import axios from "axios";
 import "./Jeux.css";
@@ -11,7 +11,7 @@ import "./animations/animatePlus.css";
 import "./animations/animateMinus.css";
 import { setUserInfos } from "../store/userInfosSlice.js";
 
-const Jeux = () => {
+const Jeux = ({ competitionIsOpen }) => {
   // const [values, setValues] = useState({});
   const values = useRef({});
 
@@ -29,6 +29,7 @@ const Jeux = () => {
   const [isSavingPoints, setisSavingPoints] = useState(false);
 
   const dispatch = useDispatch();
+  const [present] = useIonToast();
   // Fonction pour générer un nombre aléatoire entre 0 et 4
   function getRandomNumber() {
     return Math.floor(Math.random() * 2) + 1; // Multiplier par 4 et ajouter 1 pour inclure 4
@@ -315,28 +316,42 @@ const Jeux = () => {
     </IonButton>
   );
 
+  const presentToast = (position: "top" | "middle" | "bottom", message: string) => {
+    present({
+      message: message,
+      duration: 5000,
+      position: position,
+    });
+  };
+
   const saveProgression = async () => {
-    const newPoints = points.current;
-    if (lastPointsSaved.current !== newPoints && !isSavingPoints) {
-      // isSavingPoints.current = true;
-      setisSavingPoints(true);
-      values.current = { id_joueur: user_infos?.ID_JOUEUR, points: newPoints };
+    console.log(competitionIsOpen?.current);
 
-      await axios
-        .post("backend/save_progression.php", values.current)
-        .then((res) => {
-          //   console.log(res);
-          if (res.status === 200) {
-            lastPointsSaved.current = newPoints;
-            // isSavingPoints.current = false;
-            setisSavingPoints(false);
+    if (competitionIsOpen?.current === true) {
+      const newPoints = points.current;
+      if (lastPointsSaved.current !== newPoints && !isSavingPoints) {
+        // isSavingPoints.current = true;
+        setisSavingPoints(true);
+        values.current = { id_joueur: user_infos?.ID_JOUEUR, points: newPoints };
 
-            console.log(res.data.message);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        await axios
+          .post("backend/save_progression.php", values.current)
+          .then((res) => {
+            //   console.log(res);
+            if (res.status === 200) {
+              lastPointsSaved.current = newPoints;
+              // isSavingPoints.current = false;
+              setisSavingPoints(false);
+
+              console.log(res.data.message);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    } else {
+      presentToast("middle", "Ceci est un essai car la competition n'a pas encore commencé !");
     }
   };
 
@@ -399,6 +414,15 @@ const Jeux = () => {
           <IonCol size="3">{position8 === 1 ? positiveTapButton8(8, "l4-3") : negativeTapButton1(8)}</IonCol>
           <IonCol size="3">{position8 === 2 ? positiveTapButton8(8, "l4-4") : negativeTapButton1(8)}</IonCol>
         </IonRow>
+        {!competitionIsOpen?.current && (
+          <IonRow className="t-a-c">
+            <IonCol>
+              <IonText className="blinking-text" color={"danger"}>
+                Mode demonstration !
+              </IonText>
+            </IonCol>
+          </IonRow>
+        )}
         <IonRow>
           <IonCol>
             <IonButton disabled={isSavingPoints || lastPointsSaved.current === points.current} onClick={saveProgression}>

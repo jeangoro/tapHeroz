@@ -17,8 +17,8 @@ const NOM_PRENOM: string = userInfos?.NOM_PRENOM;
 // api_key = 'TSIGUIA_JEAN_goro_2000_testToken';
 const Authorization = `Bearer ${token} ${ID_JOUEUR} ${LOGIN} ${NOM_PRENOM} `;
 
-// axios.defaults.baseURL = "http://localhost:80/tap-heroz/";
-axios.defaults.baseURL = "http://tapcompetition.reunioncfy.com/";
+axios.defaults.baseURL = "http://localhost:80/tap-heroz/";
+// axios.defaults.baseURL = "http://tapcompetition.reunioncfy.com/";
 axios.defaults.headers.common["Authorization"] = Authorization;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
