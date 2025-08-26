@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCol, IonContent, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonMenuButton, IonPage, IonRow, IonTitle, IonToolbar, useIonToast, useIonViewDidEnter } from "@ionic/react";
+import { IonButton, IonCol, IonContent, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToolbar, useIonToast, useIonViewDidEnter } from "@ionic/react";
 import axios from "axios";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { copy, shareSocial } from "ionicons/icons";
 import { setListFieuls } from "../../store/parrainagesSlice";
+import Loader from "../../components/Loader";
 // import Menu from "../../components/Menu";
 
 const Parrainages = () => {
@@ -14,6 +15,8 @@ const Parrainages = () => {
   const dispatch = useDispatch();
 
   const [present] = useIonToast();
+
+  const [getDataLoading, setgetDataLoading] = useState(false);
 
   const presentToast = (position: "top" | "middle" | "bottom", message: string) => {
     present({
@@ -61,15 +64,18 @@ const Parrainages = () => {
 
   const getListFieuls = useCallback(
     async (values: object) => {
+      setgetDataLoading(true);
       await axios
         .post("backend/list_fieuls.php", values)
         .then((res) => {
+          setgetDataLoading(false);
           // console.log(res);
           if (res.status === 200) {
             dispatch(setListFieuls(res.data));
           }
         })
         .catch((err) => {
+          setgetDataLoading(false);
           console.log(err);
         });
     },
@@ -137,8 +143,8 @@ const Parrainages = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="ion-padding">
-          <div className="t-a-c">
-            <h5>Partagez l'application avec vos amis et gagner de recompense en argent reel pour chaque joueur confirmé</h5>
+          <div className="t-a-c font-small">
+            <h6>Partagez l'application avec vos amis et gagner de recompense en argent reel pour chaque joueur confirmé</h6>
             <p>Copiez votre lien de parrainge et envoyez à vos amis.</p>
             <a href={"/register/?referer=" + user_infos_state.ID_JOUEUR} target="_blank" rel="noopener noreferrer">
               {axios.defaults.baseURL + "register/?referer=" + user_infos_state.ID_JOUEUR}
@@ -154,24 +160,30 @@ const Parrainages = () => {
               </IonButton> */}
           <hr />
           <h2>Mes fieuls</h2>
-          {listFieuls?.map((fieul, key) => {
-            return (
-              <IonItem key={key} lines="full">
-                <i color="primary" slot="start">
-                  {fieul.RANK}
-                </i>
-                <IonLabel>
-                  <IonRow>
-                    <IonCol>{fieul.LOGIN}</IonCol>
-                    <IonCol size="2">
-                      <IonImg className="coin-icon" src={"/assets/images/coin.png"}></IonImg>
-                    </IonCol>
-                    <IonCol>{fieul.SOLDE_POINTS}</IonCol>
-                  </IonRow>
-                </IonLabel>
-              </IonItem>
-            );
-          })}
+          {getDataLoading ? (
+            <Loader />
+          ) : (
+            <>
+              {listFieuls?.map((fieul: any, key: number) => {
+                return (
+                  <IonItem key={key} lines="full">
+                    <i color="primary" slot="start">
+                      {fieul.RANK}
+                    </i>
+                    <IonLabel className="my-0">
+                      <IonRow>
+                        <IonCol className="py-0">{fieul.LOGIN}</IonCol>
+                        <IonCol className="py-0" size="2">
+                          <IonImg className="coin-icon" src={"/assets/images/coin.png"}></IonImg>
+                        </IonCol>
+                        <IonCol className="py-0">{fieul.SOLDE_POINTS}</IonCol>
+                      </IonRow>
+                    </IonLabel>
+                  </IonItem>
+                );
+              })}
+            </>
+          )}
         </IonContent>
       </IonPage>
     </>

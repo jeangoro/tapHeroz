@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router";
-import { IonButton, IonCol, IonGrid, IonImg, IonRow, IonText, useIonToast } from "@ionic/react";
+import { IonButton, IonCol, IonGrid, IonImg, IonRow, IonText, useIonToast, useIonViewWillLeave } from "@ionic/react";
 // import { setUserInfos, reset, incrementPoints, decrementPoints, setLastPointsSaved } from "../store/userInfosSlice.js";
 import axios from "axios";
 import "./Jeux.css";
@@ -27,6 +27,8 @@ const Jeux = ({ competitionIsOpen }) => {
   // const isSavingPoints = useRef(false);
 
   const [isSavingPoints, setisSavingPoints] = useState(false);
+
+  const intervalId = useRef(null);
 
   const dispatch = useDispatch();
   const [present] = useIonToast();
@@ -325,47 +327,82 @@ const Jeux = ({ competitionIsOpen }) => {
   };
 
   const saveProgression = async () => {
-    console.log(competitionIsOpen?.current);
+    // console.log(competitionIsOpen?.current);
 
     if (competitionIsOpen?.current === true) {
-      const newPoints = points.current;
-      if (lastPointsSaved.current !== newPoints && !isSavingPoints) {
-        // isSavingPoints.current = true;
-        setisSavingPoints(true);
-        values.current = { id_joueur: user_infos?.ID_JOUEUR, points: newPoints };
+      if (user_infos?.id_competition !== null) {
+        const newPoints = points.current;
+        if (lastPointsSaved.current !== newPoints && !isSavingPoints) {
+          // isSavingPoints.current = true;
+          setisSavingPoints(true);
+          values.current = { id_joueur: user_infos?.ID_JOUEUR, points: newPoints };
 
-        await axios
-          .post("backend/save_progression.php", values.current)
-          .then((res) => {
-            //   console.log(res);
-            if (res.status === 200) {
-              lastPointsSaved.current = newPoints;
-              // isSavingPoints.current = false;
-              setisSavingPoints(false);
+          await axios
+            .post("backend/save_progression.php", values.current)
+            .then((res) => {
+              //   console.log(res);
+              if (res.status === 200) {
+                lastPointsSaved.current = newPoints;
+                // isSavingPoints.current = false;
+                setisSavingPoints(false);
 
-              console.log(res.data.message);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+                console.log(res.data.message);
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      } else {
+        presentToast("bottom", "Ceci est un essai car vous n'êtes pas inscrit à la compétition !");
       }
     } else {
-      presentToast("middle", "Ceci est un essai car la competition n'a pas encore commencé !");
+      presentToast("bottom", "Ceci est un essai car la competition n'a pas encore commencé !");
     }
   };
 
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     saveProgression();
+  //   }, 30000);
+  // }, []);
+
   useEffect(() => {
-    setInterval(() => {
+    console.log("initialisation du setInterval!");
+
+    // Start the interval
+    // const myIntervalId = setInterval(() => {
+    //   saveProgression();
+    // }, 30000);
+
+    // console.log(myIntervalId);
+
+    intervalId.current = setInterval(() => {
+      // console.log("j'appele save progression!");
+
       saveProgression();
     }, 30000);
-  }, []);
+
+    // Clean up the interval when the component unmounts or dependencies change
+    return () => clearInterval(intervalId.current);
+  }, []); // Empty dependency array ensures the effect runs only once on mount and cleans up on unmount
+
+  useIonViewWillLeave(() => {
+    // console.log("Component is about to leave!");
+    // console.log(intervalId.current);
+
+    // Perform cleanup or save data here
+    clearInterval(intervalId.current);
+    if (lastPointsSaved.current !== points.current) {
+      saveProgression();
+    }
+  });
 
   useEffect(() => {
-    console.log("mount game page");
+    // console.log("mount game page");
 
     return () => {
-      console.log("unmount game page");
+      // console.log("unmount game page");
       if (lastPointsSaved.current !== points.current) {
         saveProgression();
       }
@@ -425,7 +462,7 @@ const Jeux = ({ competitionIsOpen }) => {
         )}
         <IonRow>
           <IonCol>
-            <IonButton disabled={isSavingPoints || lastPointsSaved.current === points.current} onClick={saveProgression}>
+            <IonButton className="font-small" disabled={isSavingPoints || lastPointsSaved.current === points.current} onClick={saveProgression}>
               {isSavingPoints ? "Enregistrement de la progression..." : "Enregistrer la progression"}
             </IonButton>
           </IonCol>

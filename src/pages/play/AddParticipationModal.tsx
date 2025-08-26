@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonInput, IonItem, IonList, IonModal, IonRow, IonSelect, IonSelectOption, IonSpinner, IonText, IonTitle, IonToolbar, useIonToast } from "@ionic/react";
+import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonItem, IonList, IonModal, IonRow, IonSelect, IonSelectOption, IonSpinner, IonText, IonTitle, IonToolbar, useIonToast } from "@ionic/react";
 
 import { useState } from "react";
 import axios from "axios";
@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 // import { setUserInfos } from "../../store/userInfosSlice.js";
 // import PayIframe from "./PayIframe.js";
 import { useHistory } from "react-router";
+import Depot from "../comptes/Depot";
 
 const AddParticipationModal = ({ isOpen, setisOpen }) => {
   //   const [id_joueur, setid_joueur] = useState("");
@@ -21,6 +22,7 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
 
   // const [canOpenPayIframe, setcanOpenPayIframe] = useState(false);
   const [payementEncours, setpayementEncours] = useState(false);
+  const [isOpenDepot, setisOpenDepot] = useState(false);
 
   const [present] = useIonToast();
 
@@ -142,6 +144,7 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
+          <Depot isOpen={isOpenDepot} setisOpen={setisOpenDepot} />
           <p>Veuillez remplir vos informations pour vous inscrire à la prochaine compétition</p>
 
           <div>
@@ -187,7 +190,18 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
                         <IonButton disabled={id_competition === null || parseFloat(user_infos.SOLDE_ARGENT) < parseFloat(user_infos.COUT_PARTICIPATION)} type="submit" expand="full" fill="solid" color="primary" className="ion-margin-top">
                           S'inscrire à la compétition
                         </IonButton>
-                        <div className="text-align-center">{parseFloat(user_infos.SOLDE_ARGENT) < parseFloat(user_infos.COUT_PARTICIPATION) && <IonText color="danger">Votre solde est insuffisant!</IonText>}</div>
+                        <div className="text-align-center">
+                          {parseFloat(user_infos.SOLDE_ARGENT) < parseFloat(user_infos.COUT_PARTICIPATION) && (
+                            <>
+                              <IonText color="danger">Votre solde est insuffisant!</IonText>
+                              <br />
+                              <span className="href" onClick={() => setisOpenDepot(true)}>
+                                Recharger mon compte
+                              </span>
+                            </>
+                          )}
+                        </div>
+
                         {/* <br /> */}
                         {/* <div style={{ float: "right" }}>
                       Pas de compte? <a href={"/register"}>Inscrivez-vous</a>

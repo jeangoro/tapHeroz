@@ -1,9 +1,9 @@
-import { IonButton, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle, IonTitle, IonToolbar } from "@ionic/react";
-import { airplane, bluetooth, call, wifi } from "ionicons/icons";
 import React from "react";
+import { IonButton, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle, IonTitle, IonToolbar } from "@ionic/react";
+import { help } from "ionicons/icons";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { reset, setUserInfos } from "../store/userInfosSlice";
+import { reset } from "../store/userInfosSlice";
 
 const Menu = () => {
   const history = useHistory();
@@ -28,10 +28,10 @@ const Menu = () => {
           <IonList>
             <IonMenuToggle>
               <IonItem>
-                <IonIcon aria-hidden="true" icon={airplane} slot="start"></IonIcon>
-                <IonLabel>Airplane Mode</IonLabel>
+                <IonIcon aria-hidden="true" icon={help} slot="start"></IonIcon>
+                <IonLabel>Aide</IonLabel>
               </IonItem>
-              <IonItem>
+              {/* <IonItem>
                 <IonIcon aria-hidden="true" icon={wifi} slot="start"></IonIcon>
                 <IonLabel>Wi-Fi</IonLabel>
               </IonItem>
@@ -42,7 +42,7 @@ const Menu = () => {
               <IonItem>
                 <IonIcon aria-hidden="true" icon={call} slot="start"></IonIcon>
                 <IonLabel>Cellular</IonLabel>
-              </IonItem>
+              </IonItem> */}
             </IonMenuToggle>
           </IonList>
           <IonButton onClick={deconnexion} color={"danger"}>

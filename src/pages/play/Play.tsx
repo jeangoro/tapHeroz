@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react";
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react";
 // import Jeux from "../components/Jeux";
 import { useHistory } from "react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 // import RappelParticipation from "../components/RappelParticipation";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setListCompetitions } from "../../store/playSlice";
+import { setListCompetitions, setMyCompetition } from "../../store/playSlice";
 // import Menu from "../../components/Menu";
 import CountDown from "../../components/timers/CountDown";
 import RappelParticipation from "../../components/RappelParticipation";
@@ -28,18 +28,28 @@ const Play: React.FC = () => {
   //   const [competitionIsOpen, setcompetitionIsOpen] = useState(false);
 
   const competitionIsOpen = useRef(false);
+  const competition = useRef(null);
 
   const user_infos_state = useSelector((state: any) => state?.userInfos?.user_infos);
   const listCompetitions = useSelector((state: any) => state?.play?.listCompetitions);
+  const myCompetition = useSelector((state: any) => state?.play?.myCompetition);
 
   useEffect(() => {
-    console.log(userInfos?.ID_JOUEUR);
-    console.log(userInfos?.current_date_time);
-    if (listCompetitions !== null) {
+    if (user_infos_state.id_competition === null) {
+      if (listCompetitions !== null) {
+        competition.current = listCompetitions[0];
+      }
+    } else {
+      competition.current = myCompetition;
+    }
+  }, [listCompetitions, myCompetition, user_infos_state]);
+
+  useEffect(() => {
+    if (competition.current !== null) {
       const currentDate = new Date(userInfos.current_date_time); // Example date
       const current_milliseconds = currentDate.getTime();
 
-      const date_time_fin1 = listCompetitions[0]?.DATE_FIN + " " + listCompetitions[0]?.HEURE_FIN;
+      const date_time_fin1 = competition.current?.DATE_FIN + " " + competition.current?.HEURE_FIN;
       const date_time_fin = new Date(date_time_fin1);
       const fin_milliseconds = date_time_fin.getTime();
       const temps_fin_restant_en_millisecondes = fin_milliseconds - current_milliseconds;
@@ -47,18 +57,23 @@ const Play: React.FC = () => {
       setLeftTimeToEnd(temps_fin_restant_seconds);
       // const myDate = new Date("2025-08-09T07:00:00Z"); // Example date
 
-      const date_time_debut1 = listCompetitions[0]?.DATE_DEBUT + " " + listCompetitions[0]?.HEURE_DEBUT;
+      const date_time_debut1 = competition.current?.DATE_DEBUT + " " + competition.current?.HEURE_DEBUT;
+      //   console.log(date_time_debut1);
+
       const date_time_debut = new Date(date_time_debut1);
       // const myDate = new Date("2025-08-09T07:00:00Z"); // Example date
       //   const currentDate = new Date(userInfos.current_date_time); // Example date
       //   const current_milliseconds = currentDate.getTime();
       const debut_milliseconds = date_time_debut.getTime();
+      //   console.log(debut_milliseconds);
+      //   console.log(current_milliseconds);
 
       const temps_restant_en_millisecondes = debut_milliseconds - current_milliseconds;
 
       const temps_restant_seconds = Math.floor(temps_restant_en_millisecondes / 1000);
 
-      console.log(temps_restant_seconds);
+      //   console.log(temps_restant_en_millisecondes);
+      //   console.log(temps_restant_seconds);
       if (temps_restant_seconds <= 0) {
         // setcompetitionIsOpen(true);
         competitionIsOpen.current = true;
@@ -92,11 +107,18 @@ const Play: React.FC = () => {
           // console.log(res);
           if (res.status === 200) {
             dispatch(setListCompetitions(res.data));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-            // const myInfos = res.data.filter((stat) => stat.ID_JOUEUR === user_infos_state.ID_JOUEUR);
-            // console.log(myData);
-            // settotalJoueur(res.data.length);
-            // setmyData(myInfos[0]);
+      await axios
+        .post("backend/my_competition.php", values)
+        .then((res) => {
+          // console.log(res);
+          if (res.status === 200) {
+            dispatch(setMyCompetition(res.data));
           }
         })
         .catch((err) => {
@@ -134,15 +156,29 @@ const Play: React.FC = () => {
         <IonContent className="ion-padding" fullscreen>
           <AddParticipationModal isOpen={isOpenAddParticipation} setisOpen={setisOpenAddParticipation} />
 
-          {competitionIsOpen.current ? (
-            <div style={{ color: "green", textAlign: "center" }}>
-              Compétition en cours : elle se termine dans <b>{leftTime && <CountDown timeToWaitInSeconds={leftTimeToEnd} />}</b>
-            </div>
-          ) : (
-            <div style={{ color: "red", textAlign: "center" }}>
-              Prochain tour de compétition commence dans :<b>{leftTime && <CountDown timeToWaitInSeconds={leftTime} />}</b>
-            </div>
+          {user_infos_state.id_competition !== null && (
+            <>
+              {competitionIsOpen.current && leftTimeToEnd <= 0 && (
+                <div className="alert alert-primary text-center">
+                  {" "}
+                  La compétition est terminée ! <br /> Vous pouvez vous inscrire au prochain tour de competition qui va commencer dans:
+                </div>
+              )}
+
+              {competitionIsOpen.current && leftTimeToEnd > 0 ? (
+                <div className="alert alert-success text-center">
+                  Compétition en cours : elle se termine dans <b>{leftTime && <CountDown timeToWaitInSeconds={leftTimeToEnd} />}</b>
+                </div>
+              ) : listCompetitions?.length > 0 ? (
+                <div className="alert alert-warning text-center">
+                  Prochain tour de compétition commence dans :<b>{leftTime && <CountDown timeToWaitInSeconds={leftTime} />}</b>
+                </div>
+              ) : (
+                <div className="alert alert-info text-center">Aucune competition programmé pour l'instant...</div>
+              )}
+            </>
           )}
+
           {user_infos_state.id_competition === null && (
             <div>
               <RappelParticipation setisOpenAddParticipation={setisOpenAddParticipation} />

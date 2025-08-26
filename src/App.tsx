@@ -46,6 +46,7 @@ import Statistiques from "./pages/statistiques/Statistiques";
 import Comptes from "./pages/comptes/Comptes";
 import Parrainages from "./pages/parrainages/Parrainages";
 import Play from "./pages/play/Play";
+import ChangePassword from "./pages/changePassword/ChangePassword";
 // import axios from "axios";
 
 setupIonicReact();
@@ -130,6 +131,9 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/compte">
                 {user_infos_state?.ID_JOUEUR !== undefined ? <Comptes /> : <Redirect to="/login" />}
+              </Route>
+              <Route exact path="/changePassword">
+                {user_infos_state?.ID_JOUEUR === undefined ? <ChangePassword /> : <Redirect to="/play" />}
               </Route>
               <Route exact path="/">
                 <Redirect to="/login" />

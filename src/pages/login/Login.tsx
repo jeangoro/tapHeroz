@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonInputPasswordToggle, IonPage, IonRow, IonTitle, IonToolbar, useIonToast } from "@ionic/react";
+import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonInput, IonInputPasswordToggle, IonPage, IonRow, IonTitle, IonToolbar, useIonToast } from "@ionic/react";
 import "./Login.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfos } from "../../store/userInfosSlice.js";
+import { setAxiosDefault } from "../../main";
 
 const Login: React.FC = () => {
   const [login, setlogin] = useState("");
@@ -42,7 +43,12 @@ const Login: React.FC = () => {
         if (res.data.status === true) {
           sessionStorage.setItem("user_infos", JSON.stringify(res.data));
           dispatch(setUserInfos(res.data));
-          history.push("/play");
+          console.log("jai recuper");
+          setAxiosDefault();
+          // getUserInfos();
+
+          // history.push("/play");
+          // history.go(0);
           // setState("user_infos", res.data);
           // setState("lastPointsSaved", res.data.SOLDE_POINTS);
           // setIsOpen(true);
@@ -60,45 +66,49 @@ const Login: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      {/* <IonHeader>
         <IonToolbar>
           <IonTitle>Connexion</IonTitle>
         </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonCard>
-          <IonCardContent>
-            <form
-              action=""
-              onSubmit={(e) => {
-                e.preventDefault();
-                connexion({ login: login, password: password });
-              }}
-            >
-              <IonGrid fixed={true} className="ion-padding" style={{ innerHeight: "100%" }}>
-                <IonRow className="ion-align-items-center">
-                  <IonCol>
-                    <>
-                      <IonInput name="login" type="text" value={login} onIonChange={(e) => setlogin(e.detail.value)} label="Nom d'utilisateur" labelPlacement="floating" fill="outline" placeholder="Nom d'utilisateur"></IonInput>
-                      <br />
-                      <IonInput name="password" type="password" value={password} onIonChange={(e) => setpassword(e.detail.value)} label="Mot de passe" labelPlacement="floating" fill="outline" placeholder="Mot de passe">
-                        <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
-                      </IonInput>
+      </IonHeader> */}
+      <IonContent fullscreen className="ion-padding">
+        <div className="t-a-c">
+          <IonImg className="logo-login" src="assets/images/logo.jpg" alt="Logo" />
+        </div>
+        <form
+          action=""
+          onSubmit={(e) => {
+            e.preventDefault();
+            connexion({ login: login, password: password });
+          }}
+        >
+          <IonGrid fixed={true} className="ion-padding" style={{ innerHeight: "100%" }}>
+            <IonRow className="ion-align-items-center">
+              <IonCol>
+                <>
+                  <IonInput name="login" type="text" value={login} onIonChange={(e) => setlogin(e.detail.value)} label="Nom d'utilisateur" labelPlacement="floating" fill="outline" placeholder="Nom d'utilisateur"></IonInput>
+                  <br />
+                  <IonInput name="password" type="password" value={password} onIonChange={(e) => setpassword(e.detail.value)} label="Mot de passe" labelPlacement="floating" fill="outline" placeholder="Mot de passe">
+                    <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
+                  </IonInput>
 
-                      <IonButton type="submit" expand="full" fill="solid" color="primary" className="ion-margin-top">
-                        Se connecter
-                      </IonButton>
-                      <br />
-                      <div style={{ float: "right" }}>
-                        Pas de compte? <a href={"/register"}>Inscrivez-vous</a>
-                      </div>
-                    </>
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-            </form>
-          </IonCardContent>
-        </IonCard>
+                  <IonButton type="submit" expand="full" fill="solid" color="primary" className="ion-margin-top">
+                    Se connecter
+                  </IonButton>
+                  <br />
+                  <div style={{ float: "right" }}>
+                    Pas de compte ? <a href={"/register"}>Inscrivez-vous</a>
+                  </div>
+                  <br />
+                  <br />
+                  <div style={{ float: "left" }}>
+                    mot de passe oublié ? <a href={"/changePassword"}>Changer</a>
+                  </div>
+                </>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </form>
       </IonContent>
     </IonPage>
   );

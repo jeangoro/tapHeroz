@@ -4,14 +4,14 @@ import "./Components.css";
 
 const RappelParticipation = ({ setisOpenAddParticipation }) => {
   return (
-    <div>
+    <div className="text-center">
       <p>
         <span className="blinking-text">Veuillez vous enregistrer pour la prochaine compétition:</span>
       </p>
       <IonRow className="competition-rowTJK" style={{ textAlign: "center" }}>
         <IonCol>
           <IonButton color={"warning"} onClick={() => setisOpenAddParticipation(true)}>
-            Je participe à la compétition
+            S'inscrire à la compétition
           </IonButton>
         </IonCol>
         {/* <IonCol size="2">
