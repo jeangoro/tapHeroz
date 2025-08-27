@@ -139,7 +139,7 @@ const App: React.FC = () => {
                 <Redirect to="/login" />
               </Route>
             </IonRouterOutlet>
-            <IonTabBar slot="bottom">
+            <IonTabBar className="tab-bar" slot="bottom">
               <IonTabButton tab="Play" href="/play">
                 <IonIcon aria-hidden="true" icon={play} />
                 <IonLabel>Jouer</IonLabel>
@@ -148,10 +148,10 @@ const App: React.FC = () => {
                 <IonIcon aria-hidden="true" icon={statsChart} />
                 <IonLabel>Stats</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="Fieuls" href="/parrainage">
+              {/* <IonTabButton tab="Fieuls" href="/parrainage">
                 <IonIcon aria-hidden="true" icon={people} />
                 <IonLabel>Fieuls</IonLabel>
-              </IonTabButton>
+              </IonTabButton> */}
               <IonTabButton tab="compte" href="/compte">
                 <IonIcon aria-hidden="true" icon={people} />
                 <IonLabel>Compte</IonLabel>

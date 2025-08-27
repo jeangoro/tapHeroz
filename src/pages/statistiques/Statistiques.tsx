@@ -5,6 +5,7 @@ import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setListStatistiques } from "../../store/statistiquesSlice";
 import Loader from "../../components/Loader";
+import "./Statistiques.css";
 // import Menu from "../../components/Menu";
 
 const Statistiques = () => {
@@ -57,12 +58,13 @@ const Statistiques = () => {
       {/* <Menu /> */}
       <IonPage>
         <IonHeader>
-          <IonToolbar>
-            {/* <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons> */}
-            <IonTitle>Statistiques</IonTitle>
-          </IonToolbar>
+          <div className="page-header">
+            <div className="leadbord">
+              <strong className="ranking">12347 📈</strong>
+              <strong className="ranking">0 🔥</strong>
+            </div>
+            <div className="reward-banner">1,020 🔥 = XAF 572.51</div>
+          </div>
         </IonHeader>
         <IonContent fullscreen className="ion-padding">
           {!getStatLoading ? (
