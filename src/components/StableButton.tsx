@@ -3,14 +3,15 @@ import { IonButton, IonIcon } from "@ionic/react";
 
 interface StableButtonProps {
   label: string;
-  icon?: string; 
-  assetIcon?: string; 
+  icon?: string;
+  assetIcon?: string;
   onClick?: () => void;
+  routerLink?: string;
 }
 
-const StableButton: React.FC<StableButtonProps> = ({ label, icon, assetIcon, onClick }) => {
+const StableButton: React.FC<StableButtonProps> = ({ label, icon, assetIcon, onClick, routerLink }) => {
   return (
-    <IonButton expand="block" fill="outline" className="btn-stable" onClick={onClick}>
+    <IonButton expand="block" fill="outline" className="btn-stable" onClick={onClick} routerLink={routerLink}>
       <div className="btn-content">
         <div className="btn-left">
           {icon && <IonIcon icon={icon} />}

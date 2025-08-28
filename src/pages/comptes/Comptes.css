@@ -15,21 +15,9 @@ a {
   text-decoration: none;
 }
 
- /* .page-header {
-  height: 56px;
-  background: rgb(26, 26, 26);
-  color: white;
-  text-align: center;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 16px;
-  padding-right: 16px;
-  gap: 50px;
-}  */
+
 .list-contener {
   top: 0px;
-  /* margin: 12px !important; */
 }
 .btn-add-icon {
   width: 15px;
@@ -44,10 +32,7 @@ a {
   width: 100%;
   max-height: 100%;
 }
-/* .ranking {
-  font-weight: 500;
-  font-size: 14px;
-} */
+
 .acount-start {
   display: flex;
   flex-direction: column;
@@ -142,14 +127,8 @@ a {
 
 .separator {
   font-size: 12px;
-  /* line-height: 1.33; */
-  /* font-weight: 300; */
   color: rgb(88, 91, 96);
 }
-/* .leadbord {
-  display: flex;
-  gap: 15px;
-} */
 
 .user-info h2 {
   margin: 0;
@@ -161,17 +140,6 @@ a {
   margin: 0.3rem 0;
   font-size: 1rem;
 }
-
-/* .reward-banner {
-  background: rgb(241, 52, 88);
-  color: white;
-  padding: 8px 12px;
-  margin: 0.5rem auto;
-  width: 52%;
-  border-radius: 15px;
-  font-weight: 500;
-  font-size: 14px;
-} */
 
 .menu-section {
   margin-top: 0rem;
@@ -186,7 +154,6 @@ a {
 
 .signout-section {
   text-align: center;
-  /* margin-top: 2rem; */
 }
 
 .signout-section ion-button {

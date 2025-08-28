@@ -1,25 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { IonPage, IonHeader, IonContent, IonList, IonItem, IonLabel, IonButton, IonFooter, IonTabBar, IonTabButton, IonIcon } from "@ionic/react";
 import { list, gift, menu, personOutline, settingsOutline, languageOutline, helpCircleOutline, peopleOutline, trophyOutline, refreshOutline, timeOutline, informationCircleOutline, cashOutline } from "ionicons/icons";
 import "./Comptes.css";
 import StableButton from "../../components/StableButton";
+import CashInModal from "./cashIn/CashInModal";
+import CashOut from "./cashOut/CashOut";
 
 const RewardsPage: React.FC = () => {
+  const [isOpenDepot, setisOpenDepot] = useState(false);
+  const [isOpenRetrait, setisOpenRetrait] = useState(false);
   return (
     <IonPage>
-      {/* Header */}
-      {/* <IonHeader>
-        <div className="page-header">
-          <div className="leadbord">
-            <strong className="ranking">12347 📈</strong>
-            <strong className="ranking">0 🔥</strong>
-          </div>
-          <div className="reward-banner">1,020 🔥 = XAF 572.51</div>
-        </div>
-      </IonHeader> */}
-
-      {/* Content */}
-
       <IonContent className="list-contener">
         {/* User Info */}
         <div className="user-containt">
@@ -30,22 +21,23 @@ const RewardsPage: React.FC = () => {
                 <img className="flag" src="/assets/images/cm.svg" alt="" />
                 <div>Hi, Cartel!</div>
               </div>
-              <div className="user-id">
+              <div className="user-id" onClick={() => setisOpenDepot(true)}>
                 <span>CASH</span>
                 <span>
-                  <img src="/assets/icon/icons8_add_48px.png"alt="asset icon" className="btn-add-icon" />
-                  {" "}$21
+                  <img src="/assets/icon/icons8_add_48px.png" alt="asset icon" className="btn-add-icon" /> $21
                 </span>
+                <CashInModal isOpen={isOpenDepot} setisOpen={setisOpenDepot} />
               </div>
             </a>
           </div>
           {/* Menu Sections */}
           <IonList className="menu-section">
             <h6 className="separator">My account</h6>
-            <StableButton label="Cash Out" icon={cashOutline} onClick={() => console.log("Profile clicked")} />
+            <StableButton label="Cash Out" icon={cashOutline} onClick={() => setisOpenRetrait(true)} />
+            <CashOut isOpen={isOpenRetrait} setisOpen={setisOpenRetrait} />
             <StableButton label="About Me" icon={personOutline} onClick={() => console.log("Profile clicked")} />
             <StableButton label="Leagues" icon={trophyOutline} assetIcon="/assets/icon/icons8_wonder_woman_40px.png" onClick={() => console.log("Profile clicked")} />
-            <StableButton label="Referrals" icon={peopleOutline} onClick={() => console.log("Profile clicked")} />
+            <StableButton label="Referrals" icon={peopleOutline} routerLink="/referrals"/>
             <StableButton label="History" icon={timeOutline} onClick={() => console.log("Profile clicked")} />
             <StableButton label="FAQ" icon={informationCircleOutline} onClick={() => console.log("Profile clicked")} />
           </IonList>

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useEffect, useState } from "react";
 import { IonButton, IonButtons, IonCol, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonMenuButton, IonPage, IonRow, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react";
-import Depot from "./Depot";
+
 import "./Comptes.css";
-import Retrait from "./Retrait";
+
 import { useDispatch, useSelector } from "react-redux";
 import { alertCircle, arrowDown, arrowUp, checkmarkCircle, close, swapHorizontal } from "ionicons/icons";
 import axios from "axios";
@@ -105,8 +105,8 @@ const Comptes = () => {
               <IonButton>Transfert</IonButton>
             </IonCol>
           </IonRow>
-          <Depot isOpen={isOpenDepot} setisOpen={setisOpenDepot} />
-          <Retrait isOpen={isOpenRetrait} setisOpen={setisOpenRetrait} />
+          {/* <Depot isOpen={isOpenDepot} setisOpen={setisOpenDepot} />
+          <Retrait isOpen={isOpenRetrait} setisOpen={setisOpenRetrait} /> */}
           <h1>Liste des transactions</h1>
           {getDataLoading ? (
             <Loader />

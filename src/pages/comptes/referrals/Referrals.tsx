@@ -2,15 +2,16 @@
 import { IonButton, IonCol, IonContent, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToolbar, useIonToast, useIonViewDidEnter } from "@ionic/react";
 import axios from "axios";
 import React, { useCallback, useState } from "react";
+import "./Referrals.css"
 import { useDispatch, useSelector } from "react-redux";
 import { copy, shareSocial } from "ionicons/icons";
-import { setListFieuls } from "../../store/parrainagesSlice";
-import Loader from "../../components/Loader";
+import { setListFieuls } from "../../../store/parrainagesSlice";
+import Loader from "../../../components/Loader";
 // import Menu from "../../components/Menu";
 
-const Parrainages = () => {
+const Referrals = () => {
   const user_infos_state = useSelector((state: any) => state?.userInfos?.user_infos);
-  const listFieuls = useSelector((state: any) => state?.parrainages?.listFieuls);
+  const listFieuls = useSelector((state: any) => state?.Referrals?.listFieuls);
 
   const dispatch = useDispatch();
 
@@ -139,7 +140,7 @@ const Parrainages = () => {
             {/* <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
             </IonButtons> */}
-            <IonTitle>Partages et Parrainages</IonTitle>
+            <IonTitle>Partages et Referrals</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="ion-padding">
@@ -190,4 +191,4 @@ const Parrainages = () => {
   );
 };
 
-export default Parrainages;
+export default Referrals;

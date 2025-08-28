@@ -1,0 +1,103 @@
+.page-header {
+  height: 56px;
+  background: rgb(26, 26, 26);
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  gap: 50px;
+}
+.prize-pool {
+    text-align: center;
+    border-radius: 12px;
+    outline: outset;
+    outline-width: 1px;
+    outline-color: rgb(217 0 0);
+    padding: 10px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    box-shadow: rgba(236, 42, 77, 0.08) 0px 4px 20px 0px;
+}
+.timer {
+  display: flex;
+  justify-content: center;
+  color: rgb(16, 16, 16);
+  font-size: 20px;
+  font-weight: 700;
+  gap: 8px;
+  margin-top: 65px;
+}
+.info-text {
+  display: flex;
+  align-items: center;
+  /* background: #fffbe6; */
+  padding: 8px 12px;
+  border-radius: 8px;
+  /* margin-bottom: 20px; */
+  font-size: 14px;
+  font-weight: 450;
+  justify-content: center;
+}
+.leadbord {
+  display: flex;
+  gap: 15px;
+}
+.ranking {
+  font-weight: 500;
+  font-size: 14px;
+}
+.reward-banner {
+  background: rgb(241, 52, 88);
+  color: white;
+  padding: 8px 12px;
+  margin: 0.5rem auto;
+  width: 52%;
+  border-radius: 15px;
+  font-weight: 500;
+  font-size: 14px;
+}
+.ranking-container {
+  width: 100%;
+  overflow-x: auto;
+  padding: 10px;
+}
+.rank-icon {
+  width: 14px;
+  height: 14px;
+}
+.rank-td {
+  text-align: center;
+  width: 0px !important;
+}
+
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.ranking-table thead {
+  background: #f4f4f4;
+  color: #333;
+  font-size: 11px;  
+}
+
+.ranking-table th,
+.ranking-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 11px;
+}
+
+.ranking-table tbody tr:hover {
+  background: #f9f9f9;
+  transition: background 0.2s;
+}

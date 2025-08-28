@@ -4,12 +4,13 @@ import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonImg, 
 import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import "./CashInModal.css";
 // import { setUserInfos } from "../../store/userInfosSlice.js";
 // import PayIframe from "./PayIframe.js";
 import { useHistory } from "react-router";
-import AttentePayement from "./AttentePayement";
+import AttentePayement from "../AttentePayement/AttentePayement";
 
-const Depot = ({ isOpen, setisOpen }) => {
+const CashInModal = ({ isOpen, setisOpen }) => {
   const [montantDepot, setmontantDepot] = useState("");
   const [isValidMontantDepot, setisValidMontantDepot] = useState(false);
   const [payer_name, setpayer_name] = useState("");
@@ -60,7 +61,7 @@ const Depot = ({ isOpen, setisOpen }) => {
   // const listingDepot = () => {
   //   setTimeout(() => {
   //     // const forms = document.getElementsByClassName("form-control");
-  //     const forms = document.getElementById("iframe-depot");
+  //     const forms = document.getElementById("iframe-CashInModal");
   //     console.log(forms);
   //   }, 10000);
   // };
@@ -75,7 +76,7 @@ const Depot = ({ isOpen, setisOpen }) => {
 
     const newValues = {
       id_joueur: user_infos.ID_JOUEUR,
-      type_transaction: "depot",
+      type_transaction: "CashInModal",
       montant: montantDepot,
       motif: "Recharge du compte par le numero: " + telephoneDepot,
       description: "",
@@ -83,7 +84,7 @@ const Depot = ({ isOpen, setisOpen }) => {
     };
 
     await axios
-      .post("backend/depot.php", newValues)
+      .post("backend/CashInModal.php", newValues)
       .then((res) => {
         // console.log(res);
         if (res.data.status === true) {
@@ -171,14 +172,14 @@ const Depot = ({ isOpen, setisOpen }) => {
           <IonToolbar>
             <IonTitle>Effectuer un dépôt</IonTitle>
             <IonButtons slot="end">
-              <IonButton onClick={() => setisOpen(false)}>Fermer</IonButton>
+              <IonButton onClick={() => setisOpen(false)}>X</IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
           <AttentePayement isOpen={payementEncours} setisOpen={setpayementEncours} paymentProcessor={payment_processor} montant={montantDepot} phoneNumber={telephoneDepot} annuler={setpayementEncours} />
           <p className="text-center">Veuillez remplir vos informations pour recharger votre compte</p>
-          {/* <Depot /> */}
+          {/* <CashInModal /> */}
           {!payementEncours ? (
             <form
               action=""
@@ -226,7 +227,17 @@ const Depot = ({ isOpen, setisOpen }) => {
                       ></IonInput>
                       {!isValidMontantDepot && <IonText color={"danger"}>Montant invalide</IonText>}
                       <br />
-                      <IonInput className="mt-2" name="telephoneDepot" type="number" value={telephoneDepot} onKeyUp={(e) => checkPhoneNumber(e.currentTarget.value)} label="Numéro de téléphone du payeur" labelPlacement="floating" fill="outline" placeholder="Numéro de téléphone du payeur"></IonInput>
+                      <IonInput
+                        className="mt-2"
+                        name="telephoneDepot"
+                        type="number"
+                        value={telephoneDepot}
+                        onKeyUp={(e) => checkPhoneNumber(e.currentTarget.value)}
+                        label="Numéro de téléphone du payeur"
+                        labelPlacement="floating"
+                        fill="outline"
+                        placeholder="Numéro de téléphone du payeur"
+                      ></IonInput>
                       {!isValidTelephoneDepot && <IonText color={"danger"}>Téléphone invalide</IonText>}
 
                       <div className="mt-3" style={{ color: "blue" }}>
@@ -256,4 +267,4 @@ const Depot = ({ isOpen, setisOpen }) => {
   );
 };
 
-export default Depot;
+export default CashInModal;
