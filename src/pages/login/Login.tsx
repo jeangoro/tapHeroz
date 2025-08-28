@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonInput, IonInputPasswordToggle, IonPage, IonRow, IonTitle, IonToolbar, useIonToast } from "@ionic/react";
+import { IonButton, IonCol, IonContent, IonGrid, IonImg, IonInput, IonInputPasswordToggle, IonPage, IonRow, useIonToast } from "@ionic/react";
 import "./Login.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
   };
 
   const connexion = async (values: object) => {
-    console.log(user_infos);
+    // console.log(user_infos);
 
     await axios
       .post("backend/identification.php", values)
@@ -43,21 +43,14 @@ const Login: React.FC = () => {
         if (res.data.status === true) {
           sessionStorage.setItem("user_infos", JSON.stringify(res.data));
           dispatch(setUserInfos(res.data));
-          console.log("jai recuper");
           setAxiosDefault();
           // getUserInfos();
 
           // history.push("/play");
           // history.go(0);
-          // setState("user_infos", res.data);
-          // setState("lastPointsSaved", res.data.SOLDE_POINTS);
-          // setIsOpen(true);
         } else {
           presentToast("middle", res.data.message);
         }
-
-        // history.go(0);
-        console.log(user_infos);
       })
       .catch((err) => {
         console.log(err);
@@ -66,11 +59,6 @@ const Login: React.FC = () => {
 
   return (
     <IonPage>
-      {/* <IonHeader>
-        <IonToolbar>
-          <IonTitle>Connexion</IonTitle>
-        </IonToolbar>
-      </IonHeader> */}
       <IonContent fullscreen className="ion-padding">
         <div className="t-a-c">
           <IonImg className="logo-login" src="assets/images/logo.jpg" alt="Logo" />
