@@ -11,3 +11,174 @@ ion-spinner {
 .t-a-l {
   text-align: left;
 }
+a {
+  text-decoration: none;
+}
+
+
+.list-contener {
+  top: 0px;
+}
+.btn-add-icon {
+  width: 15px;
+  height: 15px;
+}
+.user-containt {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: auto;
+  padding: 12px;
+  width: 100%;
+  max-height: 100%;
+}
+
+.acount-start {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  border-radius: 12px;
+  border: 1px solid rgb(234, 234, 234);
+  background: rgb(249, 249, 249);
+}
+.acount-start .flag {
+  border-radius: 4px;
+  margin-right: 8px;
+  width: 32px;
+  height: 32px;
+}
+.top {
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+.name {
+  color: rgb(16, 16, 16);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.32px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.user-id {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+}
+.user-id .user-id span:nth-child(1) {
+  line-height: 130%;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgb(16, 16, 16);
+}
+.user-id span:nth-child(1) {
+  line-height: 130%;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgb(16, 16, 16);
+}
+.user-id span:nth-child(2) {
+  line-height: 100%;
+  font-size: 14px;
+  color: rgb(8, 125, 0);
+  font-weight: 600;
+}
+
+.btn-stable {
+  --color: #7e7e7e;
+  --border-color: #d9d9d9;
+  --background: transparent;
+  --background-activated: #f0f0f0; 
+  --ripple-color: #d9d9d9;
+  width: 99%;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: rgb(16, 16, 16);
+}
+
+.btn-stable .btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn-stable .btn-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-stable .btn-content ion-icon {
+  font-size: 18px;
+  width: 24px;
+  height: 24px;
+}
+
+.btn-stable .btn-asset-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.separator {
+  font-size: 12px;
+  color: rgb(88, 91, 96);
+}
+
+.user-info h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.user-info p {
+  margin: 0.3rem 0;
+  font-size: 1rem;
+}
+
+.menu-section {
+  margin-top: 0rem;
+  margin-bottom: 0rem !important;
+}
+
+.menu-section ion-item {
+  --background: #f8f8f8;
+  --color: #222;
+  font-size: 1rem;
+}
+
+.signout-section {
+  text-align: center;
+}
+
+.signout-section ion-button {
+  --background: rgb(16, 16, 16);
+  --color: white;
+  font-weight: 300;
+  font-size: 14px;
+  width: 100%;
+  margin: auto;
+}
+
+.version-text {
+  font-size: 10px;
+  color: #666;
+  margin-top: 0.5rem;
+}
+.signout-section p {
+  margin-bottom: 0rem !important;
+}
+
+.tab-bar {
+  --background: #fff;
+  --color: #666;
+}
+
+.tab-bar ion-tab-button {
+  --color-selected: #3880ff;
+}

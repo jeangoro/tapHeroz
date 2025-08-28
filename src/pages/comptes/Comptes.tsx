@@ -1,138 +1,79 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useCallback, useEffect, useState } from "react";
-import { IonButton, IonButtons, IonCol, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonMenuButton, IonPage, IonRow, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react";
-import Depot from "./Depot";
+import React, { useState } from "react";
+import { IonPage, IonHeader, IonContent, IonList, IonItem, IonLabel, IonButton, IonFooter, IonTabBar, IonTabButton, IonIcon } from "@ionic/react";
+import { list, gift, menu, personOutline, settingsOutline, languageOutline, helpCircleOutline, peopleOutline, trophyOutline, refreshOutline, timeOutline, informationCircleOutline, cashOutline } from "ionicons/icons";
 import "./Comptes.css";
-import Retrait from "./Retrait";
-import { useDispatch, useSelector } from "react-redux";
-import { alertCircle, arrowDown, arrowUp, checkmarkCircle, close, swapHorizontal } from "ionicons/icons";
-import axios from "axios";
-import { setListTransactions } from "../../store/comptesSlice";
-import Menu from "../../components/Menu";
-import Loader from "../../components/Loader";
+import StableButton from "../../components/StableButton";
+import CashInModal from "./cashIn/CashInModal";
+import CashOut from "./cashOut/CashOut";
 
-const Comptes = () => {
-  const dispatch = useDispatch();
+const RewardsPage: React.FC = () => {
   const [isOpenDepot, setisOpenDepot] = useState(false);
   const [isOpenRetrait, setisOpenRetrait] = useState(false);
-  const user_infos_state = useSelector((state: any) => state?.userInfos?.user_infos);
-  const listTransactions = useSelector((state: any) => state?.comptes?.listTransactions);
-
-  const [getDataLoading, setgetDataLoading] = useState(false);
-
-  const getListTransaction = useCallback(
-    async (values: object) => {
-      setgetDataLoading(true);
-      await axios
-        .post("backend/list_transactions.php", values)
-        .then((res) => {
-          setgetDataLoading(false);
-          // console.log(res);
-          if (res.status === 200) {
-            dispatch(setListTransactions(res.data));
-          }
-        })
-        .catch((err) => {
-          setgetDataLoading(false);
-          console.log(err);
-        });
-    },
-    [dispatch]
-  );
-
-  useEffect(() => {
-    if (user_infos_state !== null) {
-      getListTransaction({ id_joueur: user_infos_state.ID_JOUEUR });
-    }
-  }, [user_infos_state, getListTransaction]);
-
-  useIonViewDidEnter(() => {
-    // console.log("Page did enter view");
-    if (user_infos_state !== null) {
-      getListTransaction({ id_joueur: user_infos_state.ID_JOUEUR });
-    }
-  });
-
   return (
-    <>
-      <Menu />
-      <IonPage id="main-content">
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton></IonMenuButton>
-            </IonButtons>
-            <IonTitle>Comptes</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent fullscreen className="ion-padding font-small">
-          <IonRow>
-            <IonCol size="6">Nom d'utilisateur: </IonCol>
-            <IonCol size="6">{user_infos_state.LOGIN}</IonCol>
-          </IonRow>
-          <IonRow className="t-a-l">
-            <IonCol size="6">Nom et prénom: </IonCol>
-            <IonCol size="6">{user_infos_state.NOM_PRENOM}</IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol size="6">Téléphone: </IonCol>
-            <IonCol size="6">{user_infos_state.TELEPHONE}</IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol size="6">Pays: </IonCol>
-            <IonCol size="6">{user_infos_state.PAYS}</IonCol>
-          </IonRow>
-          <IonRow className="text-align-center fz-10">
-            <IonCol size="12" className="alert alert-success py-1">
-              <h6 className="mb-0" color="danger">
-                Solde du compte: {parseFloat(user_infos_state.SOLDE_ARGENT).toLocaleString()} FCFA
-              </h6>
-            </IonCol>
-            <IonCol size="12" className="alert alert-warning py-1">
-              <h6 className="mb-0" color="danger">
-                Recompense de parrainage en attente: {parseFloat(user_infos_state.total_recompense_en_attente).toLocaleString()} FCFA
-              </h6>
-            </IonCol>
-            <br />
-            <br />
-            <IonCol size="4">
-              <IonButton onClick={() => setisOpenDepot(true)}>Recharger</IonButton>
-            </IonCol>
-            <IonCol size="4">
-              <IonButton onClick={() => setisOpenRetrait(true)}>Retirer</IonButton>
-            </IonCol>
-            <IonCol size="4">
-              <IonButton>Transfert</IonButton>
-            </IonCol>
-          </IonRow>
-          <Depot isOpen={isOpenDepot} setisOpen={setisOpenDepot} />
-          <Retrait isOpen={isOpenRetrait} setisOpen={setisOpenRetrait} />
-          <h1>Liste des transactions</h1>
-          {getDataLoading ? (
-            <Loader />
-          ) : (
-            <>
-              {listTransactions?.map((transaction, key) => {
-                return (
-                  <IonItem key={key} lines="full">
-                    <IonIcon icon={transaction.TYPE === "depot" ? arrowDown : transaction.TYPE === "retrait" ? arrowUp : swapHorizontal} color={transaction.TYPE === "depot" ? "success" : transaction.TYPE === "retrait" ? "danger" : "warning"} slot="start"></IonIcon>
-                    <IonLabel className="py-0">
-                      {transaction.TYPE} de {transaction.MONTANT} FCFA
-                    </IonLabel>
-                    <IonIcon
-                      icon={transaction?.ETAT === "Valide" ? checkmarkCircle : transaction?.ETAT === "En attente de confirmation" ? alertCircle : close}
-                      color={transaction?.ETAT === "Valide" ? "success" : transaction?.ETAT === "En attente de confirmation" ? "warning" : "danger"}
-                      slot="end"
-                    ></IonIcon>
-                  </IonItem>
-                );
-              })}
-            </>
-          )}
-        </IonContent>
-      </IonPage>
-    </>
+    <IonPage>
+      <IonContent className="list-contener">
+        {/* User Info */}
+        <div className="user-containt">
+          {" "}
+          <div className="acount-start">
+            <a className="top">
+              <div className="name">
+                <img className="flag" src="/assets/images/cm.svg" alt="" />
+                <div>Hi, Cartel!</div>
+              </div>
+              <div className="user-id" onClick={() => setisOpenDepot(true)}>
+                <span>CASH</span>
+                <span>
+                  <img src="/assets/icon/icons8_add_48px.png" alt="asset icon" className="btn-add-icon" /> $21
+                </span>
+                <CashInModal isOpen={isOpenDepot} setisOpen={setisOpenDepot} />
+              </div>
+            </a>
+          </div>
+          {/* Menu Sections */}
+          <IonList className="menu-section">
+            <h6 className="separator">My account</h6>
+            <StableButton label="Cash Out" icon={cashOutline} onClick={() => setisOpenRetrait(true)} />
+            <CashOut isOpen={isOpenRetrait} setisOpen={setisOpenRetrait} />
+            <StableButton label="About Me" icon={personOutline} onClick={() => console.log("Profile clicked")} />
+            <StableButton label="Leagues" icon={trophyOutline} assetIcon="/assets/icon/icons8_wonder_woman_40px.png" onClick={() => console.log("Profile clicked")} />
+            <StableButton label="Referrals" icon={peopleOutline} routerLink="/referrals"/>
+            <StableButton label="History" icon={timeOutline} onClick={() => console.log("Profile clicked")} />
+            <StableButton label="FAQ" icon={informationCircleOutline} onClick={() => console.log("Profile clicked")} />
+          </IonList>
+          <IonList className="menu-section">
+            <h6 className="separator">Others</h6>
+            <StableButton label="Settings" icon={settingsOutline} onClick={() => console.log("Profile clicked")} />
+            <StableButton label="Language" icon={languageOutline} assetIcon="/assets/icon/icons8_usa_48px.png" onClick={() => console.log("Profile clicked")} />
+            <StableButton label="Support" icon={helpCircleOutline} onClick={() => console.log("Profile clicked")} />
+          </IonList>
+          {/* Sign Out */}
+          <div className="signout-section">
+            <IonButton>Sign out</IonButton>
+            <p className="version-text">Version 3.5.75</p>
+          </div>
+        </div>
+      </IonContent>
+
+      {/* Bottom Navigation */}
+      <IonFooter>
+        <IonTabBar slot="bottom" className="tab-bar">
+          <IonTabButton tab="surveys" href="/surveys">
+            <IonIcon icon={list} />
+            <IonLabel>Surveys</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="rewards" href="/rewards" selected>
+            <IonIcon icon={gift} />
+            <IonLabel>Rewards</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="menu" href="/menu">
+            <IonIcon icon={menu} />
+            <IonLabel>Menu</IonLabel>
+          </IonTabButton>
+        </IonTabBar>
+      </IonFooter>
+    </IonPage>
   );
 };
 
-export default Comptes;
+export default RewardsPage;

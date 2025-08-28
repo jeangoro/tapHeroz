@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 // import { setUserInfos } from "../../store/userInfosSlice.js";
 // import PayIframe from "./PayIframe.js";
 import { useHistory } from "react-router";
-import Depot from "../comptes/Depot";
+import CashInModal from "../comptes/cashIn/CashInModal";
 
 const AddParticipationModal = ({ isOpen, setisOpen }) => {
   //   const [id_joueur, setid_joueur] = useState("");
@@ -144,7 +144,7 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-          <Depot isOpen={isOpenDepot} setisOpen={setisOpenDepot} />
+          <CashInModal isOpen={isOpenDepot} setisOpen={setisOpenDepot} />
           <p>Veuillez remplir vos informations pour vous inscrire à la prochaine compétition</p>
 
           <div>

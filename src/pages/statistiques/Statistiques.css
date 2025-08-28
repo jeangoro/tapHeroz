@@ -1,0 +1,30 @@
+.page-header {
+  height: 56px;
+  background: rgb(26, 26, 26);
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  gap: 50px;
+}
+.leadbord {
+  display: flex;
+  gap: 15px;
+}
+.ranking {
+  font-weight: 500;
+  font-size: 14px;
+}
+.reward-banner {
+  background: rgb(241, 52, 88);
+  color: white;
+  padding: 8px 12px;
+  margin: 0.5rem auto;
+  width: 52%;
+  border-radius: 15px;
+  font-weight: 500;
+  font-size: 14px;
+}

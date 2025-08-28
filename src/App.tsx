@@ -42,11 +42,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setUserInfos } from "./store/userInfosSlice.js";
 import { useCallback, useEffect } from "react";
-import Statistiques from "./pages/statistiques/Statistiques";
+// import Statistiques from "./pages/statistiques/Statistiques";
 import Comptes from "./pages/comptes/Comptes";
-import Parrainages from "./pages/parrainages/Parrainages";
 import Play from "./pages/play/Play";
 import ChangePassword from "./pages/changePassword/ChangePassword";
+import Referrals from "./pages/comptes/referrals/Referrals";
+import Stats from "./pages/statistiques/Stats";
 // import axios from "axios";
 
 setupIonicReact();
@@ -123,11 +124,17 @@ const App: React.FC = () => {
               <Route exact path="/play">
                 {user_infos_state?.ID_JOUEUR !== undefined ? <Play /> : <Redirect to="/login" />}
               </Route>
-              <Route exact path="/statistiques">
+              {/* <Route exact path="/statistiques">
                 {user_infos_state?.ID_JOUEUR !== undefined ? <Statistiques /> : <Redirect to="/login" />}
+              </Route> */}
+              <Route exact path="/stats">
+                {user_infos_state?.ID_JOUEUR !== undefined ? <Stats /> : <Redirect to="/login" />}
               </Route>
-              <Route exact path="/parrainage">
+              {/* <Route exact path="/parrainage">
                 {user_infos_state?.ID_JOUEUR !== undefined ? <Parrainages /> : <Redirect to="/login" />}
+              </Route> */}
+              <Route exact path="/referrals">
+                {user_infos_state?.ID_JOUEUR !== undefined ? <Referrals /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/compte">
                 {user_infos_state?.ID_JOUEUR !== undefined ? <Comptes /> : <Redirect to="/login" />}
@@ -139,19 +146,23 @@ const App: React.FC = () => {
                 <Redirect to="/login" />
               </Route>
             </IonRouterOutlet>
-            <IonTabBar slot="bottom">
+            <IonTabBar className="tab-bar" slot="bottom">
               <IonTabButton tab="Play" href="/play">
                 <IonIcon aria-hidden="true" icon={play} />
                 <IonLabel>Jouer</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="statistiques" href="/statistiques">
+              {/* <IonTabButton tab="statistiques" href="/statistiques">
+                <IonIcon aria-hidden="true" icon={statsChart} />
+                <IonLabel>Stats</IonLabel>
+              </IonTabButton> */}
+              <IonTabButton tab="stats" href="/stats">
                 <IonIcon aria-hidden="true" icon={statsChart} />
                 <IonLabel>Stats</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="Fieuls" href="/parrainage">
+              {/* <IonTabButton tab="Fieuls" href="/parrainage">
                 <IonIcon aria-hidden="true" icon={people} />
                 <IonLabel>Fieuls</IonLabel>
-              </IonTabButton>
+              </IonTabButton> */}
               <IonTabButton tab="compte" href="/compte">
                 <IonIcon aria-hidden="true" icon={people} />
                 <IonLabel>Compte</IonLabel>
