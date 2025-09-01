@@ -1,0 +1,43 @@
+.language-list {
+  background: #fff;
+  border-radius: 8px;
+  margin: 10px;
+  overflow: hidden;
+}
+
+.language-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.language-item:last-child {
+  border-bottom: none;
+}
+
+.language-flag {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+}
+
+.language-label {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.language-radio {
+  margin-left: auto;
+  --border-radius: 50%;         /* cercle parfait */
+  --inner-border-radius: 50%;   /* cercle intérieur */
+  --border-width: 2px;          /* contour plus visible */
+  --border-color: #ccc;         /* couleur du cercle non sélectionné */
+  --color: #ccc;                /* couleur par défaut */
+  --color-checked: #ff3b30;     /* couleur quand sélectionné (rouge) */
+  --inner-color: #ff3b30;       /* remplissage rouge */
+  --checkmark-color: #fff;   
+}

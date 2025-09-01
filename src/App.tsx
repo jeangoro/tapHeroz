@@ -48,6 +48,8 @@ import Play from "./pages/play/Play";
 import ChangePassword from "./pages/changePassword/ChangePassword";
 import Referrals from "./pages/comptes/referrals/Referrals";
 import Stats from "./pages/statistiques/Stats";
+import Languages from "./pages/comptes/language/Languages";
+import History from "./pages/comptes/history/History";
 // import axios from "axios";
 
 setupIonicReact();
@@ -133,11 +135,17 @@ const App: React.FC = () => {
               {/* <Route exact path="/parrainage">
                 {user_infos_state?.ID_JOUEUR !== undefined ? <Parrainages /> : <Redirect to="/login" />}
               </Route> */}
+              <Route exact path="/history">
+                {user_infos_state?.ID_JOUEUR !== undefined ? <History /> : <Redirect to="/login" />}
+              </Route>
               <Route exact path="/referrals">
                 {user_infos_state?.ID_JOUEUR !== undefined ? <Referrals /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/compte">
                 {user_infos_state?.ID_JOUEUR !== undefined ? <Comptes /> : <Redirect to="/login" />}
+              </Route>
+              <Route exact path="/language">
+                {user_infos_state?.ID_JOUEUR !== undefined ? <Languages /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/changePassword">
                 {user_infos_state?.ID_JOUEUR === undefined ? <ChangePassword /> : <Redirect to="/play" />}
@@ -149,7 +157,7 @@ const App: React.FC = () => {
             <IonTabBar className="tab-bar" slot="bottom">
               <IonTabButton tab="Play" href="/play">
                 <IonIcon aria-hidden="true" icon={play} />
-                <IonLabel>Jouer</IonLabel>
+                <IonLabel>Play</IonLabel>
               </IonTabButton>
               {/* <IonTabButton tab="statistiques" href="/statistiques">
                 <IonIcon aria-hidden="true" icon={statsChart} />
@@ -165,7 +173,7 @@ const App: React.FC = () => {
               </IonTabButton> */}
               <IonTabButton tab="compte" href="/compte">
                 <IonIcon aria-hidden="true" icon={people} />
-                <IonLabel>Compte</IonLabel>
+                <IonLabel>Account</IonLabel>
               </IonTabButton>
             </IonTabBar>
           </IonTabs>
