@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setListStatistiques } from "../../store/statistiquesSlice";
 import Loader from "../../components/Loader";
 import "./Stats.css";
-import { timeOutline } from "ionicons/icons";
+import { hourglassOutline, timeOutline } from "ionicons/icons";
 
 const Stats = () => {
   const user_infos_state = useSelector((state: any) => state?.userInfos?.user_infos);
@@ -55,7 +55,7 @@ const Stats = () => {
                 <strong className="ranking">
                   {myData?.RANK} <img src="/assets/icon/icons8_combo_chart_30px.png" alt="asset icon" className="rank-icon" />
                 </strong>
-                <strong className="ranking">0 🗝️</strong>
+                <strong className="ranking">{Number(myData?.SOLDE_POINTS).toLocaleString()} 🪙</strong>
               </div>
               <div className="reward-banner">
                 {myData?.SOLDE_POINTS} 🪙 = XAF {myData?.SOLDE_POINTS / 8.5}
@@ -70,9 +70,10 @@ const Stats = () => {
         {!getStatLoading ? (
           <>
             <div className="prize-pool">
+              <div> Wonder Woman League</div>
               <img src="/assets/icon/icons8_wonder_woman_40px.png" alt="asset icon" />
               <p>
-                <span>125,000</span> 🪙
+                <span>Pool: 125,000 XAF</span>
               </p>
             </div>
             <div className="timer">
@@ -81,7 +82,7 @@ const Stats = () => {
             </div>
             <div className="info-text">
               <span>
-                You have {myData?.SOLDE_POINTS} , and are ranked {myData?.RANK} out of {totalJoueur}.
+                You have {myData?.SOLDE_POINTS} 🪙 , and are ranked {myData?.RANK} out of {totalJoueur}.
               </span>
             </div>
             {/* <IonRow class="t-a-c">
@@ -109,12 +110,9 @@ const Stats = () => {
                       <tr key={key}>
                         <td className="rank-td">{stat.RANK}</td>
                         <td>{stat.LOGIN.charAt(0).toUpperCase() + stat.LOGIN.slice(1).toLowerCase()}</td>
-                        <td>{Number(stat.SOLDE_POINTS).toLocaleString()}</td>
+                        <td>{Number(stat.SOLDE_POINTS).toLocaleString()} 🪙</td>
 
-                        <td>
-                          {/* <img src="/assets/images/coin.png" alt="coin" className="coin-icon" /> */}
-                          {stat.PRIZE ?? 0}🪙
-                        </td>
+                        <td>{stat.PRIZE ?? <IonIcon icon={hourglassOutline} aria-label="Coming soon" style={{ fontSize: 12, color: "var(--ion-color-medium)" }} />} XAF</td>
                       </tr>
                     );
                   })}

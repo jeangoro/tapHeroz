@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IonPage, IonHeader, IonContent, IonList, IonItem, IonLabel, IonButton, IonFooter, IonTabBar, IonTabButton, IonIcon } from "@ionic/react";
-import { list, gift, menu, personOutline, settingsOutline, languageOutline, helpCircleOutline, peopleOutline, trophyOutline, refreshOutline, timeOutline, informationCircleOutline, cashOutline } from "ionicons/icons";
+import { list, gift, menu, personOutline, settingsOutline, languageOutline, helpCircleOutline, peopleOutline, trophyOutline, refreshOutline, timeOutline, informationCircleOutline, cashOutline, arrowDownCircleOutline } from "ionicons/icons";
 import "./Comptes.css";
 import StableButton from "../../components/StableButton";
 import CashInModal from "./cashIn/CashInModal";
@@ -34,17 +34,18 @@ const RewardsPage: React.FC = () => {
           <IonList className="menu-section">
             <h6 className="separator">My account</h6>
             <StableButton label="Cash Out" icon={cashOutline} onClick={() => setisOpenRetrait(true)} />
+            <StableButton label="Cash In" icon={cashOutline} onClick={() => setisOpenDepot(true)} />
             <CashOut isOpen={isOpenRetrait} setisOpen={setisOpenRetrait} />
             <StableButton label="About Me" icon={personOutline} onClick={() => console.log("Profile clicked")} />
             <StableButton label="Leagues" icon={trophyOutline} assetIcon="/assets/icon/icons8_wonder_woman_40px.png" onClick={() => console.log("Profile clicked")} />
-            <StableButton label="Referrals" icon={peopleOutline} routerLink="/referrals"/>
-            <StableButton label="History" icon={timeOutline} onClick={() => console.log("Profile clicked")} />
-            <StableButton label="FAQ" icon={informationCircleOutline} onClick={() => console.log("Profile clicked")} />
+            <StableButton label="Referrals" icon={peopleOutline} routerLink="/referrals" />
+            <StableButton label="History" icon={timeOutline} routerLink="/history" />
+            {/* <StableButton label="FAQ" icon={informationCircleOutline} onClick={() => console.log("Profile clicked")} /> */}
           </IonList>
           <IonList className="menu-section">
             <h6 className="separator">Others</h6>
             <StableButton label="Settings" icon={settingsOutline} onClick={() => console.log("Profile clicked")} />
-            <StableButton label="Language" icon={languageOutline} assetIcon="/assets/icon/icons8_usa_48px.png" onClick={() => console.log("Profile clicked")} />
+            <StableButton label="Language" icon={languageOutline} routerLink="/language" assetIcon="/assets/icon/icons8_usa_48px.png" />
             <StableButton label="Support" icon={helpCircleOutline} onClick={() => console.log("Profile clicked")} />
           </IonList>
           {/* Sign Out */}
