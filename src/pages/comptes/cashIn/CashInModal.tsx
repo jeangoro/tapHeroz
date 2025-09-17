@@ -172,7 +172,9 @@ const CashInModal = ({ isOpen, setisOpen }) => {
           <IonToolbar>
             <IonTitle>Effectuer un dépôt</IonTitle>
             <IonButtons slot="end">
-              <IonButton onClick={() => setisOpen(false)}>X</IonButton>
+              <IonButton onClick={() => setisOpen(false)}>
+                <b>X</b>
+              </IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
@@ -227,17 +229,7 @@ const CashInModal = ({ isOpen, setisOpen }) => {
                       ></IonInput>
                       {!isValidMontantDepot && <IonText color={"danger"}>Montant invalide</IonText>}
                       <br />
-                      <IonInput
-                        className="mt-2"
-                        name="telephoneDepot"
-                        type="number"
-                        value={telephoneDepot}
-                        onKeyUp={(e) => checkPhoneNumber(e.currentTarget.value)}
-                        label="Numéro de téléphone du payeur"
-                        labelPlacement="floating"
-                        fill="outline"
-                        placeholder="Numéro de téléphone du payeur"
-                      ></IonInput>
+                      <IonInput className="mt-2" name="telephoneDepot" type="number" value={telephoneDepot} onKeyUp={(e) => checkPhoneNumber(e.currentTarget.value)} label="Numéro de téléphone du payeur" labelPlacement="floating" fill="outline" placeholder="Numéro de téléphone du payeur"></IonInput>
                       {!isValidTelephoneDepot && <IonText color={"danger"}>Téléphone invalide</IonText>}
 
                       <div className="mt-3" style={{ color: "blue" }}>

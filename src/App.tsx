@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Redirect, Route } from "react-router-dom";
-import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from "@ionic/react";
+import { IonApp, IonRouterOutlet, IonTabs, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { people, play, statsChart } from "ionicons/icons";
 // import Tab2 from "./pages/Tab2";
 // import Tab3 from "./pages/Tab3";
 
@@ -50,6 +49,7 @@ import Referrals from "./pages/comptes/referrals/Referrals";
 import Stats from "./pages/statistiques/Stats";
 import Languages from "./pages/comptes/language/Languages";
 import History from "./pages/comptes/history/History";
+import IonTabsBar from "./components/IonTabsBar";
 // import axios from "axios";
 
 setupIonicReact();
@@ -154,28 +154,7 @@ const App: React.FC = () => {
                 <Redirect to="/login" />
               </Route>
             </IonRouterOutlet>
-            <IonTabBar className="tab-bar" slot="bottom">
-              <IonTabButton tab="Play" href="/play">
-                <IonIcon aria-hidden="true" icon={play} />
-                <IonLabel>Play</IonLabel>
-              </IonTabButton>
-              {/* <IonTabButton tab="statistiques" href="/statistiques">
-                <IonIcon aria-hidden="true" icon={statsChart} />
-                <IonLabel>Stats</IonLabel>
-              </IonTabButton> */}
-              <IonTabButton tab="stats" href="/stats">
-                <IonIcon aria-hidden="true" icon={statsChart} />
-                <IonLabel>Stats</IonLabel>
-              </IonTabButton>
-              {/* <IonTabButton tab="Fieuls" href="/parrainage">
-                <IonIcon aria-hidden="true" icon={people} />
-                <IonLabel>Fieuls</IonLabel>
-              </IonTabButton> */}
-              <IonTabButton tab="compte" href="/compte">
-                <IonIcon aria-hidden="true" icon={people} />
-                <IonLabel>Account</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
+            {user_infos_state?.ID_JOUEUR !== undefined && <IonTabsBar />}
           </IonTabs>
         </IonReactRouter>
       </IonApp>
