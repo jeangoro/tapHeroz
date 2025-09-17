@@ -21,9 +21,11 @@
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.11.0",
     "bootstrap": "^5.2.3",
+    "i18next": "^25.5.2",
     "ionicons": "^7.4.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-i18next": "^15.7.3",
     "react-redux": "^9.2.0",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4"

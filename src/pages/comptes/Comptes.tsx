@@ -1,18 +1,40 @@
 import React, { useState } from "react";
-import { IonPage, IonHeader, IonContent, IonList, IonItem, IonLabel, IonButton, IonFooter, IonTabBar, IonTabButton, IonIcon } from "@ionic/react";
-import { list, gift, menu, personOutline, settingsOutline, languageOutline, helpCircleOutline, peopleOutline, trophyOutline, refreshOutline, timeOutline, informationCircleOutline, cashOutline, arrowDownCircleOutline } from "ionicons/icons";
+import { IonPage, IonContent, IonList, IonLabel, IonButton, IonFooter, IonTabBar, IonTabButton, IonIcon } from "@ionic/react";
+import { list, gift, menu, personOutline, settingsOutline, languageOutline, helpCircleOutline, peopleOutline, trophyOutline, timeOutline, cashOutline } from "ionicons/icons";
 import "./Comptes.css";
 import StableButton from "../../components/StableButton";
 import CashInModal from "./cashIn/CashInModal";
 import CashOut from "./cashOut/CashOut";
+import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { reset } from "../../store/userInfosSlice";
+import i18n from "../../i18n";
+
+import usa from "./../../../public/assets/icon/icons8_usa_48px.png";
+// import usa from "assets/icon/icons8_usa_48px.png";
+import france from "./../../../public/assets/icon/icons8_france_48px.png";
+// import { useTranslation } from "react-i18next";
 
 const RewardsPage: React.FC = () => {
   const [isOpenDepot, setisOpenDepot] = useState(false);
   const [isOpenRetrait, setisOpenRetrait] = useState(false);
+
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const currentLanguage = i18n.language;
+
+  const deconnexion = () => {
+    sessionStorage.clear();
+    dispatch(reset());
+    history.push("/login");
+    history.go(0);
+  };
+
   return (
     <IonPage>
       <IonContent className="list-contener">
         {/* User Info */}
+        <CashInModal isOpen={isOpenDepot} setisOpen={setisOpenDepot} />
         <div className="user-containt">
           {" "}
           <div className="acount-start">
@@ -26,7 +48,6 @@ const RewardsPage: React.FC = () => {
                 <span>
                   <img src="/assets/icon/icons8_add_48px.png" alt="asset icon" className="btn-add-icon" /> $21
                 </span>
-                <CashInModal isOpen={isOpenDepot} setisOpen={setisOpenDepot} />
               </div>
             </a>
           </div>
@@ -45,12 +66,13 @@ const RewardsPage: React.FC = () => {
           <IonList className="menu-section">
             <h6 className="separator">Others</h6>
             <StableButton label="Settings" icon={settingsOutline} onClick={() => console.log("Profile clicked")} />
-            <StableButton label="Language" icon={languageOutline} routerLink="/language" assetIcon="/assets/icon/icons8_usa_48px.png" />
+            {/* <StableButton label="Language" icon={languageOutline} routerLink="/language" assetIcon="/assets/icon/icons8_usa_48px.png" /> */}
+            <StableButton label="Language" icon={languageOutline} routerLink="/language" assetIcon={currentLanguage === "en" ? usa : france} />
             <StableButton label="Support" icon={helpCircleOutline} onClick={() => console.log("Profile clicked")} />
           </IonList>
           {/* Sign Out */}
           <div className="signout-section">
-            <IonButton>Sign out</IonButton>
+            <IonButton onClick={deconnexion}>Sign out</IonButton>
             <p className="version-text">Version 3.5.75</p>
           </div>
         </div>
