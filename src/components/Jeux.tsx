@@ -10,6 +10,7 @@ import "./Jeux.css";
 import "./animations/animatePlus.css";
 import "./animations/animateMinus.css";
 import { setUserInfos } from "../store/userInfosSlice.js";
+import { useTranslation } from "react-i18next";
 
 const Jeux = ({ competitionIsOpen }) => {
   // const [values, setValues] = useState({});
@@ -29,6 +30,8 @@ const Jeux = ({ competitionIsOpen }) => {
   const [isSavingPoints, setisSavingPoints] = useState(false);
 
   const intervalId = useRef(null);
+
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const [present] = useIonToast();
@@ -354,10 +357,10 @@ const Jeux = ({ competitionIsOpen }) => {
             });
         }
       } else {
-        presentToast("bottom", "Ceci est un essai car vous n'êtes pas inscrit à la compétition !");
+        presentToast("bottom", t("This is a trial because you are not registered for the competition!"));
       }
     } else {
-      presentToast("bottom", "Ceci est un essai car la competition n'a pas encore commencé !");
+      presentToast("bottom", t("This is a trial because the competition has not yet started!"));
     }
   };
 
@@ -455,7 +458,7 @@ const Jeux = ({ competitionIsOpen }) => {
           <IonRow className="t-a-c">
             <IonCol>
               <IonText className="blinking-text" color={"danger"}>
-                Mode demonstration !
+                {t("Demonstration mode!")}
               </IonText>
             </IonCol>
           </IonRow>
@@ -463,7 +466,7 @@ const Jeux = ({ competitionIsOpen }) => {
         <IonRow>
           <IonCol>
             <IonButton className="font-small" disabled={isSavingPoints || lastPointsSaved.current === points.current} onClick={saveProgression}>
-              {isSavingPoints ? "Enregistrement de la progression..." : "Enregistrer la progression"}
+              {isSavingPoints ? t("Saving progress...") : t("Progress saved")}
             </IonButton>
           </IonCol>
         </IonRow>

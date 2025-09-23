@@ -1,17 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonCol, IonContent, IonHeader, IonIcon, IonPage, IonRow, useIonViewDidEnter } from "@ionic/react";
+import { IonContent, IonHeader, IonIcon, IonPage, useIonViewDidEnter } from "@ionic/react";
 import axios from "axios";
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setListStatistiques } from "../../store/statistiquesSlice";
 import Loader from "../../components/Loader";
 import "./Stats.css";
-import { hourglassOutline, timeOutline } from "ionicons/icons";
+import { bowlingBall, hourglass, hourglassOutline, timeOutline } from "ionicons/icons";
+import { useTranslation } from "react-i18next";
 
 const Stats = () => {
   const user_infos_state = useSelector((state: any) => state?.userInfos?.user_infos);
   const listStatistiques = useSelector((state: any) => state?.statistiques?.listStatistiques);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [totalJoueur, settotalJoueur] = useState(0);
   const [myData, setmyData] = useState<any>(null);
@@ -55,10 +57,12 @@ const Stats = () => {
                 <strong className="ranking">
                   {myData?.RANK} <img src="/assets/icon/icons8_combo_chart_30px.png" alt="asset icon" className="rank-icon" />
                 </strong>
-                <strong className="ranking">{Number(myData?.SOLDE_POINTS).toLocaleString()} 🪙</strong>
+                <strong className="ranking">
+                  {Number(myData?.SOLDE_POINTS).toLocaleString()} <IonIcon color="warning" icon={bowlingBall} />
+                </strong>
               </div>
               <div className="reward-banner">
-                {myData?.SOLDE_POINTS} 🪙 = XAF {myData?.SOLDE_POINTS / 8.5}
+                {myData?.SOLDE_POINTS} <IonIcon color="warning" icon={bowlingBall} /> = <IonIcon color="warning" icon={hourglass} /> XAF
               </div>
             </>
           ) : (
@@ -73,16 +77,16 @@ const Stats = () => {
               <div> Wonder Woman League</div>
               <img src="/assets/icon/icons8_wonder_woman_40px.png" alt="asset icon" />
               <p>
-                <span>Pool: 125,000 XAF</span>
+                <span>{t("Jackpot")}: 125,000 XAF</span>
               </p>
             </div>
             <div className="timer">
               <IonIcon icon={timeOutline} />
-              <p>Ends in 4d 05h 49m 30s</p>
+              <p>{t("Ends in")}: 4d 05h 49m 30s</p>
             </div>
             <div className="info-text">
               <span>
-                You have {myData?.SOLDE_POINTS} 🪙 , and are ranked {myData?.RANK} out of {totalJoueur}.
+                {t("You have")}: {myData?.SOLDE_POINTS} <IonIcon color="warning" icon={bowlingBall} /> , {t("and are ranked")}: {myData?.RANK} {t("out of")}: {totalJoueur}.
               </span>
             </div>
             {/* <IonRow class="t-a-c">
@@ -98,10 +102,10 @@ const Stats = () => {
               <table className="ranking-table">
                 <thead>
                   <tr>
-                    <th>Rank</th>
-                    <th>User</th>
-                    <th>Earnings</th>
-                    <th>Prize</th>
+                    <th>{t("Rank")}</th>
+                    <th>{t("User")}</th>
+                    <th>{t("Earnings")}</th>
+                    <th>{t("Prize")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -110,7 +114,9 @@ const Stats = () => {
                       <tr key={key}>
                         <td className="rank-td">{stat.RANK}</td>
                         <td>{stat.LOGIN.charAt(0).toUpperCase() + stat.LOGIN.slice(1).toLowerCase()}</td>
-                        <td>{Number(stat.SOLDE_POINTS).toLocaleString()} 🪙</td>
+                        <td>
+                          {Number(stat.SOLDE_POINTS).toLocaleString()} <IonIcon color="warning" icon={bowlingBall} />
+                        </td>
 
                         <td>{stat.PRIZE ?? <IonIcon icon={hourglassOutline} aria-label="Coming soon" style={{ fontSize: 12, color: "var(--ion-color-medium)" }} />} XAF</td>
                       </tr>

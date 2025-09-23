@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonCol, IonContent, IonHeader, IonImg, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react";
+import { IonCol, IonContent, IonHeader, IonImg, IonItem, IonLabel, IonPage, IonRow, useIonViewDidEnter } from "@ionic/react";
 import axios from "axios";
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";

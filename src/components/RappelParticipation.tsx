@@ -1,17 +1,19 @@
 import { IonButton, IonCol, IonRow } from "@ionic/react";
 import React from "react";
 import "./Components.css";
+import { useTranslation } from "react-i18next";
 
 const RappelParticipation = ({ setisOpenAddParticipation }) => {
+  const { t } = useTranslation();
   return (
     <div className="text-center">
       <p>
-        <span className="blinking-text">Veuillez vous enregistrer pour la prochaine compétition:</span>
+        <span className="blinking-text">{t("Please register for the next competition:")}</span>
       </p>
       <IonRow className="competition-rowTJK" style={{ textAlign: "center" }}>
         <IonCol>
           <IonButton color={"warning"} onClick={() => setisOpenAddParticipation(true)}>
-            S'inscrire à la compétition
+            {t("Register for a competition")}
           </IonButton>
         </IonCol>
         {/* <IonCol size="2">

@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 // import PayIframe from "./PayIframe.js";
 import { useHistory } from "react-router";
 import CashInModal from "../comptes/cashIn/CashInModal";
+import { useTranslation } from "react-i18next";
 
 const AddParticipationModal = ({ isOpen, setisOpen }) => {
   //   const [id_joueur, setid_joueur] = useState("");
@@ -15,6 +16,7 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
   //   const [cout_participation, setcout_participation] = useState(1);
   //   const [telephoneDepot, settelephoneDepot] = useState<any>("");
   const history = useHistory();
+  const { t } = useTranslation();
 
   const user_infos = useSelector((state: any) => state.userInfos.user_infos);
   const listCompetitions = useSelector((state: any) => state?.play?.listCompetitions);
@@ -58,8 +60,8 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
   // };
 
   const doDepot = async (values: any) => {
-    console.log(user_infos);
-    console.log("values: ", values);
+    // console.log(user_infos);
+    // console.log("values: ", values);
 
     // "success": false,
     // "message": "Payment link PENDING",
@@ -77,13 +79,6 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
       .then((res) => {
         // console.log(res);
         if (res.data.status === true) {
-          // sessionStorage.setItem("user_infos", JSON.stringify(res.data));
-          // dispatch(setUserInfos(res.data));
-          // setState("user_infos", res.data);
-          // setState("lastPointsSaved", res.data.SOLDE_POINTS);
-          // setIsOpen(true);
-          // setcanOpenPayIframe(true);
-          // listingDepot();
           presentToastSuccess("middle", res.data.message);
           //   window.open("https://pay.glotelho.cm/collect/mhitr7pqZA");
         } else {
@@ -137,15 +132,15 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
       <IonModal isOpen={isOpen}>
         <IonHeader>
           <IonToolbar>
-            <IonTitle>S'inscrire à une compétition</IonTitle>
+            <IonTitle>{t("Register for a competition")}</IonTitle>
             <IonButtons slot="end">
-              <IonButton onClick={() => setisOpen(false)}>Fermer</IonButton>
+              <IonButton onClick={() => setisOpen(false)}>{t("Close")}</IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
           <CashInModal isOpen={isOpenDepot} setisOpen={setisOpenDepot} />
-          <p>Veuillez remplir vos informations pour vous inscrire à la prochaine compétition</p>
+          <p>{t("Please fill in your information to register for the next competition")}</p>
 
           <div>
             {!payementEncours ? (
@@ -169,10 +164,10 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
                             <IonList>
                               <IonItem>
                                 {listCompetitions !== undefined && (
-                                  <IonSelect label="Choisir la compétition" value={id_competition} labelPlacement="floating" onIonChange={(e) => setid_competition(e.detail.value)}>
+                                  <IonSelect label={t("Choose the competition")} value={id_competition} labelPlacement="floating" onIonChange={(e) => setid_competition(e.detail.value)}>
                                     {listCompetitions?.map((competition: any, key: number) => (
                                       <IonSelectOption key={key} value={competition?.ID_COMPETITION}>
-                                        {competition?.NOM}: (commence le {competition?.DATE_DEBUT} à {competition?.HEURE_DEBUT})
+                                        {competition?.NOM}: ({t("begin on")} {competition?.DATE_DEBUT} {t("at")} {competition?.HEURE_DEBUT})
                                       </IonSelectOption>
                                     ))}
                                   </IonSelect>
@@ -188,15 +183,15 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
                           <IonInput name="telephoneDepot" type="number" value={telephoneDepot} onKeyUp={(e) => settelephoneDepot(e.currentTarget.value)} label="Numéro de téléphone du payeur" labelPlacement="floating" fill="outline" placeholder="Numéro de téléphone du payeur"></IonInput> */}
 
                         <IonButton disabled={id_competition === null || parseFloat(user_infos.SOLDE_ARGENT) < parseFloat(user_infos.COUT_PARTICIPATION)} type="submit" expand="full" fill="solid" color="primary" className="ion-margin-top">
-                          S'inscrire à la compétition
+                          {t("Register for a competition")}
                         </IonButton>
                         <div className="text-align-center">
                           {parseFloat(user_infos.SOLDE_ARGENT) < parseFloat(user_infos.COUT_PARTICIPATION) && (
                             <>
-                              <IonText color="danger">Votre solde est insuffisant!</IonText>
+                              <IonText color="danger">{t("Your balance is insufficient!")}</IonText>
                               <br />
                               <span className="href" onClick={() => setisOpenDepot(true)}>
-                                Recharger mon compte
+                                {t("Recharge my account")}
                               </span>
                             </>
                           )}

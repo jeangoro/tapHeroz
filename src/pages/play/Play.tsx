@@ -14,12 +14,14 @@ import CountDown from "../../components/timers/CountDown";
 import RappelParticipation from "../../components/RappelParticipation";
 import Jeux from "../../components/Jeux";
 import AddParticipationModal from "./AddParticipationModal";
+import { useTranslation } from "react-i18next";
 // import { setListCompetitions } from "../store/playSlice";
 
 const Play: React.FC = () => {
   const userInfos = JSON.parse(sessionStorage.getItem("user_infos")!);
   const history = useHistory();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   // console.log(userInfos);
   // const [leftTime, setLeftTime] = useState(60 * 60 * 24 * 1);
   const [leftTime, setLeftTime] = useState(0);
@@ -160,21 +162,20 @@ const Play: React.FC = () => {
             <>
               {competitionIsOpen.current && leftTimeToEnd <= 0 && (
                 <div className="alert alert-primary text-center">
-                  {" "}
-                  La compétition est terminée ! <br /> Vous pouvez vous inscrire au prochain tour de competition qui va commencer dans:
+                  {t("The competition is over!")} <br /> {t("You can register for the next round of the competition starting in:")}
                 </div>
               )}
 
               {competitionIsOpen.current && leftTimeToEnd > 0 ? (
                 <div className="alert alert-success text-center">
-                  Compétition en cours : elle se termine dans <b>{leftTime && <CountDown timeToWaitInSeconds={leftTimeToEnd} />}</b>
+                  {t("Competition in progress: it ends in")} <b>{leftTime && <CountDown timeToWaitInSeconds={leftTimeToEnd} />}</b>
                 </div>
               ) : listCompetitions?.length > 0 ? (
                 <div className="alert alert-warning text-center">
-                  Prochain tour de compétition commence dans :<b>{leftTime && <CountDown timeToWaitInSeconds={leftTime} />}</b>
+                  {t("Next round of competition starts in:")} <b>{leftTime && <CountDown timeToWaitInSeconds={leftTime} />}</b>
                 </div>
               ) : (
-                <div className="alert alert-info text-center">Aucune competition programmé pour l'instant...</div>
+                <div className="alert alert-info text-center">{t("No competition scheduled at this time...")}</div>
               )}
             </>
           )}
