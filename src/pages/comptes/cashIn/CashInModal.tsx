@@ -9,6 +9,7 @@ import "./CashInModal.css";
 // import PayIframe from "./PayIframe.js";
 import { useHistory } from "react-router";
 import AttentePayement from "../AttentePayement/AttentePayement";
+import { useTranslation } from "react-i18next";
 
 const CashInModal = ({ isOpen, setisOpen }) => {
   const [montantDepot, setmontantDepot] = useState("");
@@ -18,6 +19,7 @@ const CashInModal = ({ isOpen, setisOpen }) => {
   const [telephoneDepot, settelephoneDepot] = useState<any>("");
   const [isValidTelephoneDepot, setisValidTelephoneDepot] = useState<any>("");
   const history = useHistory();
+  const { t } = useTranslation();
 
   const user_infos = useSelector((state: any) => state.userInfos.user_infos);
   // const dispatch = useDispatch();
@@ -41,7 +43,7 @@ const CashInModal = ({ isOpen, setisOpen }) => {
 
   const presentToast = (position: "top" | "middle" | "bottom", message: string) => {
     present({
-      message: message,
+      message: t(message),
       duration: 5000,
       position: position,
     });
@@ -49,7 +51,7 @@ const CashInModal = ({ isOpen, setisOpen }) => {
 
   const presentToastSuccess = (position: "top" | "middle" | "bottom", message: string) => {
     present({
-      message: message,
+      message: t(message),
       duration: 10000,
       position: position,
     }).finally(() => {
@@ -78,7 +80,7 @@ const CashInModal = ({ isOpen, setisOpen }) => {
       id_joueur: user_infos.ID_JOUEUR,
       type_transaction: "CashInModal",
       montant: montantDepot,
-      motif: "Recharge du compte par le numero: " + telephoneDepot,
+      motif: t("Top-up the account by number: ") + telephoneDepot,
       description: "",
       valide: values?.success ? 1 : 0,
     };
@@ -170,7 +172,7 @@ const CashInModal = ({ isOpen, setisOpen }) => {
       <IonModal isOpen={isOpen}>
         <IonHeader>
           <IonToolbar>
-            <IonTitle>Effectuer un dépôt</IonTitle>
+            <IonTitle>{t("Cash In")}</IonTitle>
             <IonButtons slot="end">
               <IonButton onClick={() => setisOpen(false)}>
                 <b>X</b>
@@ -180,7 +182,7 @@ const CashInModal = ({ isOpen, setisOpen }) => {
         </IonHeader>
         <IonContent className="ion-padding">
           <AttentePayement isOpen={payementEncours} setisOpen={setpayementEncours} paymentProcessor={payment_processor} montant={montantDepot} phoneNumber={telephoneDepot} annuler={setpayementEncours} />
-          <p className="text-center">Veuillez remplir vos informations pour recharger votre compte</p>
+          <p className="text-center">{t("Please fill in your information to top up your account")}</p>
           {/* <CashInModal /> */}
           {!payementEncours ? (
             <form
@@ -213,7 +215,7 @@ const CashInModal = ({ isOpen, setisOpen }) => {
                         </IonCol>
                       </IonRow>
                       <br />
-                      <IonInput name="payer_name" type="text" value={payer_name} onIonChange={(e) => setpayer_name(e.detail.value)} label="Votre nom" labelPlacement="floating" fill="outline" placeholder="Votre nom"></IonInput>
+                      <IonInput name="payer_name" type="text" value={payer_name} onIonChange={(e) => setpayer_name(e.detail.value)} label={t("Your name")} labelPlacement="floating" fill="outline" placeholder={t("Your name")}></IonInput>
 
                       <IonInput
                         // style={!isValidMontantDepot && errorStyle}
@@ -222,22 +224,22 @@ const CashInModal = ({ isOpen, setisOpen }) => {
                         type="number"
                         value={montantDepot}
                         onKeyUp={(e) => checkMontant(e.currentTarget.value)}
-                        label="Montant du dépôt"
+                        label={t("Amount to deposit")}
                         labelPlacement="floating"
                         fill="outline"
-                        placeholder="Montant du dépôt"
+                        placeholder={t("Amount to deposit")}
                       ></IonInput>
-                      {!isValidMontantDepot && <IonText color={"danger"}>Montant invalide</IonText>}
+                      {!isValidMontantDepot && <IonText color={"danger"}>{t("Invalid amount")}</IonText>}
                       <br />
-                      <IonInput className="mt-2" name="telephoneDepot" type="number" value={telephoneDepot} onKeyUp={(e) => checkPhoneNumber(e.currentTarget.value)} label="Numéro de téléphone du payeur" labelPlacement="floating" fill="outline" placeholder="Numéro de téléphone du payeur"></IonInput>
-                      {!isValidTelephoneDepot && <IonText color={"danger"}>Téléphone invalide</IonText>}
+                      <IonInput className="mt-2" name="telephoneDepot" type="number" value={telephoneDepot} onKeyUp={(e) => checkPhoneNumber(e.currentTarget.value)} label={t("Payer's phone number")} labelPlacement="floating" fill="outline" placeholder={t("Payer's phone number")}></IonInput>
+                      {!isValidTelephoneDepot && <IonText color={"danger"}>{t("Invalid phone number")}</IonText>}
 
                       <div className="mt-3" style={{ color: "blue" }}>
-                        <h5 className="fl-l">Total à payer </h5>:<h5 className="fl-r">{montantDepot} FCFA</h5>
+                        <h5 className="fl-l">{t("Total to pay")} </h5>:<h5 className="fl-r">{montantDepot} FCFA</h5>
                       </div>
 
                       <IonButton type="submit" expand="full" fill="solid" color="primary" className="ion-margin-top" disabled={!isValidMontantDepot || !isValidTelephoneDepot}>
-                        Recharger
+                        {t("Recharge my account")}
                       </IonButton>
                       {/* <br /> */}
                       {/* <div style={{ float: "right" }}>
