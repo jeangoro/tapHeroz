@@ -25,3 +25,8 @@
 .blinking-text {
   animation: blink 1s infinite steps(1); /* 1s duration, infinite loop, instant transition */
 }
+.language-selector {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}

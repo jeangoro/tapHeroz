@@ -72,7 +72,7 @@ const App: React.FC = () => {
           if (res.status === 200) {
             sessionStorage.setItem("user_infos", JSON.stringify(res.data));
             dispatch(setUserInfos(res.data));
-            console.log("actualisation effectuée!!!");
+            // console.log("actualisation effectuée!!!");
 
             // points.current = parseInt(res.data.SOLDE_POINTS);
             // setState("user_infos", res.data);
@@ -90,12 +90,12 @@ const App: React.FC = () => {
   );
 
   useEffect(() => {
-    console.log(user_infos_state?.ID_JOUEUR);
+    // console.log(user_infos_state?.ID_JOUEUR);
 
     if (user_infos_state?.ID_JOUEUR === undefined && user_infos?.ID_JOUEUR !== undefined) {
       if (Object.keys(user_infos_state).length === 0) {
         getUserInfos({ id_joueur: user_infos?.ID_JOUEUR });
-        console.log("user_infos recuperer");
+        // console.log("user_infos recuperer");
       }
     }
   }, [getUserInfos, user_infos, user_infos_state]);
