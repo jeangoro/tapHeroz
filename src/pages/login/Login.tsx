@@ -7,6 +7,8 @@ import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfos } from "../../store/userInfosSlice.js";
 import { setAxiosDefault } from "../../main";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "../../components/LanguageSelector";
 
 const Login: React.FC = () => {
   const [login, setlogin] = useState("");
@@ -15,6 +17,7 @@ const Login: React.FC = () => {
 
   const user_infos = useSelector((state: any) => state.userInfos.user_infos);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     // if (Object.keys().length !== 0) {
@@ -27,7 +30,7 @@ const Login: React.FC = () => {
 
   const presentToast = (position: "top" | "middle" | "bottom", message: "") => {
     present({
-      message: message,
+      message: t(message),
       duration: 5000,
       position: position,
     });
@@ -60,6 +63,10 @@ const Login: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen className="ion-padding">
+        <div>
+          <LanguageSelector />
+        </div>
+        <br />
         <div className="t-a-c">
           <IonImg className="logo-login" src="assets/images/logo.jpg" alt="Logo" />
         </div>
@@ -74,23 +81,23 @@ const Login: React.FC = () => {
             <IonRow className="ion-align-items-center">
               <IonCol>
                 <>
-                  <IonInput name="login" type="text" value={login} onIonChange={(e) => setlogin(e.detail.value)} label="Nom d'utilisateur" labelPlacement="floating" fill="outline" placeholder="Nom d'utilisateur"></IonInput>
+                  <IonInput name="login" type="text" value={login} onIonChange={(e) => setlogin(e.detail.value)} label={t("Username")} labelPlacement="floating" fill="outline" placeholder={t("Username")}></IonInput>
                   <br />
-                  <IonInput name="password" type="password" value={password} onIonChange={(e) => setpassword(e.detail.value)} label="Mot de passe" labelPlacement="floating" fill="outline" placeholder="Mot de passe">
+                  <IonInput name="password" type="password" value={password} onIonChange={(e) => setpassword(e.detail.value)} label={t("Password")} labelPlacement="floating" fill="outline" placeholder={t("Password")}>
                     <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
                   </IonInput>
 
                   <IonButton type="submit" expand="full" fill="solid" color="primary" className="ion-margin-top">
-                    Se connecter
+                    {"Log in"}
                   </IonButton>
                   <br />
                   <div style={{ float: "right" }}>
-                    Pas de compte ? <a href={"/register"}>Inscrivez-vous</a>
+                    {t("No account?")} <a href={"/register"}>{t("Sign up")}</a>
                   </div>
                   <br />
                   <br />
                   <div style={{ float: "left" }}>
-                    mot de passe oublié ? <a href={"/changePassword"}>Changer</a>
+                    {t("Forgot password?")} <a href={"/changePassword"}>{t("Change")}</a>
                   </div>
                 </>
               </IonCol>

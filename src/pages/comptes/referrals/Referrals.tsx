@@ -8,12 +8,14 @@ import "./Referrals.css";
 import { setListFieuls } from "../../../store/parrainagesSlice";
 import Loader from "../../../components/Loader";
 import HeaderWithBack from "../../../components/HeaderWithBack";
+import { useTranslation } from "react-i18next";
 
 const Referrals: React.FC = () => {
   const user_infos_state = useSelector((state: any) => state?.userInfos?.user_infos);
   const listFieuls = useSelector((state: any) => state?.parrainages?.listFieuls);
 
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [present] = useIonToast();
 
@@ -85,11 +87,11 @@ const Referrals: React.FC = () => {
 
   return (
     <IonPage>
-      <HeaderWithBack title="Referral" />
+      <HeaderWithBack title={t("Sponsorships")} />
 
       <IonContent className="ion-padding">
         <div style={{ fontSize: "smaller" }}>
-          <IonLabel position="stacked">Share your referral link and earn 5% of the play amount of your referrals</IonLabel> <br />
+          <IonLabel position="stacked">{t("Share your referral link and earn 5% of the play amount of your referrals")}</IonLabel> <br />
           <a href={"/register/?referer=" + user_infos_state.ID_JOUEUR} target="_blank" rel="noopener noreferrer">
             {axios.defaults.baseURL + "register/?referer=" + user_infos_state.ID_JOUEUR}
           </a>
@@ -109,7 +111,7 @@ const Referrals: React.FC = () => {
             <IonIcon icon={logoX} />
           </IonButton>
         </div>
-        <h6 className="separator mt-4">My Referrals</h6>
+        <h6 className="separator mt-4">{t("My Referrals")}</h6>
         {getDataLoading ? (
           <Loader />
         ) : (

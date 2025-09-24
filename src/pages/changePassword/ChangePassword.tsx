@@ -6,10 +6,12 @@ import axios from "axios";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setMyQuestion } from "../../store/changePasswordSlice.js";
+import { useTranslation } from "react-i18next";
 
 const ChangePassword: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [present] = useIonToast();
 
@@ -45,12 +47,12 @@ const ChangePassword: React.FC = () => {
   const presentToast = useCallback(
     (position: "top" | "middle" | "bottom", message: string) => {
       present({
-        message: message,
+        message: t(message),
         duration: 5000,
         position: position,
       });
     },
-    [present]
+    [present, t]
   );
 
   const checkPassword = (value) => {
@@ -133,8 +135,8 @@ const ChangePassword: React.FC = () => {
 
   const checkPhoneNumber = (value) => {
     setphone(value);
-    console.log(value);
-    console.log(value.length);
+    // console.log(value);
+    // console.log(value.length);
     if (value.length >= 8 && value.length < 13) {
       setisValidPhone(true);
     } else {
@@ -151,22 +153,22 @@ const ChangePassword: React.FC = () => {
       {/* <IonAlert isOpen={isOpen} header="Information" subHeader="Création de compte" message={changePasswordMessage} buttons={["OK"]} onDidDismiss={() => setIsOpen(false)}></IonAlert> */}
       <IonAlert
         trigger="present-alert"
-        header="Are you sure?"
+        header={t("Are you sure?")}
         className="custom-alert"
         buttons={[
           {
-            text: "No",
+            text: t("No"),
             cssClass: "alert-button-cancel",
           },
           {
-            text: "Yes",
+            text: t("Yes"),
             cssClass: "alert-button-confirm",
           },
         ]}
       ></IonAlert>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Changer le mot de passe</IonTitle>
+          <IonTitle>{t("Change Password")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="ion-padding">
@@ -204,10 +206,10 @@ const ChangePassword: React.FC = () => {
                       // onErrorCapture={(error) => checkPhoneNumber(error)}
                       value={phone}
                       onKeyUp={(e: any) => checkPhoneNumber(e.currentTarget.value)}
-                      label="Votre téléphone"
+                      label={t("Your phone")}
                       labelPlacement="floating"
                       fill="outline"
-                      placeholder="Votre téléphone"
+                      placeholder={t("Your phone")}
                     ></IonInput>
                   </IonCol>
                   <IonCol sizeXs="12" sizeSm="6"></IonCol>
@@ -219,7 +221,7 @@ const ChangePassword: React.FC = () => {
                   <IonRow>
                     {myQuestion} <br />
                     <IonCol sizeXs="12" sizeSm="6">
-                      <IonInput name="reponseQuestion" type="text" value={reponseQuestion} onIonChange={(e) => setreponseQuestion(e.detail.value!)} label="Reponse à la question sécrète" labelPlacement="floating" fill="outline" placeholder="Reponse à la question sécrète"></IonInput>
+                      <IonInput name="reponseQuestion" type="text" value={reponseQuestion} onIonChange={(e) => setreponseQuestion(e.detail.value!)} label={t("The answer")} labelPlacement="floating" fill="outline" placeholder={t("Answer to the secret question")}></IonInput>
                     </IonCol>
                   </IonRow>
                   {/* <IonRow>
@@ -241,7 +243,7 @@ const ChangePassword: React.FC = () => {
                     
                   </IonRow> */}
                   <br />
-                  <IonInput name="password" type="password" value={password} onIonChange={(e) => setpassword(e.detail.value!)} label="Mot de passe" labelPlacement="floating" fill="outline" placeholder="Mot de passe">
+                  <IonInput name="password" type="password" value={password} onIonChange={(e) => setpassword(e.detail.value!)} label={t("Password")} labelPlacement="floating" fill="outline" placeholder={t("Password")}>
                     <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
                   </IonInput>
                   <br />
@@ -253,10 +255,10 @@ const ChangePassword: React.FC = () => {
                     onKeyUp={(e: any) => {
                       checkPassword(e?.currentTarget?.value);
                     }}
-                    label="Confirmer le mot de passe"
+                    label={t("Confirm password")}
                     labelPlacement="floating"
                     fill="outline"
-                    placeholder="Confirmer le mot de passe"
+                    placeholder={t("Confirm password")}
                   >
                     <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
                   </IonInput>
@@ -265,17 +267,17 @@ const ChangePassword: React.FC = () => {
 
               {myQuestion === null && (
                 <IonButton type="submit" disabled={!isValidPhone} expand="full" fill="solid" color="primary" className="ion-margin-top">
-                  Suivant
+                  {t("Next")}
                 </IonButton>
               )}
               {myQuestion !== null && (
                 <IonButton type="submit" disabled={!isPasswordSame} expand="full" fill="solid" color="primary" className="ion-margin-top">
-                  Changer le mot de passe
+                  {t("Change password")}
                 </IonButton>
               )}
               <br />
               <div style={{ float: "right" }}>
-                Je me rappele de mon mot de passe. <a href={"/login"}>Connectez-vous</a>
+                {t("I remember my password.")} <a href={"/login"}>{t("Log in")}</a>
               </div>
             </>
           </form>

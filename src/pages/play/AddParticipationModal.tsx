@@ -35,7 +35,7 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
 
   const presentToast = (position: "top" | "middle" | "bottom", message: string) => {
     present({
-      message: message,
+      message: t(message),
       duration: 5000,
       position: position,
     });
@@ -43,7 +43,7 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
 
   const presentToastSuccess = (position: "top" | "middle" | "bottom", message: string) => {
     present({
-      message: message,
+      message: t(message),
       duration: 10000,
       position: position,
     }).finally(() => {

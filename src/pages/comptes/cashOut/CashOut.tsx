@@ -6,6 +6,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import "./CashOut.css";
 import PayIframe from "../PayIframe.js";
+import { useTranslation } from "react-i18next";
 // import { setUserInfos } from "../../store/userInfosSlice.js";
 
 const CashOut = ({ isOpen, setisOpen }) => {
@@ -13,7 +14,7 @@ const CashOut = ({ isOpen, setisOpen }) => {
   const [nomCompteRetrait, setnomCompteRetrait] = useState<any>("");
   const [telephoneRetrait, settelephoneRetrait] = useState<any>("");
   //   const history = useHistory();
-
+  const { t } = useTranslation();
   const user_infos = useSelector((state: any) => state.userInfos.user_infos);
   //   const dispatch = useDispatch();
   const [present] = useIonToast();
@@ -22,7 +23,7 @@ const CashOut = ({ isOpen, setisOpen }) => {
 
   const presentToastSuccess = (position: "top" | "middle" | "bottom", message: string) => {
     present({
-      message: message,
+      message: t(message),
       duration: 10000,
       position: position,
     }).finally(() => {
@@ -64,14 +65,14 @@ const CashOut = ({ isOpen, setisOpen }) => {
       <IonModal isOpen={isOpen}>
         <IonHeader>
           <IonToolbar>
-            <IonTitle>Demander un Retrait</IonTitle>
+            <IonTitle>{t("Request a Withdrawal")}</IonTitle>
             <IonButtons slot="end">
               <IonButton onClick={() => setisOpen(false)}>X</IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-          <p>Veuillez remplir les informations pour demander un CashOut</p>
+          <p>{t("Please fill in your information to request a CashOut")}</p>
           {/* <Depot /> */}
           <IonCard>
             <IonCardContent>
@@ -82,10 +83,10 @@ const CashOut = ({ isOpen, setisOpen }) => {
                     e.preventDefault();
                     connexion({
                       id_joueur: user_infos.ID_JOUEUR,
-                      type_transaction: "CashOut",
+                      type_transaction: "Retrait",
                       montant: montantRetrait,
-                      motif: "CashOut du compte pour le numero: " + telephoneRetrait + " (" + nomCompteRetrait + ")",
-                      description: "CashOut du compte pour le numero: " + telephoneRetrait + " (" + nomCompteRetrait + ")",
+                      motif: t("Withdrawal from account for number: ") + telephoneRetrait + " (" + nomCompteRetrait + ")",
+                      description: t("Withdrawal from account for number: ") + telephoneRetrait + " (" + nomCompteRetrait + ")",
                       valide: 0,
                     });
                   }}
@@ -94,41 +95,14 @@ const CashOut = ({ isOpen, setisOpen }) => {
                     <IonRow className="ion-align-items-center">
                       <IonCol>
                         <>
-                          <IonInput
-                            name="montantRetrait"
-                            type="text"
-                            value={montantRetrait}
-                            onIonChange={(e) => setmontantRetrait(e.detail.value)}
-                            label="Montant du CashOut"
-                            labelPlacement="floating"
-                            fill="outline"
-                            placeholder="Montant du CashOut"
-                          ></IonInput>
+                          <IonInput name="montantRetrait" type="text" value={montantRetrait} onIonChange={(e) => setmontantRetrait(e.detail.value)} label={t("Withdrawal Amount")} labelPlacement="floating" fill="outline" placeholder={t("Withdrawal Amount")}></IonInput>
                           <br />
-                          <IonInput
-                            name="telephoneRetrait"
-                            type="number"
-                            value={telephoneRetrait}
-                            onKeyUp={(e) => settelephoneRetrait(e.currentTarget.value)}
-                            label="Numéro de téléphone du payeur"
-                            labelPlacement="floating"
-                            fill="outline"
-                            placeholder="Numéro de téléphone du payeur"
-                          ></IonInput>
+                          <IonInput name="telephoneRetrait" type="number" value={telephoneRetrait} onKeyUp={(e) => settelephoneRetrait(e.currentTarget.value)} label={t("Payer's phone number")} labelPlacement="floating" fill="outline" placeholder={t("Payer's phone number")}></IonInput>
                           <br />
-                          <IonInput
-                            name="nomCompteRetrait"
-                            type="text"
-                            value={nomCompteRetrait}
-                            onKeyUp={(e) => setnomCompteRetrait(e.currentTarget.value)}
-                            label="Nom du compte recepteur"
-                            labelPlacement="floating"
-                            fill="outline"
-                            placeholder="Nom du compte recepteur"
-                          ></IonInput>
+                          <IonInput name="nomCompteRetrait" type="text" value={nomCompteRetrait} onKeyUp={(e) => setnomCompteRetrait(e.currentTarget.value)} label={t("Receiver's account name")} labelPlacement="floating" fill="outline" placeholder={t("Receiver's account name")}></IonInput>
 
                           <IonButton type="submit" expand="full" fill="solid" color="primary" className="ion-margin-top">
-                            Demander un Retrait
+                            {t("Request a Withdrawal")}
                           </IonButton>
                           {/* <br /> */}
                           {/* <div style={{ float: "right" }}>
