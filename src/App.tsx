@@ -50,6 +50,9 @@ import Stats from "./pages/statistiques/Stats";
 import Languages from "./pages/comptes/language/Languages";
 import History from "./pages/comptes/history/History";
 import IonTabsBar from "./components/IonTabsBar";
+import Settings from "./pages/comptes/settings/Settings";
+import AboutMe from "./pages/comptes/aboutMe/AboutMe";
+import Supports from "./pages/comptes/supports/Supports";
 // import axios from "axios";
 
 setupIonicReact();
@@ -143,6 +146,15 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/compte">
                 {user_infos_state?.ID_JOUEUR !== undefined ? <Comptes /> : <Redirect to="/login" />}
+              </Route>
+              <Route exact path="/settings">
+                {user_infos_state?.ID_JOUEUR !== undefined ? <Settings /> : <Redirect to="/login" />}
+              </Route>
+              <Route exact path="/aboutMe">
+                {user_infos_state?.ID_JOUEUR !== undefined ? <AboutMe /> : <Redirect to="/login" />}
+              </Route>
+              <Route exact path="/supports">
+                {user_infos_state?.ID_JOUEUR !== undefined ? <Supports /> : <Supports />}
               </Route>
               <Route exact path="/language">
                 {user_infos_state?.ID_JOUEUR !== undefined ? <Languages /> : <Redirect to="/login" />}

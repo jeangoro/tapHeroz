@@ -57,12 +57,12 @@ const Stats = () => {
                 <strong className="ranking">
                   {myData?.RANK} <img src="/assets/icon/icons8_combo_chart_30px.png" alt="asset icon" className="rank-icon" />
                 </strong>
-                <strong className="ranking">
+                <strong className="ranking flex-item-center">
                   {Number(myData?.SOLDE_POINTS).toLocaleString()} <IonIcon color="warning" icon={bowlingBall} />
                 </strong>
               </div>
               <div className="reward-banner">
-                {myData?.SOLDE_POINTS} <IonIcon color="warning" icon={bowlingBall} /> = <IonIcon color="warning" icon={hourglass} /> XAF
+                {myData?.SOLDE_POINTS} <IonIcon color="warning" icon={bowlingBall} /> = <IonIcon color="warning" icon={hourglass} /> {parseInt(myData?.SOLDE_POINTS) * parseInt(myData?.coin_value)} XAF
               </div>
             </>
           ) : (
@@ -77,7 +77,9 @@ const Stats = () => {
               <div> Wonder Woman League</div>
               <img src="/assets/icon/icons8_wonder_woman_40px.png" alt="asset icon" />
               <p>
-                <span>{t("Jackpot")}: 125,000 XAF</span>
+                <span>
+                  {t("Jackpot")}: {myData?.cagnotte} XAF
+                </span>
               </p>
             </div>
             <div className="timer">
@@ -85,7 +87,7 @@ const Stats = () => {
               <p>{t("Ends in")}: 4d 05h 49m 30s</p>
             </div>
             <div className="info-text">
-              <span>
+              <span className="flex-item-center">
                 {t("You have")}: {myData?.SOLDE_POINTS} <IonIcon color="warning" icon={bowlingBall} /> , {t("and are ranked")}: {myData?.RANK} {t("out of")}: {totalJoueur}.
               </span>
             </div>
@@ -114,7 +116,7 @@ const Stats = () => {
                       <tr key={key}>
                         <td className="rank-td">{stat.RANK}</td>
                         <td>{stat.LOGIN.charAt(0).toUpperCase() + stat.LOGIN.slice(1).toLowerCase()}</td>
-                        <td>
+                        <td className="flex-item-center">
                           {Number(stat.SOLDE_POINTS).toLocaleString()} <IonIcon color="warning" icon={bowlingBall} />
                         </td>
 

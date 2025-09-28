@@ -63,7 +63,7 @@ const RewardsPage: React.FC = () => {
             <StableButton label={t("Cash Out")} icon={cashOutline} onClick={() => setisOpenRetrait(true)} />
             <StableButton label={t("Cash In")} icon={cashOutline} onClick={() => setisOpenDepot(true)} />
             <CashOut isOpen={isOpenRetrait} setisOpen={setisOpenRetrait} />
-            <StableButton label={t("About Me")} icon={personOutline} onClick={() => console.log("Profile clicked")} />
+            <StableButton label={t("About Me")} icon={personOutline} routerLink="/aboutMe" />
             <StableButton label={t("Leagues")} icon={trophyOutline} assetIcon="/assets/icon/icons8_wonder_woman_40px.png" onClick={() => console.log("Profile clicked")} />
             <StableButton label={t("Referrals")} icon={peopleOutline} routerLink="/referrals" />
             <StableButton label={t("History")} icon={timeOutline} routerLink="/history" />
@@ -71,10 +71,10 @@ const RewardsPage: React.FC = () => {
           </IonList>
           <IonList className="menu-section">
             <h6 className="separator">{t("Others")}</h6>
-            <StableButton label={t("Settings")} icon={settingsOutline} onClick={() => console.log("Profile clicked")} />
+            <StableButton label={t("Settings")} icon={settingsOutline} routerLink="/settings" onClick={() => console.log("Profile clicked")} />
             {/* <StableButton label="Language" icon={languageOutline} routerLink="/language" assetIcon="/assets/icon/icons8_usa_48px.png" /> */}
             <StableButton label={t("Language")} icon={languageOutline} routerLink="/language" assetIcon={currentLanguage === "en" ? usa : france} />
-            <StableButton label={t("Support")} icon={helpCircleOutline} onClick={() => console.log("Profile clicked")} />
+            <StableButton label={t("Support")} icon={helpCircleOutline} routerLink="/supports" />
           </IonList>
           {/* Sign Out */}
           <div className="signout-section">

@@ -5,6 +5,8 @@ export const incrementPoints = createAction("userInfos/incrementPoints");
 export const decrementPoints = createAction("userInfos/decrementPoints");
 export const reset = createAction("userInfos/reset");
 export const setLastPointsSaved = createAction("userInfos/setLastPointsSaved");
+export const setSoundStatus = createAction("userInfos/setSoundStatus");
+export const setSoundLevel = createAction("userInfos/setSoundLevel");
 
 const initialState = {
   user_infos: {},
@@ -31,10 +33,16 @@ export const userInfosSlice = createSlice({
       state.user_infos = {};
     },
     setLastPointsSaved: (state, action) => {
-      console.log(action);
+      // console.log(action);
 
       state.lastPointsSaved = parseInt(action.payload);
-      console.log(state.lastPointsSaved);
+      // console.log(state.lastPointsSaved);
+    },
+    setSoundStatus: (state, action) => {
+      state.user_infos.params_sound = action.payload;
+    },
+    setSoundLevel: (state, action) => {
+      state.user_infos.params_sound_level = parseInt(action.payload);
     },
   },
 });

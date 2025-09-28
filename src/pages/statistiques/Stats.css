@@ -11,15 +11,15 @@
   gap: 50px;
 }
 .prize-pool {
-    text-align: center;
-    border-radius: 12px;
-    outline: outset;
-    outline-width: 1px;
-    outline-color: rgb(217 0 0);
-    padding: 10px;
-    margin-bottom: 15px;
-    font-weight: 700;
-    box-shadow: rgba(236, 42, 77, 0.08) 0px 4px 20px 0px;
+  text-align: center;
+  border-radius: 12px;
+  outline: outset;
+  outline-width: 1px;
+  outline-color: rgb(217 0 0);
+  padding: 10px;
+  margin-bottom: 15px;
+  font-weight: 700;
+  box-shadow: rgba(236, 42, 77, 0.08) 0px 4px 20px 0px;
 }
 .timer {
   display: flex;
@@ -58,6 +58,9 @@
   border-radius: 15px;
   font-weight: 500;
   font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .ranking-container {
   width: 100%;
@@ -87,7 +90,7 @@
 .ranking-table thead {
   background: #f4f4f4;
   color: #333;
-  font-size: 11px;  
+  font-size: 11px;
 }
 
 .ranking-table th,
@@ -100,4 +103,10 @@
 .ranking-table tbody tr:hover {
   background: #f9f9f9;
   transition: background 0.2s;
+}
+.flex-item-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }

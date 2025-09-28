@@ -59,49 +59,37 @@ const Jeux = ({ competitionIsOpen }) => {
   const [classPlus8, setClassPlus8] = useState("on"); // Change this to 2 to switch the fourth button
   const [classMinus1, setClassMinus1] = useState("on"); // Change this to 2 to switch the fourth button
 
-  const wonAudio = new Audio("/assets/audios/explosion.mp3");
-  const lostAudio = new Audio("/assets/audios/bomb.mp3");
+  const [wonAudio] = React.useState<HTMLAudioElement | null>(typeof Audio !== "undefined" ? new Audio("/assets/audios/explosion.mp3") : null);
+  const [lostAudio] = React.useState<HTMLAudioElement | null>(typeof Audio !== "undefined" ? new Audio("/assets/audios/bomb.mp3") : null);
+
+  useEffect(() => {
+    if (user_infos_state.params_sound === "1") {
+      wonAudio.volume = user_infos_state.params_sound_level / 100;
+      lostAudio.volume = user_infos_state.params_sound_level / 100;
+    } else {
+      wonAudio.volume = 0;
+      lostAudio.volume = 0;
+    }
+  }, [user_infos_state]);
 
   const playWonAudio = () => {
-    // let wonAudio = new Audio("./../assets/audio/explosion_small.mp3");
-    // const wonAudio = document.getElementById("wonAudio") as HTMLAudioElement;
     wonAudio.play();
   };
   const playLostAudio = () => {
     lostAudio.play();
   };
 
-  // useEffect(() => {
-  //   console.log(points.current);
-
-  //   if (Number.isNaN(points.current)) {
-  //     console.log("Je suis entré...");
-  //     console.log(user_infos);
-
-  //     points.current = user_infos.SOLDE_POINTS;
-  //   }
-  // }, [user_infos]);
-
   const getUserInfos = useCallback(
     async (values: object) => {
-      // console.log(user_infos);
-
       await axios
         .post("backend/get_user_infos.php", values)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status === 200) {
             sessionStorage.setItem("user_infos", JSON.stringify(res.data));
             dispatch(setUserInfos(res.data));
-            console.log("actualisation effectuée!!!");
-
             points.current = parseInt(res.data.SOLDE_POINTS);
-            // setState("user_infos", res.data);
-            // setState("lastPointsSaved", res.data.SOLDE_POINTS);
-            // setIsOpen(true);
           }
-          // history.push("/play");
-          // console.log(user_infos);
         })
         .catch((err) => {
           console.log(err);
@@ -111,12 +99,8 @@ const Jeux = ({ competitionIsOpen }) => {
   );
 
   useEffect(() => {
-    // console.log(user_infos_state);
-
-    // if (Object.keys(user_infos_state).length === 0 && user_infos !== null) {
     if (user_infos_state?.ID_JOUEUR === undefined && user_infos?.ID_JOUEUR !== undefined) {
       getUserInfos({ id_joueur: user_infos?.ID_JOUEUR });
-      console.log("user_infos recuperer");
     }
   }, [getUserInfos]);
 
@@ -349,7 +333,7 @@ const Jeux = ({ competitionIsOpen }) => {
                 // isSavingPoints.current = false;
                 setisSavingPoints(false);
 
-                console.log(res.data.message);
+                // console.log(res.data.message);
               }
             })
             .catch((err) => {
@@ -364,22 +348,7 @@ const Jeux = ({ competitionIsOpen }) => {
     }
   };
 
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     saveProgression();
-  //   }, 30000);
-  // }, []);
-
   useEffect(() => {
-    console.log("initialisation du setInterval!");
-
-    // Start the interval
-    // const myIntervalId = setInterval(() => {
-    //   saveProgression();
-    // }, 30000);
-
-    // console.log(myIntervalId);
-
     intervalId.current = setInterval(() => {
       // console.log("j'appele save progression!");
 
