@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IonButton, IonCol, IonContent, IonGrid, IonImg, IonInput, IonInputPasswordToggle, IonPage, IonRow, useIonToast } from "@ionic/react";
 import "./Login.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import axios from "axios";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,8 +11,8 @@ import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../components/LanguageSelector";
 
 const Login: React.FC = () => {
-  const [login, setlogin] = useState("");
-  const [password, setpassword] = useState("");
+  const login = useRef("");
+  const password = useRef("");
   const history = useHistory();
 
   const user_infos = useSelector((state: any) => state.userInfos.user_infos);
@@ -42,7 +42,7 @@ const Login: React.FC = () => {
     await axios
       .post("backend/identification.php", values)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.status === true) {
           sessionStorage.setItem("user_infos", JSON.stringify(res.data));
           dispatch(setUserInfos(res.data));
@@ -74,16 +74,28 @@ const Login: React.FC = () => {
           action=""
           onSubmit={(e) => {
             e.preventDefault();
-            connexion({ login: login, password: password });
+            connexion({ login: login.current, password: password.current });
           }}
         >
           <IonGrid fixed={true} className="ion-padding" style={{ innerHeight: "100%" }}>
             <IonRow className="ion-align-items-center">
               <IonCol>
                 <>
-                  <IonInput name="login" type="text" value={login} onIonChange={(e) => setlogin(e.detail.value)} label={t("Username")} labelPlacement="floating" fill="outline" placeholder={t("Username")}></IonInput>
+                  <IonInput name="login" type="text" value={login.current} onIonChange={(e) => (login.current = e.detail.value)} label={t("Username")} labelPlacement="floating" fill="outline" placeholder={t("Username")}></IonInput>
                   <br />
-                  <IonInput name="password" type="password" value={password} onIonChange={(e) => setpassword(e.detail.value)} label={t("Password")} labelPlacement="floating" fill="outline" placeholder={t("Password")}>
+                  <IonInput
+                    name="password"
+                    type="password"
+                    value={password.current}
+                    onIonChange={(e) => {
+                      password.current = e.detail.value;
+                      console.log(password.current);
+                    }}
+                    label={t("Password")}
+                    labelPlacement="floating"
+                    fill="outline"
+                    placeholder={t("Password")}
+                  >
                     <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
                   </IonInput>
 

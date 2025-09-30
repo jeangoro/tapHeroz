@@ -19,7 +19,7 @@ export const setAxiosDefault = () => {
   const Authorization = `Bearer ${token} ${ID_JOUEUR} ${LOGIN} ${NOM_PRENOM} `;
 
   axios.defaults.baseURL = "http://localhost:80/tap-heroz/";
-  // axios.defaults.baseURL = "https://tapcompetition.reunioncfy.com/";
+  // axios.defaults.baseURL = "https://tapheroz.com/";
   axios.defaults.headers.common["Authorization"] = Authorization;
   axios.defaults.headers.post["Content-Type"] = "application/json";
 };

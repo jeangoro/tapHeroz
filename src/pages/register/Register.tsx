@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonInputPasswordToggle, IonItem, IonList, IonPage, IonRow, IonSelect, IonSelectOption, IonTitle, IonToolbar } from "@ionic/react";
 import "./Register.css";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,17 +16,29 @@ const Register: React.FC = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const [username, setusername] = useState("");
-  const [nom_prenom, setnom_prenom] = useState("");
-  const [email, setemail] = useState("");
-  const [phone, setphone] = useState("");
-  const [pays, setpays] = useState("");
-  const [reponseQuestion, setreponseQuestion] = useState("");
-  const [idLeague, setidLeague] = useState(1);
-  const [idQuestion, setidQuestion] = useState(1);
-  const [password, setpassword] = useState("");
-  const [confirmPassword, setconfirmPassword] = useState<string>("");
-  const [isPasswordSame, setisPasswordSame] = useState(false);
+  const username = useRef("");
+  const nom_prenom = useRef("");
+  const email = useRef("");
+  const phone = useRef("");
+  const pays = useRef("");
+  const reponseQuestion = useRef("");
+  const idLeague = useRef(1);
+  const idQuestion = useRef(1);
+  const password = useRef("");
+  const confirmPassword = useRef<string>("");
+  const isPasswordSame = useRef(false);
+
+  // const [username, setusername] = useState("");
+  // const [nom_prenom, setnom_prenom] = useState("");
+  // const [email, setemail] = useState("");
+  // const [phone, setphone] = useState("");
+  // const [pays, setpays] = useState("");
+  // const [reponseQuestion, setreponseQuestion] = useState("");
+  // const [idLeague, setidLeague] = useState(1);
+  // const [idQuestion, setidQuestion] = useState(1);
+  // const [password, setpassword] = useState("");
+  // const [confirmPassword, setconfirmPassword] = useState<string>("");
+  // const [isPasswordSame, setisPasswordSame] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
   const [registerMessage, setRegisterMessage] = useState("");
@@ -45,13 +57,13 @@ const Register: React.FC = () => {
   // console.log(refererId);
   sessionStorage.setItem("referer", refererId);
 
-  const checkPassword = (value) => {
+  const checkPassword = (value: any) => {
     if (password === value) {
-      setconfirmPassword(value);
-      setisPasswordSame(true);
+      confirmPassword.current = value;
+      isPasswordSame.current = true;
     } else {
-      setconfirmPassword(value);
-      setisPasswordSame(false);
+      confirmPassword.current = value;
+      isPasswordSame.current = false;
     }
   };
 
@@ -98,8 +110,8 @@ const Register: React.FC = () => {
             dispatch(setListQuestions(res.data));
             // setState("list_questions", res.data);
           }
-          console.log(res);
-          console.log(list_questions);
+          // console.log(res);
+          // console.log(list_questions);
         })
         .catch((err) => {
           console.log(err);
@@ -113,7 +125,7 @@ const Register: React.FC = () => {
     await axios
       .post("backend/inscription.php", infos)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.status === true) {
           // setState("list_leagues", res.data);
           setRegisterMessage(res.data.message);
@@ -182,16 +194,16 @@ const Register: React.FC = () => {
               e.preventDefault();
               // Handle form submission
               const values = {
-                username: username,
-                nom_prenom: nom_prenom,
-                email: email,
-                phone: phone,
-                pays: pays,
+                username: username.current,
+                nom_prenom: nom_prenom.current,
+                email: email.current,
+                phone: phone.current,
+                pays: pays.current,
                 referer_id: refererId,
-                id_league: idLeague,
-                id_question: idQuestion,
-                reponse_question: reponseQuestion,
-                password: password,
+                id_league: idLeague.current,
+                id_question: idQuestion.current,
+                reponse_question: reponseQuestion.current,
+                password: password.current,
               };
               // console.log("Form submitted :", values);
               registration(values);
@@ -200,26 +212,26 @@ const Register: React.FC = () => {
             <>
               <IonRow>
                 <IonCol sizeXs="12" sizeSm="6">
-                  <IonInput name="username" type="text" value={username} onIonChange={(e) => setusername(e.detail.value!)} label={t("Username")} labelPlacement="floating" fill="outline" placeholder={t("Username")}></IonInput>
+                  <IonInput name="username" type="text" value={username.current} onIonChange={(e) => (username.current = e.detail.value!)} label={t("Username")} labelPlacement="floating" fill="outline" placeholder={t("Username")}></IonInput>
                 </IonCol>
                 <IonCol sizeXs="12" sizeSm="6">
-                  <IonInput name="nom_prenom" type="text" value={nom_prenom} onIonChange={(e) => setnom_prenom(e.detail.value!)} label={t("Full Name")} labelPlacement="floating" fill="outline" placeholder={t("Full Name")}></IonInput>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol sizeXs="12" sizeSm="6">
-                  <IonInput name="email" type="email" value={email} onIonChange={(e) => setemail(e.detail.value!)} label={t("Email")} labelPlacement="floating" fill="outline" placeholder={t("Email")}></IonInput>
-                </IonCol>
-                <IonCol sizeXs="12" sizeSm="6">
-                  <IonInput name="phone" type="tel" value={phone} onIonChange={(e) => setphone(e.detail.value!)} label={t("Phone")} labelPlacement="floating" fill="outline" placeholder={t("Phone")}></IonInput>
+                  <IonInput name="nom_prenom" type="text" value={nom_prenom.current} onIonChange={(e) => (nom_prenom.current = e.detail.value!)} label={t("Full Name")} labelPlacement="floating" fill="outline" placeholder={t("Full Name")}></IonInput>
                 </IonCol>
               </IonRow>
               <IonRow>
                 <IonCol sizeXs="12" sizeSm="6">
-                  <IonInput name="pays" type="text" value={pays} onIonChange={(e) => setpays(e.detail.value!)} label={t("Country")} labelPlacement="floating" fill="outline" placeholder={t("Country")}></IonInput>
+                  <IonInput name="email" type="email" value={email.current} onIonChange={(e) => (email.current = e.detail.value!)} label={t("Email")} labelPlacement="floating" fill="outline" placeholder={t("Email")}></IonInput>
                 </IonCol>
                 <IonCol sizeXs="12" sizeSm="6">
-                  <IonInput name="password" type="password" value={password} onIonChange={(e) => setpassword(e.detail.value!)} label={t("Password")} labelPlacement="floating" fill="outline" placeholder={t("Password")}>
+                  <IonInput name="phone" type="tel" value={phone.current} onIonChange={(e) => (phone.current = e.detail.value!)} label={t("Phone")} labelPlacement="floating" fill="outline" placeholder={t("Phone")}></IonInput>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol sizeXs="12" sizeSm="6">
+                  <IonInput name="pays" type="text" value={pays.current} onIonChange={(e) => (pays.current = e.detail.value!)} label={t("Country")} labelPlacement="floating" fill="outline" placeholder={t("Country")}></IonInput>
+                </IonCol>
+                <IonCol sizeXs="12" sizeSm="6">
+                  <IonInput name="password" type="password" value={password.current} onIonChange={(e) => (password.current = e.detail.value!)} label={t("Password")} labelPlacement="floating" fill="outline" placeholder={t("Password")}>
                     <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
                   </IonInput>
                 </IonCol>
@@ -229,7 +241,7 @@ const Register: React.FC = () => {
                   <IonInput
                     name="confirmPassword"
                     type="password"
-                    value={confirmPassword}
+                    value={confirmPassword.current}
                     // onIonChange={(e) => {}}
                     onKeyUp={(e: any) => {
                       checkPassword(e?.currentTarget?.value);
@@ -246,7 +258,7 @@ const Register: React.FC = () => {
                   <IonList>
                     <IonItem>
                       {list_questions !== undefined && (
-                        <IonSelect label={t("Secret Question")} value={idQuestion} labelPlacement="floating" onIonChange={(e) => setidQuestion(e.detail.value)}>
+                        <IonSelect label={t("Secret Question")} value={idQuestion} labelPlacement="floating" onIonChange={(e) => (idQuestion.current = e.detail.value)}>
                           {list_questions?.map((question: any, key: number) => (
                             <IonSelectOption key={key} value={question?.id_question}>
                               {question?.question}
@@ -260,7 +272,16 @@ const Register: React.FC = () => {
               </IonRow>
               <IonRow>
                 <IonCol sizeXs="12" sizeSm="6">
-                  <IonInput name="reponseQuestion" type="text" value={reponseQuestion} onIonChange={(e) => setreponseQuestion(e.detail.value!)} label={t("Answer to the secret question")} labelPlacement="floating" fill="outline" placeholder={t("Answer to the secret question")}></IonInput>
+                  <IonInput
+                    name="reponseQuestion"
+                    type="text"
+                    value={reponseQuestion.current}
+                    onIonChange={(e) => (reponseQuestion.current = e.detail.value!)}
+                    label={t("Answer to the secret question")}
+                    labelPlacement="floating"
+                    fill="outline"
+                    placeholder={t("Answer to the secret question")}
+                  ></IonInput>
                 </IonCol>
                 <IonCol sizeXs="12" sizeSm="6">
                   <IonInput disabled name="refererId" type="text" value={refererId} onIonChange={(e) => setrefererId(e.detail.value!)} label={t("Referer")} labelPlacement="floating" fill="outline" placeholder={t("Referer")}></IonInput>

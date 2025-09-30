@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router";
-import { IonButton, IonCol, IonGrid, IonImg, IonRow, IonText, useIonToast, useIonViewWillLeave } from "@ionic/react";
+import { IonButton, IonCol, IonGrid, IonImg, IonRow, IonText, useIonToast, useIonViewWillEnter, useIonViewWillLeave } from "@ionic/react";
 // import { setUserInfos, reset, incrementPoints, decrementPoints, setLastPointsSaved } from "../store/userInfosSlice.js";
 import axios from "axios";
 import "./Jeux.css";
@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 const Jeux = ({ competitionIsOpen }) => {
   // const [values, setValues] = useState({});
   const values = useRef({});
+  const randomNumber = Math.floor(Math.random() * 10) + 1;
 
   // const { state } = useContext(MyContext);
   // const { setState } = useContext(MyContext);
@@ -61,21 +62,32 @@ const Jeux = ({ competitionIsOpen }) => {
 
   const [wonAudio] = React.useState<HTMLAudioElement | null>(typeof Audio !== "undefined" ? new Audio("/assets/audios/explosion.mp3") : null);
   const [lostAudio] = React.useState<HTMLAudioElement | null>(typeof Audio !== "undefined" ? new Audio("/assets/audios/bomb.mp3") : null);
+  const [backgroundMusic] = React.useState<HTMLAudioElement | null>(typeof Audio !== "undefined" ? new Audio(`/assets/audios/backgroundSound-${randomNumber}.mp3`) : null);
 
   useEffect(() => {
     if (user_infos_state.params_sound === "1") {
       wonAudio.volume = user_infos_state.params_sound_level / 100;
       lostAudio.volume = user_infos_state.params_sound_level / 100;
+      backgroundMusic.volume = user_infos_state.params_sound_level / 100;
     } else {
       wonAudio.volume = 0;
       lostAudio.volume = 0;
+      backgroundMusic.volume = 0;
     }
   }, [user_infos_state]);
 
   const playWonAudio = () => {
+    if (backgroundMusic.currentTime == 0) {
+      backgroundMusic.play();
+    }
+    wonAudio.currentTime = 0;
     wonAudio.play();
   };
   const playLostAudio = () => {
+    if (backgroundMusic.currentTime == 0) {
+      backgroundMusic.play();
+    }
+    lostAudio.currentTime = 0;
     lostAudio.play();
   };
 
@@ -362,6 +374,7 @@ const Jeux = ({ competitionIsOpen }) => {
   useIonViewWillLeave(() => {
     // console.log("Component is about to leave!");
     // console.log(intervalId.current);
+    backgroundMusic.pause();
 
     // Perform cleanup or save data here
     clearInterval(intervalId.current);
@@ -370,8 +383,16 @@ const Jeux = ({ competitionIsOpen }) => {
     }
   });
 
+  useIonViewWillEnter(() => {
+    // console.log("Component is about to leave!");
+    // backgroundMusic.setAttribute("loop", "true");
+    backgroundMusic.loop = true;
+    backgroundMusic.play();
+  });
+
   useEffect(() => {
     // console.log("mount game page");
+    // backgroundMusic.loop = true;
 
     return () => {
       // console.log("unmount game page");
