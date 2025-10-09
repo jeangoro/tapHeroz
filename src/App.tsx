@@ -53,6 +53,7 @@ import IonTabsBar from "./components/IonTabsBar";
 import Settings from "./pages/comptes/settings/Settings";
 import AboutMe from "./pages/comptes/aboutMe/AboutMe";
 import Supports from "./pages/comptes/supports/Supports";
+import Admin from "./pages/comptes/admin/Admin";
 // import axios from "axios";
 
 setupIonicReact();
@@ -161,6 +162,9 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/changePassword">
                 {user_infos_state?.ID_JOUEUR === undefined ? <ChangePassword /> : <Redirect to="/play" />}
+              </Route>
+              <Route exact path="/admin_tapheroz">
+                <Admin />
               </Route>
               <Route exact path="/">
                 <Redirect to="/login" />

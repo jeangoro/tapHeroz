@@ -1,0 +1,97 @@
+.custom-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px; /* Adjust padding as needed */
+  background-color: white;
+}
+.header-list-competition {
+  font-weight: bold;
+  background-color: #f0f0f0; /* Light gray background for header */
+}
+.header-list-competition ion-col {
+  border-bottom: 2px solid #ccc; /* Bottom border for header columns */
+  padding: 8px 0; /* Adjust padding as needed */
+}
+.header-list-competition ion-col:first-child {
+  border-left: none; /* Remove left border for the first column */
+}
+.header-list-competition ion-col:last-child {
+  border-right: none; /* Remove right border for the last column */
+}
+.list-competition ion-row {
+  border-bottom: 1px solid #eee; /* Bottom border for each row */
+  padding: 8px 0; /* Adjust padding as needed */
+}
+.list-competition ion-col {
+  padding: 8px 0; /* Adjust padding as needed */
+}
+.list-competition ion-col:first-child {
+  border-left: none; /* Remove left border for the first column */
+}
+.list-competition ion-col:last-child {
+  border-right: none; /* Remove right border for the last column */
+}
+.list-competition ion-row:hover {
+  background-color: #fafafa; /* Light hover effect */
+}
+.list-competition {
+  max-height: 400px; /* Adjust height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+.list-competition ion-col {
+  text-align: center; /* Center align text in columns */
+}
+.list-competition ion-col:nth-child(1) {
+  text-align: left; /* Left align text in the first column (ID) */
+}
+.list-competition ion-col:nth-child(2) {
+  text-align: left; /* Left align text in the second column (NOM) */
+}
+.list-competition ion-col:nth-child(8) {
+  text-align: left; /* Left align text in the eighth column (ETAT) */
+}
+.list-competition ion-col:nth-child(3),
+.list-competition ion-col:nth-child(4),
+.list-competition ion-col:nth-child(5),
+.list-competition ion-col:nth-child(6),
+.list-competition ion-col:nth-child(7) {
+  text-align: left; /* Left align text in the third, fourth, fifth, sixth, and seventh columns */
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header-list-competition ion-col,
+  .list-competition ion-col {
+    font-size: 12px; /* Smaller font size for smaller screens */
+    padding: 4px 0; /* Adjust padding for smaller screens */
+  }
+}
+@media (max-width: 480px) {
+  .header-list-competition ion-col,
+  .list-competition ion-col {
+    font-size: 10px; /* Even smaller font size for very small screens */
+    padding: 2px 0; /* Adjust padding for very small screens */
+  }
+}
+@media (max-width: 400px) {
+  .header-list-competition ion-col:nth-child(n + 3),
+  .list-competition ion-col:nth-child(n + 3) {
+    display: none; /* Hide columns from the third onward on very small screens */
+  }
+}
+@media (max-width: 300px) {
+  .header-list-competition ion-col:nth-child(n + 2),
+  .list-competition ion-col:nth-child(n + 2) {
+    display: none; /* Hide columns from the second onward on extremely small screens */
+  }
+}
+@media (min-width: 769px) {
+  .list-competition {
+    max-height: 600px; /* Increase height for larger screens */
+  }
+}
+@media (min-width: 1200px) {
+  .list-competition {
+    max-height: 800px; /* Further increase height for very large screens */
+  }
+}
