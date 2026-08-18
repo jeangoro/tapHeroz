@@ -19,7 +19,7 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
   const { t } = useTranslation();
 
   const user_infos = useSelector((state: any) => state.userInfos.user_infos);
-  const listCompetitions = useSelector((state: any) => state?.play?.listCompetitions);
+  const listCompetitions = useSelector((state: any) => state?.play?.listCompetitions) || [];
   // const dispatch = useDispatch();
 
   // const [canOpenPayIframe, setcanOpenPayIframe] = useState(false);
@@ -150,8 +150,7 @@ const AddParticipationModal = ({ isOpen, setisOpen }) => {
                   e.preventDefault();
                   doDepot({ id_competition: id_competition });
                   // doPaymentDepot({ payer_name: payer_name, amount: montantDepot, payment_processor: payment_processor, payer_number: telephoneDepot, type: "TOPUP", link: "yASRDtENBU" });
-                }}
-              >
+                }}>
                 <IonGrid fixed={true} className="ion-padding" style={{ innerHeight: "100%" }}>
                   <IonRow className="ion-align-items-center">
                     <IonCol>

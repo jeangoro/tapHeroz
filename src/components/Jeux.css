@@ -27,3 +27,9 @@
   width: auto;
   margin-right: 10px;
 }
+.game-grid ion-row ion-col ion-button {
+  background-color: rgb(245, 219, 186);
+}
+.game-row ion-col ion-button {
+  font-weight: 800 !important;
+}

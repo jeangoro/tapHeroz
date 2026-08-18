@@ -7,7 +7,7 @@ const RappelParticipation = ({ setisOpenAddParticipation }) => {
   const { t } = useTranslation();
   return (
     <div className="text-center">
-      <p>
+      <p className="mb-0">
         <span className="blinking-text">{t("Please register for the next competition:")}</span>
       </p>
       <IonRow className="competition-rowTJK" style={{ textAlign: "center" }}>

@@ -7,6 +7,7 @@ import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setMyQuestion } from "../../store/changePasswordSlice.js";
 import { useTranslation } from "react-i18next";
+import { isNumeric } from "../../services/fonctions";
 
 const ChangePassword: React.FC = () => {
   const history = useHistory();
@@ -52,7 +53,7 @@ const ChangePassword: React.FC = () => {
         position: position,
       });
     },
-    [present, t]
+    [present, t],
   );
 
   const checkPassword = (value) => {
@@ -74,7 +75,7 @@ const ChangePassword: React.FC = () => {
   useEffect(() => {
     // console.log(user_infos.ID_JOUEUR);
 
-    if (user_infos.ID_JOUEUR !== undefined) {
+    if (isNumeric(user_infos.ID_JOUEUR)) {
       history.push("/play");
     }
   });
@@ -102,7 +103,7 @@ const ChangePassword: React.FC = () => {
           });
       }
     },
-    [history, isPasswordSame, myQuestion, presentToast]
+    [history, isPasswordSame, myQuestion, presentToast],
   );
 
   const getMyQuestion = async (infos: object) => {
@@ -164,8 +165,7 @@ const ChangePassword: React.FC = () => {
             text: t("Yes"),
             cssClass: "alert-button-confirm",
           },
-        ]}
-      ></IonAlert>
+        ]}></IonAlert>
       <IonHeader>
         <IonToolbar>
           <IonTitle>{t("Change Password")}</IonTitle>
@@ -192,8 +192,7 @@ const ChangePassword: React.FC = () => {
                 };
                 changePassword(values);
               }
-            }}
-          >
+            }}>
             <>
               {myQuestion === null && (
                 <IonRow>
@@ -209,8 +208,7 @@ const ChangePassword: React.FC = () => {
                       label={t("Your phone")}
                       labelPlacement="floating"
                       fill="outline"
-                      placeholder={t("Your phone")}
-                    ></IonInput>
+                      placeholder={t("Your phone")}></IonInput>
                   </IonCol>
                   <IonCol sizeXs="12" sizeSm="6"></IonCol>
                 </IonRow>
@@ -258,8 +256,7 @@ const ChangePassword: React.FC = () => {
                     label={t("Confirm password")}
                     labelPlacement="floating"
                     fill="outline"
-                    placeholder={t("Confirm password")}
-                  >
+                    placeholder={t("Confirm password")}>
                     <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
                   </IonInput>
                 </>

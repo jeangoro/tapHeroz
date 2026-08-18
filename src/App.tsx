@@ -54,6 +54,7 @@ import Settings from "./pages/comptes/settings/Settings";
 import AboutMe from "./pages/comptes/aboutMe/AboutMe";
 import Supports from "./pages/comptes/supports/Supports";
 import Admin from "./pages/comptes/admin/Admin";
+import { isNumeric } from "./services/fonctions";
 // import axios from "axios";
 
 setupIonicReact();
@@ -64,6 +65,9 @@ const App: React.FC = () => {
   const user_infos = JSON.parse(sessionStorage.getItem("user_infos")!);
 
   const user_infos_state = useSelector((state: any) => state?.userInfos?.user_infos);
+
+  // 1. Define a helper function that returns a Promise
+  // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const getUserInfos = useCallback(
     async (values: object) => {
@@ -90,13 +94,13 @@ const App: React.FC = () => {
           console.log(err);
         });
     },
-    [dispatch]
+    [dispatch],
   );
 
   useEffect(() => {
     // console.log(user_infos_state?.ID_JOUEUR);
 
-    if (user_infos_state?.ID_JOUEUR === undefined && user_infos?.ID_JOUEUR !== undefined) {
+    if (!isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) && isNumeric(user_infos?.ID_JOUEUR)) {
       if (Object.keys(user_infos_state).length === 0) {
         getUserInfos({ id_joueur: user_infos?.ID_JOUEUR });
         // console.log("user_infos recuperer");
@@ -119,58 +123,58 @@ const App: React.FC = () => {
           <IonTabs>
             <IonRouterOutlet>
               <Route exact path="/login">
-                {user_infos_state?.ID_JOUEUR === undefined ? <Login /> : <Redirect to="/play" />}
+                {!isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) ? <Login /> : <Redirect to="/play" />}
               </Route>
               <Route exact path="/register">
-                {user_infos_state?.ID_JOUEUR === undefined ? <Register /> : <Redirect to="/play" />}
+                {!isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) ? <Register /> : <Redirect to="/play" />}
               </Route>
               {/* <Route exact path="/:id">
-                {user_infos_state?.ID_JOUEUR === undefined ? <Register /> : <Play />}
+                {!isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) ? <Register /> : <Play />}
               </Route> */}
               <Route exact path="/play">
-                {user_infos_state?.ID_JOUEUR !== undefined ? <Play /> : <Redirect to="/login" />}
+                {isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) || isNumeric(parseInt(user_infos?.ID_JOUEUR)) ? <Play /> : <Redirect to="/login" />}
               </Route>
               {/* <Route exact path="/statistiques">
-                {user_infos_state?.ID_JOUEUR !== undefined ? <Statistiques /> : <Redirect to="/login" />}
+                {isNumeric(parseInt(user_infos_state?.ID_JOUEUR))  ? <Statistiques /> : <Redirect to="/login" />}
               </Route> */}
               <Route exact path="/stats">
-                {user_infos_state?.ID_JOUEUR !== undefined ? <Stats /> : <Redirect to="/login" />}
+                {isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) ? <Stats /> : <Redirect to="/login" />}
               </Route>
               {/* <Route exact path="/parrainage">
-                {user_infos_state?.ID_JOUEUR !== undefined ? <Parrainages /> : <Redirect to="/login" />}
+                {isNumeric(parseInt(user_infos_state?.ID_JOUEUR))  ? <Parrainages /> : <Redirect to="/login" />}
               </Route> */}
               <Route exact path="/history">
-                {user_infos_state?.ID_JOUEUR !== undefined ? <History /> : <Redirect to="/login" />}
+                {isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) ? <History /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/referrals">
-                {user_infos_state?.ID_JOUEUR !== undefined ? <Referrals /> : <Redirect to="/login" />}
+                {isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) ? <Referrals /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/compte">
-                {user_infos_state?.ID_JOUEUR !== undefined ? <Comptes /> : <Redirect to="/login" />}
+                {isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) ? <Comptes /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/settings">
-                {user_infos_state?.ID_JOUEUR !== undefined ? <Settings /> : <Redirect to="/login" />}
+                {isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) ? <Settings /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/aboutMe">
-                {user_infos_state?.ID_JOUEUR !== undefined ? <AboutMe /> : <Redirect to="/login" />}
+                {isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) ? <AboutMe /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/supports">
-                {user_infos_state?.ID_JOUEUR !== undefined ? <Supports /> : <Supports />}
+                {isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) ? <Supports /> : <Supports />}
               </Route>
               <Route exact path="/language">
-                {user_infos_state?.ID_JOUEUR !== undefined ? <Languages /> : <Redirect to="/login" />}
+                {isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) ? <Languages /> : <Redirect to="/login" />}
               </Route>
               <Route exact path="/changePassword">
-                {user_infos_state?.ID_JOUEUR === undefined ? <ChangePassword /> : <Redirect to="/play" />}
+                {!isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) ? <ChangePassword /> : <Redirect to="/play" />}
               </Route>
               <Route exact path="/admin_tapheroz">
                 <Admin />
               </Route>
               <Route exact path="/">
-                <Redirect to="/login" />
+                <Redirect to="/play" />
               </Route>
             </IonRouterOutlet>
-            {user_infos_state?.ID_JOUEUR !== undefined && <IonTabsBar />}
+            {isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) && <IonTabsBar />}
           </IonTabs>
         </IonReactRouter>
       </IonApp>

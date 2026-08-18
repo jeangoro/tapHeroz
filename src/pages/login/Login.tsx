@@ -1,30 +1,40 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonButton, IonCol, IonContent, IonGrid, IonImg, IonInput, IonInputPasswordToggle, IonPage, IonRow, useIonToast } from "@ionic/react";
+import { IonButton, IonCol, IonContent, IonGrid, IonImg, IonInput, IonInputPasswordToggle, IonPage, IonRow, useIonRouter, useIonToast } from "@ionic/react";
 import "./Login.css";
 import { useEffect, useRef } from "react";
 import axios from "axios";
-import { useHistory } from "react-router";
+// import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfos } from "../../store/userInfosSlice.js";
 import { setAxiosDefault } from "../../main";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../components/LanguageSelector";
+import { isNumeric } from "../../services/fonctions";
 
 const Login: React.FC = () => {
   const login = useRef("");
   const password = useRef("");
-  const history = useHistory();
+  // const history = useHistory();
 
   const user_infos = useSelector((state: any) => state.userInfos.user_infos);
+  // const user_infos = JSON.parse(sessionStorage.getItem("user_infos")!);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const router = useIonRouter();
+
   useEffect(() => {
     // if (Object.keys().length !== 0) {
-    if (user_infos.ID_JOUEUR !== undefined) {
-      history.push("/play");
+
+    // if ( isNumeric(user_infos?.ID_JOUEUR)) {
+    //   history.push("/play");
+    // }
+    if (isNumeric(parseInt(user_infos?.ID_JOUEUR))) {
+      router.push("/play");
+      // history.push("/play");
+      // return <IonRedirect to="/dashboard" />;
     }
-  });
+  }, [router, user_infos]);
 
   const [present] = useIonToast();
 
@@ -75,8 +85,7 @@ const Login: React.FC = () => {
           onSubmit={(e) => {
             e.preventDefault();
             connexion({ login: login.current, password: password.current });
-          }}
-        >
+          }}>
           <IonGrid fixed={true} className="ion-padding" style={{ innerHeight: "100%" }}>
             <IonRow className="ion-align-items-center">
               <IonCol>
@@ -94,8 +103,7 @@ const Login: React.FC = () => {
                     label={t("Password")}
                     labelPlacement="floating"
                     fill="outline"
-                    placeholder={t("Password")}
-                  >
+                    placeholder={t("Password")}>
                     <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
                   </IonInput>
 

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from "@ionic/react";
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
 // import Jeux from "../components/Jeux";
-import { useHistory } from "react-router";
+// import { useHistory } from "react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 // import Menu from "../components/Menu";
 // import CountDown from "../components/timers/CountDown";
@@ -15,11 +15,13 @@ import RappelParticipation from "../../components/RappelParticipation";
 import Jeux from "../../components/Jeux";
 import AddParticipationModal from "./AddParticipationModal";
 import { useTranslation } from "react-i18next";
+import { isNumeric } from "../../services/fonctions";
 // import { setListCompetitions } from "../store/playSlice";
 
 const Play: React.FC = () => {
   const userInfos = JSON.parse(sessionStorage.getItem("user_infos")!);
-  const history = useHistory();
+  // const userInfos = useSelector((state: any) => state.userInfos.user_infos);
+  // const history = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   // console.log(userInfos);
@@ -32,9 +34,12 @@ const Play: React.FC = () => {
   const competitionIsOpen = useRef(false);
   const competition = useRef(null);
 
+  // const user_infos = await useSelector((state: any) => state?.userInfos);
   const user_infos_state = useSelector((state: any) => state?.userInfos?.user_infos);
   const listCompetitions = useSelector((state: any) => state?.play?.listCompetitions);
   const myCompetition = useSelector((state: any) => state?.play?.myCompetition);
+
+  const router = useIonRouter();
 
   useEffect(() => {
     if (user_infos_state.id_competition === null) {
@@ -87,10 +92,13 @@ const Play: React.FC = () => {
       setLeftTime(temps_restant_seconds);
     }
 
-    if (userInfos?.ID_JOUEUR === undefined) {
-      history.push("/login");
+    console.log(parseInt(userInfos?.ID_JOUEUR));
+
+    if (!isNumeric(parseInt(userInfos?.ID_JOUEUR))) {
+      // history.push("/login");
+      router.push("/login");
     }
-  }, [history, userInfos, listCompetitions]);
+  }, [router, userInfos, listCompetitions]);
 
   // function handleRefresh(event: RefresherCustomEvent) {
   //   setTimeout(() => {
@@ -127,19 +135,31 @@ const Play: React.FC = () => {
           console.log(err);
         });
     },
-    [dispatch]
+    [dispatch],
   );
 
   // if (user_infos_state !== null) {
   //   getListCompetitions({ id_joueur: user_infos_state.ID_JOUEUR });
   // }
 
-  useIonViewDidEnter(() => {
-    // console.log("Page did enter view");
-    if (user_infos_state !== null) {
+  // useIonViewDidEnter(() => {
+  //   // console.log("Page did enter view");
+  //   // console.log(userInfos);
+  //   // console.log(user_infos);
+  //   console.log(user_infos_state.ID_JOUEUR);
+
+  //   if (user_infos_state.ID_JOUEUR !== undefined) {
+  //     getListCompetitions({ id_joueur: user_infos_state.ID_JOUEUR });
+  //   }
+  // });
+
+  useEffect(() => {
+    console.log(user_infos_state.ID_JOUEUR);
+
+    if (user_infos_state.ID_JOUEUR !== undefined && listCompetitions == null) {
       getListCompetitions({ id_joueur: user_infos_state.ID_JOUEUR });
     }
-  });
+  }, [user_infos_state, getListCompetitions, listCompetitions]);
 
   return (
     <>
@@ -169,10 +189,15 @@ const Play: React.FC = () => {
               {competitionIsOpen.current && leftTimeToEnd > 0 ? (
                 <div className="alert alert-success text-center">
                   {t("Competition in progress: it ends in")} <b>{leftTime && <CountDown timeToWaitInSeconds={leftTimeToEnd} />}</b>
+                  <br /> <span>{t("Tap the green buttons to get the maximum number of points before the end of the game.")}</span>
                 </div>
               ) : listCompetitions?.length > 0 ? (
-                <div className="alert alert-warning text-center">
+                <div className="alert alert-warning text-center p-1">
                   {t("Next round of competition starts in:")} <b>{leftTime && <CountDown timeToWaitInSeconds={leftTime} />}</b>
+                </div>
+              ) : !competitionIsOpen.current && leftTimeToEnd > 0 ? (
+                <div className="alert alert-info text-center">
+                  {t("The competition begins in:")} <b>{leftTime && <CountDown timeToWaitInSeconds={leftTime} />}</b>
                 </div>
               ) : (
                 <div className="alert alert-info text-center">{t("No competition scheduled at this time...")}</div>
@@ -182,6 +207,9 @@ const Play: React.FC = () => {
 
           {user_infos_state.id_competition === null && (
             <div>
+              <div className="alert alert-warning text-center p-1">
+                {t("Next round of competition starts in:")} <b>{leftTime && <CountDown timeToWaitInSeconds={leftTime} />}</b>
+              </div>
               <RappelParticipation setisOpenAddParticipation={setisOpenAddParticipation} />
             </div>
           )}

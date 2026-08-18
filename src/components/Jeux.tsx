@@ -1,16 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 // import { useHistory } from "react-router";
-import { IonButton, IonCol, IonGrid, IonImg, IonRow, IonText, useIonToast, useIonViewWillEnter, useIonViewWillLeave } from "@ionic/react";
+import { IonButton, IonCol, IonGrid, IonImg, IonRow, IonText, useIonToast, useIonViewDidEnter, useIonViewWillLeave } from "@ionic/react";
 // import { setUserInfos, reset, incrementPoints, decrementPoints, setLastPointsSaved } from "../store/userInfosSlice.js";
 import axios from "axios";
 import "./Jeux.css";
 import "./animations/animatePlus.css";
 import "./animations/animateMinus.css";
-import { setUserInfos } from "../store/userInfosSlice.js";
+// import { setUserInfos } from "../store/userInfosSlice.js";
 import { useTranslation } from "react-i18next";
+import { isNumeric } from "../services/fonctions";
 
 const Jeux = ({ competitionIsOpen }) => {
   // const [values, setValues] = useState({});
@@ -24,7 +25,7 @@ const Jeux = ({ competitionIsOpen }) => {
   const user_infos_state = useSelector((state: any) => state.userInfos.user_infos);
   // const lastPointsSaved = useSelector((state) => state.userInfos.lastPointsSaved);
   //   const [points, setPoints] = useState(parseInt(user_infos.SOLDE_POINTS));
-  const points = useRef(parseInt(user_infos?.SOLDE_POINTS));
+  const points = useRef(parseInt(user_infos?.SOLDE_POINTS) || 0);
   const lastPointsSaved = useRef(parseInt(user_infos?.SOLDE_POINTS));
   // const isSavingPoints = useRef(false);
 
@@ -34,7 +35,7 @@ const Jeux = ({ competitionIsOpen }) => {
 
   const { t } = useTranslation();
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [present] = useIonToast();
   // Fonction pour générer un nombre aléatoire entre 0 et 4
   function getRandomNumber() {
@@ -91,30 +92,40 @@ const Jeux = ({ competitionIsOpen }) => {
     lostAudio.play();
   };
 
-  const getUserInfos = useCallback(
-    async (values: object) => {
-      await axios
-        .post("backend/get_user_infos.php", values)
-        .then((res) => {
-          // console.log(res);
-          if (res.status === 200) {
-            sessionStorage.setItem("user_infos", JSON.stringify(res.data));
-            dispatch(setUserInfos(res.data));
-            points.current = parseInt(res.data.SOLDE_POINTS);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    [dispatch]
-  );
+  // const getUserInfos = useCallback(
+  //   async (values: object) => {
+  //     await axios
+  //       .post("backend/get_user_infos.php", values)
+  //       .then((res) => {
+  //         // console.log(res);
+  //         if (res.status === 200) {
+  //           sessionStorage.setItem("user_infos", JSON.stringify(res.data));
+  //           dispatch(setUserInfos(res.data));
+  //           points.current = parseInt(res.data.SOLDE_POINTS);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   },
+  //   [dispatch],
+  // );
+
+  // useEffect(() => {
+  //   console.log(user_infos_state);
+
+  //   if (!isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) && isNumeric(user_infos?.ID_JOUEUR)) {
+  //     getUserInfos({ id_joueur: user_infos?.ID_JOUEUR });
+  //   }
+  // }, [getUserInfos]);
 
   useEffect(() => {
-    if (user_infos_state?.ID_JOUEUR === undefined && user_infos?.ID_JOUEUR !== undefined) {
-      getUserInfos({ id_joueur: user_infos?.ID_JOUEUR });
+    console.log(user_infos_state);
+
+    if (isNumeric(parseInt(user_infos_state?.ID_JOUEUR)) && parseInt(user_infos_state.SOLDE_POINTS) > points.current) {
+      points.current = parseInt(user_infos_state.SOLDE_POINTS);
     }
-  }, [getUserInfos]);
+  }, [user_infos_state]);
 
   const positiveTapButton1 = (line: number, id: string) => (
     <IonButton
@@ -132,9 +143,8 @@ const Jeux = ({ competitionIsOpen }) => {
       }}
       color={"success"}
       style={{ width: "100%" }}
-      className={`${classPlus1}`}
-    >
-      + 1
+      className={`${classPlus1}`}>
+      +1
     </IonButton>
   );
 
@@ -154,9 +164,8 @@ const Jeux = ({ competitionIsOpen }) => {
       }}
       color={"success"}
       style={{ width: "100%" }}
-      className={`${classPlus2}`}
-    >
-      + 1
+      className={`${classPlus2}`}>
+      +1
     </IonButton>
   );
 
@@ -176,9 +185,8 @@ const Jeux = ({ competitionIsOpen }) => {
       }}
       color={"success"}
       style={{ width: "100%" }}
-      className={`${classPlus3}`}
-    >
-      + 1
+      className={`${classPlus3}`}>
+      +1
     </IonButton>
   );
 
@@ -198,9 +206,8 @@ const Jeux = ({ competitionIsOpen }) => {
       }}
       color={"success"}
       style={{ width: "100%" }}
-      className={`${classPlus4}`}
-    >
-      + 1
+      className={`${classPlus4}`}>
+      +1
     </IonButton>
   );
   const positiveTapButton5 = (line: number, id: string) => (
@@ -219,9 +226,8 @@ const Jeux = ({ competitionIsOpen }) => {
       }}
       color={"success"}
       style={{ width: "100%" }}
-      className={`${classPlus5}`}
-    >
-      + 1
+      className={`${classPlus5}`}>
+      +1
     </IonButton>
   );
 
@@ -241,9 +247,8 @@ const Jeux = ({ competitionIsOpen }) => {
       }}
       color={"success"}
       style={{ width: "100%" }}
-      className={`${classPlus6}`}
-    >
-      + 1
+      className={`${classPlus6}`}>
+      +1
     </IonButton>
   );
 
@@ -263,9 +268,8 @@ const Jeux = ({ competitionIsOpen }) => {
       }}
       color={"success"}
       style={{ width: "100%" }}
-      className={`${classPlus7}`}
-    >
-      + 1
+      className={`${classPlus7}`}>
+      +1
     </IonButton>
   );
 
@@ -285,9 +289,8 @@ const Jeux = ({ competitionIsOpen }) => {
       }}
       color={"success"}
       style={{ width: "100%" }}
-      className={`${classPlus8}`}
-    >
-      + 1
+      className={`${classPlus8}`}>
+      +1
     </IonButton>
   );
 
@@ -311,9 +314,8 @@ const Jeux = ({ competitionIsOpen }) => {
       }}
       color={"danger"}
       style={{ width: "100%" }}
-      className={`${classMinus1}`}
-    >
-      - 4
+      className={`${classMinus1}`}>
+      -4
     </IonButton>
   );
 
@@ -383,10 +385,19 @@ const Jeux = ({ competitionIsOpen }) => {
     }
   });
 
-  useIonViewWillEnter(() => {
+  // useIonViewWillEnter(() => {
+  //   // console.log("Component is about to leave!");
+  //   // backgroundMusic.setAttribute("loop", "true");
+  //   backgroundMusic.loop = true;
+  //   backgroundMusic.play();
+  // });
+
+  useIonViewDidEnter(() => {
     // console.log("Component is about to leave!");
     // backgroundMusic.setAttribute("loop", "true");
     backgroundMusic.loop = true;
+    backgroundMusic.muted = true;
+    backgroundMusic.autoplay = true;
     backgroundMusic.play();
   });
 
@@ -419,26 +430,26 @@ const Jeux = ({ competitionIsOpen }) => {
               UI Components
             </a>
           </p> */}
-      <IonGrid>
-        <IonRow>
+      <IonGrid className="game-grid">
+        <IonRow className="game-row">
           <IonCol size="3">{position1 === 1 ? positiveTapButton1(1, "l1-1") : negativeTapButton1(1)}</IonCol>
           <IonCol size="3">{position1 === 2 ? positiveTapButton1(1, "l1-2") : negativeTapButton1(1)}</IonCol>
           <IonCol size="3">{position2 === 1 ? positiveTapButton2(2, "l1-3") : negativeTapButton1(2)}</IonCol>
           <IonCol size="3">{position2 === 2 ? positiveTapButton2(2, "l1-4") : negativeTapButton1(2)}</IonCol>
         </IonRow>
-        <IonRow>
+        <IonRow className="game-row">
           <IonCol size="3">{position3 === 1 ? positiveTapButton3(3, "l2-1") : negativeTapButton1(3)}</IonCol>
           <IonCol size="3">{position3 === 2 ? positiveTapButton3(3, "l2-2") : negativeTapButton1(3)}</IonCol>
           <IonCol size="3">{position4 === 1 ? positiveTapButton4(4, "l2-3") : negativeTapButton1(4)}</IonCol>
           <IonCol size="3">{position4 === 2 ? positiveTapButton4(4, "l2-4") : negativeTapButton1(4)}</IonCol>
         </IonRow>
-        <IonRow>
+        <IonRow className="game-row">
           <IonCol size="3">{position5 === 1 ? positiveTapButton5(5, "l3-1") : negativeTapButton1(5)}</IonCol>
           <IonCol size="3">{position5 === 2 ? positiveTapButton5(5, "l3-2") : negativeTapButton1(5)}</IonCol>
           <IonCol size="3">{position6 === 1 ? positiveTapButton6(6, "l3-3") : negativeTapButton1(6)}</IonCol>
           <IonCol size="3">{position6 === 2 ? positiveTapButton6(6, "l3-4") : negativeTapButton1(6)}</IonCol>
         </IonRow>
-        <IonRow>
+        <IonRow className="game-row">
           <IonCol size="3">{position7 === 1 ? positiveTapButton7(7, "l4-1") : negativeTapButton1(7)}</IonCol>
           <IonCol size="3">{position7 === 2 ? positiveTapButton7(7, "l4-2") : negativeTapButton1(7)}</IonCol>
           <IonCol size="3">{position8 === 1 ? positiveTapButton8(8, "l4-3") : negativeTapButton1(8)}</IonCol>

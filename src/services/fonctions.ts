@@ -24,3 +24,5 @@ export const getUserInfos = async () => {
 
   return { response: response, error: error };
 };
+
+export const isNumeric = (val: unknown) => !isNaN(+val) && val !== "";

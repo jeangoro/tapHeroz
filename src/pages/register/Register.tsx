@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setListQuestions } from "../../store/changePasswordSlice";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../components/LanguageSelector";
+import { isNumeric } from "../../services/fonctions";
 
 const Register: React.FC = () => {
   const history = useHistory();
@@ -74,9 +75,9 @@ const Register: React.FC = () => {
   // });
 
   useEffect(() => {
-    // console.log(user_infos.ID_JOUEUR);
+    // console.log(parseInt(user_infos.ID_JOUEUR));
 
-    if (user_infos.ID_JOUEUR !== undefined) {
+    if (isNumeric(parseInt(user_infos.ID_JOUEUR))) {
       history.push("/play");
     }
   });
@@ -177,8 +178,7 @@ const Register: React.FC = () => {
             text: t("Yes"),
             cssClass: "alert-button-confirm",
           },
-        ]}
-      ></IonAlert>
+        ]}></IonAlert>
       <IonHeader>
         <div className="custom-header">
           <span>
@@ -207,8 +207,7 @@ const Register: React.FC = () => {
               };
               // console.log("Form submitted :", values);
               registration(values);
-            }}
-          >
+            }}>
             <>
               <IonRow>
                 <IonCol sizeXs="12" sizeSm="6">
@@ -249,8 +248,7 @@ const Register: React.FC = () => {
                     label={t("Confirm Password")}
                     labelPlacement="floating"
                     fill="outline"
-                    placeholder={t("Confirm Password")}
-                  >
+                    placeholder={t("Confirm Password")}>
                     <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
                   </IonInput>
                 </IonCol>
@@ -280,8 +278,7 @@ const Register: React.FC = () => {
                     label={t("Answer to the secret question")}
                     labelPlacement="floating"
                     fill="outline"
-                    placeholder={t("Answer to the secret question")}
-                  ></IonInput>
+                    placeholder={t("Answer to the secret question")}></IonInput>
                 </IonCol>
                 <IonCol sizeXs="12" sizeSm="6">
                   <IonInput disabled name="refererId" type="text" value={refererId} onIonChange={(e) => setrefererId(e.detail.value!)} label={t("Referer")} labelPlacement="floating" fill="outline" placeholder={t("Referer")}></IonInput>

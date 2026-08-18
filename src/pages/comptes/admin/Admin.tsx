@@ -42,6 +42,7 @@ const Admin: React.FC = () => {
 
   const [refererId, setrefererId] = useState(referer);
   const [listCompetitions, setListCompetitions] = useState(null);
+  const [updateData, setUpdateData] = useState(null);
   // Returns "shirt"
 
   // console.log(refererId);
@@ -66,7 +67,7 @@ const Admin: React.FC = () => {
   // useEffect(() => {
   //   // console.log(user_infos.ID_JOUEUR);
 
-  //   if (user_infos.ID_JOUEUR !== undefined) {
+  //   if ( isNumeric(user_infos.ID_JOUEUR)) {
   //     history.push("/play");
   //   }
   // });
@@ -109,6 +110,43 @@ const Admin: React.FC = () => {
     }
   }, [listCompetitions]);
 
+  const updateCompetition = useCallback(
+    async (values: any) => {
+      // console.log("deleting competition with ID:", id);
+
+      if (values !== null) {
+        await axios
+          .post("backend/update_competition.php", values)
+          .then((res) => {
+            if (res.status === 200) {
+              // dispatch(setListQuestions(res.data));
+              // getListCompetitions();
+              alert(t("Competition updated successfully"));
+              axios
+                .get("backend/list_all_competitions.php")
+                .then((res) => {
+                  if (res.status === 200) {
+                    // dispatch(setListQuestions(res.data));
+                    setListCompetitions(res.data);
+                  }
+                  // console.log(res);
+                  // console.log(list_questions);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+            // console.log(res);
+            // console.log(list_questions);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    [t, getListCompetitions],
+  );
+
   const deleteCompetition = useCallback(
     async (id: number) => {
       // console.log("deleting competition with ID:", id);
@@ -130,29 +168,33 @@ const Admin: React.FC = () => {
           });
       }
     },
-    [listCompetitions, t, getListCompetitions]
+    [listCompetitions, t, getListCompetitions],
   );
 
   const createCompetition = async (infos: object) => {
     // console.log(list_leagues);
-
-    await axios
-      .post("backend/create_competition.php", infos)
-      .then((res) => {
-        // console.log(res);
-        if (res.data.status === true) {
-          // setState("list_leagues", res.data);
-          setCreateMessage(res.data.message);
-          setIsOpen(true);
-          history.push("/login");
-        } else {
-          setCreateMessage(res.data.message);
-          setIsOpen(true);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (updateData !== null) {
+      updateCompetition(infos);
+      return;
+    } else {
+      await axios
+        .post("backend/create_competition.php", infos)
+        .then((res) => {
+          // console.log(res);
+          if (res.data.status === true) {
+            // setState("list_leagues", res.data);
+            setCreateMessage(res.data.message);
+            setIsOpen(true);
+            history.push("/login");
+          } else {
+            setCreateMessage(res.data.message);
+            setIsOpen(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   useEffect(() => {
@@ -162,6 +204,20 @@ const Admin: React.FC = () => {
       getListCompetitions();
     }
   }, [getListCompetitions, listCompetitions]);
+
+  const setUpdateDetails = (values: any) => {
+    console.log(values);
+
+    NOM.current = values.NOM;
+    DATE_DEBUT.current = values.DATE_DEBUT;
+    HEURE_DEBUT.current = values.HEURE_DEBUT;
+    DATE_FIN.current = values.DATE_FIN;
+    HEURE_FIN.current = values.HEURE_FIN;
+    ETAT.current = values.ETAT;
+    cagnotte.current = values.cagnotte;
+    coin_value.current = values.coin_value;
+    setUpdateData(values);
+  };
 
   // useEffect(() => {
   //   console.log("voici la liste des league:");
@@ -191,8 +247,7 @@ const Admin: React.FC = () => {
             text: t("Yes"),
             cssClass: "alert-button-confirm",
           },
-        ]}
-      ></IonAlert>
+        ]}></IonAlert>
       <IonHeader>
         <div className="custom-header">
           <span>
@@ -214,6 +269,7 @@ const Admin: React.FC = () => {
               e.preventDefault();
               // Handle form submission
               const values = {
+                ID_COMPETITION: updateData !== null ? updateData.ID_COMPETITION : null,
                 NOM: NOM.current,
                 DATE_DEBUT: DATE_DEBUT.current,
                 HEURE_DEBUT: HEURE_DEBUT.current,
@@ -227,8 +283,7 @@ const Admin: React.FC = () => {
               };
               // console.log("Form submitted :", values);
               createCompetition(values);
-            }}
-          >
+            }}>
             <>
               <IonRow>
                 <IonCol sizeXs="12" sizeSm="12">
@@ -329,9 +384,15 @@ const Admin: React.FC = () => {
                     </IonItem>
                   </IonList>
                   <br /> */}
-              <IonButton type="submit" expand="full" fill="solid" color="primary" className="ion-margin-top">
-                {t("Create")}
-              </IonButton>
+              {updateData === null ? (
+                <IonButton type="submit" expand="full" fill="solid" color="primary" className="ion-margin-top">
+                  {t("Create")}
+                </IonButton>
+              ) : (
+                <IonButton type="submit" expand="full" fill="solid" color="warning" className="ion-margin-top">
+                  {t("Update")}
+                </IonButton>
+              )}
               <br />
               {/* <div style={{ float: "right" }}>
                 {t("You already have an account?")} <a href={"/login"}>{t("Log in")}</a>
@@ -398,7 +459,7 @@ const Admin: React.FC = () => {
                     <IonPopover trigger={`popover-button-${key}`} dismissOnSelect={true}>
                       <IonContent>
                         <IonList>
-                          <IonItem button={true} detail={false}>
+                          <IonItem button={true} detail={false} onClick={() => setUpdateDetails(competition)}>
                             {t("Update")}
                           </IonItem>
                           <IonItem button={true} detail={false} onClick={() => deleteCompetition(competition.ID_COMPETITION)}>

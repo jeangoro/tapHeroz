@@ -18,8 +18,14 @@ export const setAxiosDefault = () => {
   // api_key = 'TSIGUIA_JEAN_goro_2000_testToken';
   const Authorization = `Bearer ${token} ${ID_JOUEUR} ${LOGIN} ${NOM_PRENOM} `;
 
+  // ion build
   // axios.defaults.baseURL = "http://localhost:80/tap-heroz/";
-  axios.defaults.baseURL = "https://tapheroz.com/";
+  // axios.defaults.baseURL = "https://tapheroz.com/";
+  if (import.meta.env.DEV) {
+    axios.defaults.baseURL = import.meta.env.VITE_DEV_BASE_URL;
+  } else {
+    axios.defaults.baseURL = import.meta.env.VITE_PROD_BASE_URL;
+  }
   axios.defaults.headers.common["Authorization"] = Authorization;
   axios.defaults.headers.post["Content-Type"] = "application/json";
 };
@@ -29,5 +35,5 @@ setAxiosDefault();
 root.render(
   <Provider store={store}>
     <App />
-  </Provider>
+  </Provider>,
 );

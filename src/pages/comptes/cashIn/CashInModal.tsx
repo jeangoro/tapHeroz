@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonInput, IonItem, IonList, IonModal, IonRow, IonSelect, IonSelectOption, IonSpinner, IonText, IonTitle, IonToolbar, useIonToast } from "@ionic/react";
+import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonModal, IonRow, IonSelect, IonSelectOption, IonSpinner, IonText, IonTitle, IonToolbar, useIonToast } from "@ionic/react";
 
 import { useState } from "react";
 import axios from "axios";
@@ -10,6 +10,7 @@ import "./CashInModal.css";
 import { useHistory } from "react-router";
 import AttentePayement from "../AttentePayement/AttentePayement";
 import { useTranslation } from "react-i18next";
+import { logoWhatsapp, phonePortrait } from "ionicons/icons";
 
 const CashInModal = ({ isOpen, setisOpen }) => {
   const [montantDepot, setmontantDepot] = useState("");
@@ -26,12 +27,18 @@ const CashInModal = ({ isOpen, setisOpen }) => {
 
   // const [canOpenPayIframe, setcanOpenPayIframe] = useState(false);
   const [payementEncours, setpayementEncours] = useState(false);
+  const [country, setcountry] = useState("Cameroun");
 
   const [present] = useIonToast();
 
   const list_mobile_money = [
     { value: 1, label: "MOMO (MTN Mobile Money)" },
     { value: 2, label: "OM (Orange Money)" },
+  ];
+
+  const list_country = [
+    { value: "Cameroun", label: "Cameroun" },
+    { value: "Autres", label: "Autres" },
   ];
 
   // const errorStyle = {
@@ -78,7 +85,7 @@ const CashInModal = ({ isOpen, setisOpen }) => {
 
     const newValues = {
       id_joueur: user_infos.ID_JOUEUR,
-      type_transaction: "CashInModal",
+      type_transaction: "depot",
       montant: montantDepot,
       motif: t("Top-up the account by number: ") + telephoneDepot,
       description: "",
@@ -86,7 +93,7 @@ const CashInModal = ({ isOpen, setisOpen }) => {
     };
 
     await axios
-      .post("backend/CashInModal.php", newValues)
+      .post("backend/depot.php", newValues)
       .then((res) => {
         // console.log(res);
         if (res.data.status === true) {
@@ -181,79 +188,137 @@ const CashInModal = ({ isOpen, setisOpen }) => {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
+          <IonRow className="ion-justify-content-center">
+            <IonCol sizeXs="12" sizeSm="6">
+              <IonList>
+                <IonItem>
+                  {list_country !== undefined && (
+                    <IonSelect label={t("Country")} value={country} labelPlacement="floating" onIonChange={(e) => setcountry(e.detail.value)}>
+                      {list_country?.map((country: any, key: number) => (
+                        <IonSelectOption key={key} value={country?.value}>
+                          {country?.label}
+                        </IonSelectOption>
+                      ))}
+                    </IonSelect>
+                  )}
+                </IonItem>
+              </IonList>
+            </IonCol>
+          </IonRow>
+
           <AttentePayement isOpen={payementEncours} setisOpen={setpayementEncours} paymentProcessor={payment_processor} montant={montantDepot} phoneNumber={telephoneDepot} annuler={setpayementEncours} />
-          <p className="text-center">{t("Please fill in your information to top up your account")}</p>
+          {country === "Cameroun" ? <p className="text-center">{t("Please fill in your information to top up your account")}</p> : <p className="text-center">{t("Please click this button to make your payment and send us your information to update your balance.")}</p>}
           {/* <CashInModal /> */}
-          {!payementEncours ? (
-            <form
-              action=""
-              onSubmit={(e) => {
-                e.preventDefault();
-                doPaymentDepot({ payer_name: payer_name, amount: montantDepot, payment_processor: payment_processor, payer_number: telephoneDepot, type: "TOPUP", link: "yASRDtENBU" });
-              }}
-            >
-              <IonGrid fixed={true} className="ion-padding" style={{ innerHeight: "100%" }}>
-                <IonRow className="ion-align-items-center">
-                  <IonCol>
-                    <>
-                      <IonRow>
-                        <IonCol size="2">{payment_processor === 1 ? <IonImg src="/assets/images/momo.jpg"></IonImg> : <IonImg src="/assets/images/om.jpg"></IonImg>}</IonCol>
-                        <IonCol size="10">
-                          <IonList>
-                            <IonItem>
-                              {list_mobile_money !== undefined && (
-                                <IonSelect label="Moyen de payement" value={payment_processor} labelPlacement="floating" onIonChange={(e) => setpayment_processor(e.detail.value)}>
-                                  {list_mobile_money?.map((mobile_money: any, key: number) => (
-                                    <IonSelectOption key={key} value={mobile_money?.value}>
-                                      {mobile_money?.label}
-                                    </IonSelectOption>
-                                  ))}
-                                </IonSelect>
-                              )}
-                            </IonItem>
-                          </IonList>
-                        </IonCol>
-                      </IonRow>
-                      <br />
-                      <IonInput name="payer_name" type="text" value={payer_name} onIonChange={(e) => setpayer_name(e.detail.value)} label={t("Your name")} labelPlacement="floating" fill="outline" placeholder={t("Your name")}></IonInput>
 
-                      <IonInput
-                        // style={!isValidMontantDepot && errorStyle}
-                        className="mt-4"
-                        name="montantDepot"
-                        type="number"
-                        value={montantDepot}
-                        onKeyUp={(e) => checkMontant(e.currentTarget.value)}
-                        label={t("Amount to deposit")}
-                        labelPlacement="floating"
-                        fill="outline"
-                        placeholder={t("Amount to deposit")}
-                      ></IonInput>
-                      {!isValidMontantDepot && <IonText color={"danger"}>{t("Invalid amount")}</IonText>}
-                      <br />
-                      <IonInput className="mt-2" name="telephoneDepot" type="number" value={telephoneDepot} onKeyUp={(e) => checkPhoneNumber(e.currentTarget.value)} label={t("Payer's phone number")} labelPlacement="floating" fill="outline" placeholder={t("Payer's phone number")}></IonInput>
-                      {!isValidTelephoneDepot && <IonText color={"danger"}>{t("Invalid phone number")}</IonText>}
-
-                      <div className="mt-3" style={{ color: "blue" }}>
-                        <h5 className="fl-l">{t("Total to pay")} </h5>:<h5 className="fl-r">{montantDepot} FCFA</h5>
-                      </div>
-
-                      <IonButton type="submit" expand="full" fill="solid" color="primary" className="ion-margin-top" disabled={!isValidMontantDepot || !isValidTelephoneDepot}>
-                        {t("Recharge my account")}
-                      </IonButton>
-                      {/* <br /> */}
-                      {/* <div style={{ float: "right" }}>
+          {country === "Cameroun" ? (
+            <>
+              {!payementEncours ? (
+                <form
+                  action=""
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    doPaymentDepot({ payer_name: payer_name, amount: montantDepot, payment_processor: payment_processor, payer_number: telephoneDepot, type: "TOPUP", link: "yASRDtENBU" });
+                  }}
+                >
+                  <IonGrid fixed={true} className="ion-padding" style={{ innerHeight: "100%" }}>
+                    <IonRow className="ion-align-items-center">
+                      <IonCol>
+                        <>
+                          <IonRow>
+                            <IonCol size="2">{payment_processor === 1 ? <IonImg src="/assets/images/momo.jpg"></IonImg> : <IonImg src="/assets/images/om.jpg"></IonImg>}</IonCol>
+                            <IonCol size="10">
+                              <IonList>
+                                <IonItem>
+                                  {list_mobile_money !== undefined && (
+                                    <IonSelect label="Moyen de payement" value={payment_processor} labelPlacement="floating" onIonChange={(e) => setpayment_processor(e.detail.value)}>
+                                      {list_mobile_money?.map((mobile_money: any, key: number) => (
+                                        <IonSelectOption key={key} value={mobile_money?.value}>
+                                          {mobile_money?.label}
+                                        </IonSelectOption>
+                                      ))}
+                                    </IonSelect>
+                                  )}
+                                </IonItem>
+                              </IonList>
+                            </IonCol>
+                          </IonRow>
+                          <br />
+                          <IonInput name="payer_name" type="text" value={payer_name} onIonChange={(e) => setpayer_name(e.detail.value)} label={t("Your name")} labelPlacement="floating" fill="outline" placeholder={t("Your name")}></IonInput>
+                          <IonInput
+                            // style={!isValidMontantDepot && errorStyle}
+                            className="mt-4"
+                            name="montantDepot"
+                            type="number"
+                            value={montantDepot}
+                            onKeyUp={(e) => checkMontant(e.currentTarget.value)}
+                            label={t("Amount to deposit")}
+                            labelPlacement="floating"
+                            fill="outline"
+                            placeholder={t("Amount to deposit")}
+                          ></IonInput>
+                          {!isValidMontantDepot && <IonText color={"danger"}>{t("Invalid amount")}</IonText>}
+                          <br />
+                          <IonInput className="mt-2" name="telephoneDepot" type="number" value={telephoneDepot} onKeyUp={(e) => checkPhoneNumber(e.currentTarget.value)} label={t("Payer's phone number")} labelPlacement="floating" fill="outline" placeholder={t("Payer's phone number")}></IonInput>
+                          {!isValidTelephoneDepot && <IonText color={"danger"}>{t("Invalid phone number")}</IonText>}
+                          <div className="mt-3" style={{ color: "blue" }}>
+                            <h5 className="fl-l">{t("Total to pay")} </h5>:<h5 className="fl-r">{montantDepot} FCFA</h5>
+                          </div>
+                          <IonButton type="submit" expand="full" fill="solid" color="primary" className="ion-margin-top" disabled={!isValidMontantDepot || !isValidTelephoneDepot}>
+                            {t("Recharge my account")}
+                          </IonButton>
+                          <br />
+                          <br />
+                          Vous voulez recharger en crypto monnaie ?{/* <IonText color={"danger"}> */}
+                          <a href="https://nowpayments.io/payment/?iid=4382716533&source=button" target="_blank" rel="noreferrer noopener">
+                            <IonImg src="https://nowpayments.io/images/embeds/payment-button-black.svg" alt="Bouton de paiement crypto par NOWPayments" />
+                          </a>
+                          {/* <br /> */}
+                          {/* <div style={{ float: "right" }}>
                       Pas de compte? <a href={"/register"}>Inscrivez-vous</a>
                     </div> */}
-                    </>
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-            </form>
+                        </>
+                      </IonCol>
+                    </IonRow>
+                  </IonGrid>
+                </form>
+              ) : (
+                <div>
+                  <IonSpinner className="center"></IonSpinner>
+                </div>
+              )}
+            </>
           ) : (
-            <div>
-              <IonSpinner className="center"></IonSpinner>
-            </div>
+            <>
+              <a href="https://nowpayments.io/payment/?iid=4382716533&source=button" target="_blank" rel="noreferrer noopener">
+                <IonImg src="https://nowpayments.io/images/embeds/payment-button-black.svg" alt="Bouton de paiement crypto par NOWPayments" />
+              </a>
+              <br />
+              <h4>Nos Contacts:</h4>
+              <IonList>
+                <IonItem>
+                  <IonIcon aria-hidden="true" icon={phonePortrait} slot="start"></IonIcon>
+                  <IonLabel>
+                    {t("Phone")} :{" "}
+                    <span className="text-primary">
+                      <a href="tel:+237679628124">{"+237679628124"}</a>
+                    </span>{" "}
+                    /{" "}
+                    <span className="text-primary">
+                      <a href="tel:+237699030871">{"+237699030871"}</a>
+                    </span>
+                  </IonLabel>
+                </IonItem>
+                <IonItem>
+                  <IonIcon aria-hidden="true" icon={logoWhatsapp} slot="start"></IonIcon>
+                  <IonLabel>
+                    {t("Whatsapp")} :{" "}
+                    <span className="text-primary">
+                      <a href="https://wa.me/237679628124">{"+237679628124"}</a>
+                    </span>
+                  </IonLabel>
+                </IonItem>
+              </IonList>
+            </>
           )}
         </IonContent>
       </IonModal>
